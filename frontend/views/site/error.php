@@ -6,7 +6,9 @@
 /* @var $exception Exception */
 
 use yii\helpers\Html;
+use frontend\assets\SiteAsset;
 
+SiteAsset::register($this);
 $this->title = $name;
 ?>
 <div class="site-error">

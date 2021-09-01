@@ -2,7 +2,7 @@
 
 namespace frontend\dao;
 
-use common\Models\Candidate;
+use common\models\Candidate;
 
 class CandidateDao extends BaseDao
 {

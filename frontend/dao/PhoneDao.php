@@ -2,7 +2,7 @@
 
 namespace frontend\dao;
 
-use common\Models\Phone;
+use common\models\Phone;
 
 class PhoneDao extends BaseDao
 {
