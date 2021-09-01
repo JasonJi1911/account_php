@@ -81,4 +81,18 @@ class CandidateLogic
 
         return $step;
     }
+
+    public function UpdateStep($customer_id, $data)
+    {
+        $candidateDao = new CandidateDao();
+        $condition = ['Customer_id' => $customer_id];
+        $candidateDao->UpdateCandidate($condition, $data);
+    }
+
+    public function GetCandidate($customer_id)
+    {
+        $candidateDao = new CandidateDao();
+        $info = $candidateDao->SearchCandidate(['Customer_id' => $customer_id]);
+        return $info;
+    }
 }
