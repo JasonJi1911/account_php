@@ -15,9 +15,76 @@ use common\models\Phone;
 $this->title = '首页-财猫证券开户';
 AppAsset::register($this);
 
+$js = <<<JS
+$(function(){
+    let identity_url = 'https://api.moneycatrading.com/index.php?app=member&act=sendmsg';
+    $('#identity-btn').click(function (){
+        var phone = $('#phone').val();
+        var country = $('#country').val();
+        var country_code = 86;
+        switch (country){
+            case 'CHN':
+                country_code = 86;
+                break;
+            case 'AUS':
+                country_code = 61;
+                break;
+            case 'USA':
+                country_code = 1;
+                break;
+        }
+        if (phone == '')
+        {
+            alert('手机号不能为空');
+            return false;
+        }
+        var form = new FormData();
+        form.append("tel", phone);
+        form.append("country_code", country_code);
+
+        console.log(form);
+        var settings = {
+          "url": identity_url,
+          "method": "POST",
+          "timeout": 0,
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          "data": form
+        };
+        
+        $.ajax(settings).done(function (response) {
+            $('#identity-count').removeClass('divHide');
+            $('#identity-btn').addClass('divHide')
+            
+            var tin = setInterval(function(){
+                $('#identity-count span').text($('#identity-count span').text() - 1);
+                if($('#identity-count span').text() == 0)
+                {
+                    $('#identity-count').addClass('divHide');
+                    $('#identity-btn').removeClass('divHide');
+                    $('#identity-count span').text(60)
+                    clearInterval(tin);
+                }
+            },1000);
+        });
+    })
+});
+JS;
+
+$this->registerJs($js);
+
 ?>
 
     <style>
+        .phone{
+            height: auto;
+        }
+
+        .phone input{
+            height: 50px;
+        }
+
         .form-group{
             height: 100%;
         }
@@ -26,23 +93,21 @@ AppAsset::register($this);
             color: red;
         }
 
-        .phone{
-            overflow: unset;
-        }
+
     </style>
 
     <div class="banner">
-        <img src="img/banner.jpg" />
+        <img src="/img/banner.jpg" />
     </div>
     <div class="title">
         <div class="logo">
-            <img src="img/logo.png" />
+            <img src="/img/logo.png" />
         </div>
         <div>手机号验证</div>
     </div>
     <div class="process">
         <div class="process-top">
-            <img src="img/18.png" />
+            <img src="/img/18.png" />
         </div>
         <div class="process-bow">
             <div>
@@ -53,20 +118,21 @@ AppAsset::register($this);
 
 <?php $form = ActiveForm::begin([
     'id' => 'contact-form',
-    'enableAjaxValidation' => true,
+    'enableClientValidation' => false,
+//    'enableAjaxValidation' => true,
 ]) ?>
     <div class="title-name">手机号</div>
     <div class="phone">
         <div class="phone-country">
-            <?= $form->field($model, 'country')->dropDownList(Phone::$countrys)->label(false) ?>
+            <?= $form->field($model, 'country')->dropDownList(Phone::$countrys, ['id'=>'country'])->label(false) ?>
         </div>
         <div class="phone-num">
-            <?= $form->field($model, 'number')->textInput(['maxlength' => 11, 'placeholder' => '您的手机号', 'pattern'=>"[0-9]*"])->label(false) ?>
+            <?= $form->field($model, 'number')->textInput(['maxlength' => 11, 'placeholder' => '您的手机号', 'pattern'=>"[0-9]*", 'id'=>'phone'])->label(false) ?>
         </div>
         <div class="phone-btn">
             <!-- input和div 隐藏样式class="divHide" -->
-            <input type="button" value="获取验证码" />
-            <div class="divHide">
+            <input id='identity-btn' type="button" value="获取验证码" />
+            <div id='identity-count' class="divHide">
                 <span>60</span>后秒重试
             </div>
         </div>
@@ -74,31 +140,32 @@ AppAsset::register($this);
 
     <div class="title-name">验证码</div>
     <div class="phone">
-        <input type="text" class="inpttext" placeholder="请输入收到的验证码" pattern="[0-9]*" maxlength="6" />
+<!--        <input type="text" class="inpttext" placeholder="请输入收到的验证码" pattern="[0-9]*" maxlength="6" />-->
+        <?= $form->field($model, 'identity_code')->textInput(['maxlength' => 6, 'placeholder' => '请输入收到的验证码', 'pattern'=>"[0-9]*", 'class'=>'inpttext'])->label(false) ?>
     </div>
 
     <!-- div 隐藏样式class="divHide" -->
-    <div class="errors ">
+    <div class="errors divHide">
         <div class="errors-img">
-            <img src="img/remind-Red.png" />
+            <img src="/img/remind-Red.png" />
         </div>
         <div class="errors-text colorRed">验证码输入错误,请查询后重新输入</div>
     </div>
     <div class="rule-01">
         <div class="rule-01-left">
-            <img src="img/IDicon.png" />
+            <img src="/img/IDicon.png" />
         </div>
         <div class="rule-01-right">若为中国大陆居民，请准备好本人国内二代居民身份证，以免影响开户进度</div>
     </div>
     <div class="rule-01">
         <div class="rule-01-left">
-            <img src="img/passport-o.png" />
+            <img src="/img/passport-o.png" />
         </div>
         <div class="rule-01-right">若为国外居民，请准备好驾照或护照</div>
     </div>
     <div class="rule-01">
         <div class="rule-01-left">
-            <img src="img/wifi.png" />
+            <img src="/img/wifi.png" />
         </div>
         <div class="rule-01-right">开户前请确保网络连接畅通</div>
     </div>

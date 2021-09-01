@@ -14,6 +14,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'cookieValidationKey' => 'T0ZK5NohbEgclUuLjBfgvlZXQmVKhZUx',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -40,18 +41,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
 
-//            'suffix' => '.html',
-
             'rules' => [
-
-                // 视频首页
+                // 网站首页
                 [
                     'pattern'   => '/',
                     'route'     => 'account/index',
                 ],
-
-                'news/<id:\d+>/detail' => 'news/detail',
-
                 // 通用路由配置
                 '<controller:[\w-]+>/<action:[\w-]+>' => '<controller>/<action>',
                 '<verify:[\w-]+>.txt' => 'site/txt' //验证文件
