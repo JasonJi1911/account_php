@@ -11,7 +11,6 @@ use common\models\Phone;
 /* @var $model common\models\Phone */
 /* @var $form yii\widgets\ActiveForm */
 
-//$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子tv,澳洲瓜子tv,新西兰瓜子tv,澳新瓜子tv,瓜子视频,瓜子影视,电影,电视剧,榜单,综艺,动画,记录片']);
 $this->title = '首页-财猫证券开户';
 AppAsset::register($this);
 

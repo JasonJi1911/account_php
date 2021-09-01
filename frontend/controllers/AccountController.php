@@ -79,7 +79,7 @@ class AccountController extends BaseController
     public function actionTips()
     {
         $customer_id = Yii::$app->request->get('Customer_id', '');
-        $this->SwitchTag($customer_id, TAB_TIPS);
+
         $result = $this->ValidateCustomer($customer_id);
         if(!$result)
             return $this->redirect(Url::to(['/site/error']));
@@ -88,12 +88,23 @@ class AccountController extends BaseController
         $candidateLogic = new CandidateLogic();
         $candidateLogic->UpdateStep($customer_id, $data);
         return $this->render('tips', [
+            'Customer_id' => $customer_id,
         ]);
     }
 
     public function actionNationality()
     {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
 
+        $result = $this->ValidateCustomer($customer_id);
+        if(!$result)
+            return $this->redirect(Url::to(['/site/error']));
+
+        $data = ['step' => TAB_NATIONALITY];
+        $candidateLogic = new CandidateLogic();
+        $candidateLogic->UpdateStep($customer_id, $data);
+        return $this->render('nationality', [
+        ]);
     }
 
     public function actionIdentity()

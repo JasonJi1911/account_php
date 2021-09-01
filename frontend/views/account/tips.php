@@ -58,7 +58,7 @@ AppAsset::register($this);
 <div class="tips-box">
     <div class="box-01-bth matop">
         <input type="button" class="inptbtn colorWhite" value="我准备好了"
-               onclick='location.href=("<?= Url::to(['nationality'])?>")' />
+               onclick='location.href=("<?= Url::to(['nationality', 'Customer_id' => $Customer_id])?>")' />
     </div>
     <div class="colorGrey">
         暂不开户
