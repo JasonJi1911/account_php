@@ -63,6 +63,7 @@ class CandidateLogic
 
         $phone = Phone::findOne(['number' => $phoneData['number']]);
         $condition = ['Customer_id' => $phone['Customer_id']];
+        $phoneData['Customer_id'] = $phone['Customer_id'];
         $this->UpdatePhone($condition, $phoneData);
         return ['status' => 200, 'Customer_id' => $phone['Customer_id'], 'message' => ''];
     }
@@ -76,7 +77,7 @@ class CandidateLogic
         if (!isset($step))
             $step = 1;
         else{
-            $step = $step == 10 ? $step : (++$step);
+            $step = $step != 10 && $step == 0 ? ++$step : $step;
         }
 
         return $step;
@@ -94,5 +95,12 @@ class CandidateLogic
         $candidateDao = new CandidateDao();
         $info = $candidateDao->SearchCandidate(['Customer_id' => $customer_id]);
         return $info;
+    }
+
+    public function UpdateCandidate($condition, $data)
+    {
+        $candidateDao = new CandidateDao();
+        $result = $candidateDao->UpdateCandidate($condition, $data);
+        return $result;
     }
 }

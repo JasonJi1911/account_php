@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use common\helpers\Tool;
+use common\models\Identity;
+use frontend\Logic\IdentityLogic;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -96,14 +98,39 @@ class AccountController extends BaseController
     {
         $customer_id = Yii::$app->request->get('Customer_id', '');
 
-        $result = $this->ValidateCustomer($customer_id);
-        if(!$result)
-            return $this->redirect(Url::to(['/site/error']));
-
-        $data = ['step' => TAB_NATIONALITY];
+        $candidate = new Candidate();
+        $identity = new Identity();
+        $identity->Customer_id = $customer_id;
         $candidateLogic = new CandidateLogic();
-        $candidateLogic->UpdateStep($customer_id, $data);
+        $identityLogic = new IdentityLogic();
+
+        if (Yii::$app->request->isPost) {
+            $reponse = Yii::$app->request->post();
+            $reponse_candidate = $reponse[Candidate::className()];
+            $reponse_identity = $reponse[Identity::className()];
+            $identity->type = $reponse_identity['type'];
+            $condition = ['Customer_id' => $customer_id];
+            $candidateLogic->UpdateCandidate($condition, ['citizenship' => $reponse_candidate['citizenship']]);
+            $identityLogic->InsertNewIdentity($identity->attributes);
+            if($candidate->same_citizen == $candidate::SAME_CITIZEN_YES)
+            {
+
+            }
+            return $this->redirect(Url::to(['account/identity', 'Customer_id'=> $customer_id]));
+        }
+        else
+        {
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+
+            $data = ['step' => TAB_NATIONALITY];
+            $candidateLogic->UpdateStep($customer_id, $data);
+        }
+
         return $this->render('nationality', [
+            'candidate' => $candidate,
+            'identity' => $identity,
         ]);
     }
 

@@ -15,7 +15,7 @@ class PhoneDao extends BaseDao
     {
         $info = Phone::findOne($condition);
         $Phone = new Phone();
-        $info->oldAttributes = $info;
+        $Phone->oldAttributes = $info;
         $Phone->updateAttributes($data);
     }
 

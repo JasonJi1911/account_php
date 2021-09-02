@@ -15,8 +15,13 @@ class CandidateDao extends BaseDao
     {
         $info = Candidate::findOne($condition);
         $candidate = new Candidate();
-        $info->oldAttributes = $info;
+        $candidate->oldAttributes = $info;
         $candidate->updateAttributes($data);
+
+        if (!empty($candidate->errors))
+            return ['status'=>500, 'Customer_id' => 0, 'message' => '更新信息失败'];
+
+        return ['status' => 200, 'Customer_id' => $candidate->Customer_id, 'message' => ''];
     }
 
     public function InsertCandidate($data)
