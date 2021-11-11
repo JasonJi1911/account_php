@@ -30,8 +30,12 @@ class CandidateDao extends BaseDao
         $candidate::findOne(['Customer_id' => 0]);
 //        $candidate->attributes = $data;
         foreach ($data as $k=>$v)
-            $candidate->setAttribute($k, $v);
-        $candidate->save();
+        {
+            if (!empty($v))
+                $candidate->setAttribute($k, $v);
+        }
+
+        $candidate->save(false);
 
         if (!empty($candidate->errors))
             return ['status'=>500, 'Customer_id' => 0, 'message' => '创建新用户失败'];

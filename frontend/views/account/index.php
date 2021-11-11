@@ -19,7 +19,7 @@ $(function(){
     let identity_url = 'https://api.moneycatrading.com/index.php?app=member&act=sendmsg';
     $('#identity-btn').click(function (){
         var phone = $('#phone').val();
-        var country = $('#country').val();
+        var country = $('#haveSj').val();
         var country_code = 86;
         switch (country){
             case 'CHN':
@@ -67,7 +67,11 @@ $(function(){
                 }
             },1000);
         });
-    })
+    });
+    
+    $("#divNext").click(function (){
+        $('#next').trigger('click');
+    });
 });
 JS;
 
@@ -75,104 +79,69 @@ $this->registerJs($js);
 
 ?>
 
-    <style>
-        .phone{
-            height: auto;
-        }
+<style>
+    input::-webkit-input-placeholder{
+        color: #ADADAD;
+    }
 
-        .phone input{
-            height: 50px;
-        }
+    #haveSj {
+        border: 0;
+        outline: none;
+        display: block;
+        position: relative;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        line-height: 1.5rem;
+    }
 
-        .form-group{
-            height: 100%;
-        }
+    .help-block {
+        color: red;
+    }
+</style>
 
-        .help-block{
-            color: red;
-        }
-
-
-    </style>
-
-    <div class="banner">
-        <img src="/img/banner.jpg" />
-    </div>
-    <div class="title">
-        <div class="logo">
-            <img src="/img/logo.png" />
-        </div>
-        <div>手机号验证</div>
-    </div>
-    <div class="process">
-        <div class="process-top">
-            <img src="/img/18.png" />
-        </div>
-        <div class="process-bow">
-            <div>
-                &nbsp;
-            </div>
-        </div>
-    </div>
+<div class="color272727 f40 p1L p1T p1B bold">手机号验证</div>
+<div class="colorEF7E2E p1L p1T p1B bgF8F8F8 flexBox2">
+    <img src="/img/icon_1.png" class="phoneIcon"/>
+    <span class="f33">&nbsp手机号</span>
+</div>
 
 <?php $form = ActiveForm::begin([
     'id' => 'contact-form',
-    'enableClientValidation' => false,
+    'enableClientValidation' => true,
 //    'enableAjaxValidation' => true,
 ]) ?>
-    <div class="title-name">手机号</div>
-    <div class="phone">
-        <div class="phone-country">
-            <?= $form->field($model, 'country')->dropDownList(Phone::$countrys, ['id'=>'country'])->label(false) ?>
+    <div class="f33 m1L borderB p1R p1T p1B flexBox1">
+        <div class="flexBox2">
+            <?= $form->field($model, 'country')->dropDownList(Phone::$countrys, ['id'=>'haveSj', 'class' => 'color474747'])->label(false) ?>
+            <div class="sj relative" style="top:8px;left:3px;"></div>
+            &nbsp;&nbsp;&nbsp;
+<!--            <input placeholder="请输入您的手机号" value="" class="color474747 f33"/>-->
+            <?= $form->field($model, 'number')
+                ->textInput(['maxlength' => 11, 'placeholder' => '请输入您的手机号', 'pattern'=>"[0-9]*", 'id'=>'phone', 'class' => 'color474747 f33'])
+                ->label(false) ?>
         </div>
-        <div class="phone-num">
-            <?= $form->field($model, 'number')->textInput(['maxlength' => 11, 'placeholder' => '您的手机号', 'pattern'=>"[0-9]*", 'id'=>'phone'])->label(false) ?>
-        </div>
-        <div class="phone-btn">
-            <!-- input和div 隐藏样式class="divHide" -->
-            <input id='identity-btn' type="button" value="获取验证码" />
-            <div id='identity-count' class="divHide">
-                <span>60</span>后秒重试
-            </div>
+        <span class="colorEF7E2E f33" id='identity-btn'>获取验证码</span>
+        <div id='identity-count' class="olorEF7E2E f33 divHide">
+            <span>60</span>后秒重试
         </div>
     </div>
-
-    <div class="title-name">验证码</div>
-    <div class="phone">
-<!--        <input type="text" class="inpttext" placeholder="请输入收到的验证码" pattern="[0-9]*" maxlength="6" />-->
-        <?= $form->field($model, 'identity_code')->textInput(['maxlength' => 6, 'placeholder' => '请输入收到的验证码', 'pattern'=>"[0-9]*", 'class'=>'inpttext'])->label(false) ?>
+    <div class="f33 m1L borderB p1R p1T p1B">
+        <?= $form->field($model, 'identity_code')->textInput(['maxlength' => 6, 'placeholder' => '请输入验证码', 'pattern'=>"[0-9]*", 'class'=>'color474747 f33'])->label(false) ?>
     </div>
-
-    <!-- div 隐藏样式class="divHide" -->
-    <div class="errors divHide">
-        <div class="errors-img">
-            <img src="/img/remind-Red.png" />
-        </div>
-        <div class="errors-text colorRed">验证码输入错误,请查询后重新输入</div>
+    <div class="color999 f24 m1L m1R p1T flexBox2">
+        <img src="/img/icon_2.png" class="icon1" style="height:13px;"/>
+        <div class="m05L">请您准备好澳洲有效证件：澳洲驾照（推荐）、澳洲 photoID或澳洲护照。</div>
     </div>
-    <div class="rule-01">
-        <div class="rule-01-left">
-            <img src="/img/IDicon.png" />
-        </div>
-        <div class="rule-01-right">若为中国大陆居民，请准备好本人国内二代居民身份证，以免影响开户进度</div>
+    <div class="color999 f24 m1L p1T">
+        <img src="/img/icon_3.png" class="icon1"/>
+        &nbsp;开户前请确认网络连接正常。
     </div>
-    <div class="rule-01">
-        <div class="rule-01-left">
-            <img src="/img/passport-o.png" />
-        </div>
-        <div class="rule-01-right">若为国外居民，请准备好驾照或护照</div>
+    <div class="f24 m1L p1T color999 flexBox2">
+        <img src="/img/icon_4.png" class="icon1"/>
+        &nbsp;&nbsp;绑定已有财猫交易账号（无需开户）。
     </div>
-    <div class="rule-01">
-        <div class="rule-01-left">
-            <img src="/img/wifi.png" />
-        </div>
-        <div class="rule-01-right">开户前请确保网络连接畅通</div>
-    </div>
-    <div class="box-01">
-        <div class="box-01-bth">
-            <input type="submit" class="inptbtn colorWhite" value="下一步" />
-        </div>
-        <div class="box-01-a">登录注册即表示同意&nbsp;<a class="colorOrange " href="#">隐私协议</a></div>
+    <input type="submit" class="divHide" id="next">
+    <div class="f33 bgEF7E2E colorFFF cenetr m1L m1R p05T p05B radius20px fixed bottom w100_" id="divNext">
+        下一步
     </div>
 
 <?php ActiveForm::end() ?>

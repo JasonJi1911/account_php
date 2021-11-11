@@ -5,62 +5,43 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
-//$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子tv,澳洲瓜子tv,新西兰瓜子tv,澳新瓜子tv,瓜子视频,瓜子影视,电影,电视剧,榜单,综艺,动画,记录片']);
+//$this->registerMetaTag(['name' => 'keywords', 'content' => 'xxxx']);
 $this->title = '证件提示-财猫证券开户';
 AppAsset::register($this);
+
+$js = <<<JS
+$(function(){
+    $("#next").click(function (){
+        location.href = $(this).attr('data-link');
+    });
+});
+JS;
+
+$this->registerJs($js);
 ?>
 
-<div class="banner">
-    <img src="/img/banner.jpg" />
-</div>
-<div class="text-02 textBold">
-    开户前请做好一下准备
-</div>
-<div class="tips-01">
-    <div class="tips-01-left">
-        <img src="/img/IDicon-w.png" />
-    </div>
-    <div class="tips-01-right">
-        <div class="tips-Bold">
-            身份证（正反面照片）
-        </div>
-        <div class="colorGrey">
-            身份证原件或正反面照片，证件在有效期内且已年满18岁。
-        </div>
+<div class="f40 color272727 m53-37 bold">开户前请您准备</div>
+<div class="m1L m1T flexBox2 m1R m2B">
+    <img src="/img/icon_6.png" class="W31"/>
+    <div class="m1L">
+        <p class="f38 color000 fontWeight400">身份证件</p>
+        <p class="f33 color656565 m05T">请准备好身份证件，澳洲驾照(推荐）、澳洲photo ID或澳洲护照。</p>
     </div>
 </div>
-<div class="tips-01">
-    <div class="tips-01-left">
-        <img src="/img/passport-w.png" />
-    </div>
-    <div class="tips-01-right">
-        <div class="tips-Bold">
-            驾照或护照
-        </div>
-        <div class="colorGrey">
-            若为国外用户请准备驾照或护照原件，证件在有效期内且已年满18岁。
-        </div>
+<div class="flexBox2 m1L m1T m1R">
+    <img src="/img/icon_5.png" class="W31"/>
+    <div class="m1L">
+        <p class="f38 color000">良好的网络链接</p>
+        <p class="f33 color656565 m05T">建议使用Wi－Fi，或4G / 5G。</p>
     </div>
 </div>
-<div class="tips-01">
-    <div class="tips-01-left">
-        <img src="/img/wifi-w.png" />
+<div class="fixed bottom w100_ m1L m1R">
+    <div class="f33 bgEF7E2E colorFFF cenetr p05T p05B radius20px m05B"
+         data-link="<?= Url::to(['nationality', 'Customer_id' => $Customer_id])?>"
+         id="next">
+        我准备好了
     </div>
-    <div class="tips-01-right">
-        <div class="tips-Bold">
-            良好网络链接
-        </div>
-        <div class="colorGrey">
-            建议使用Wi-Fi，或3G/4G。
-        </div>
-    </div>
-</div>
-<div class="tips-box">
-    <div class="box-01-bth matop">
-        <input type="button" class="inptbtn colorWhite" value="我准备好了"
-               onclick='location.href=("<?= Url::to(['nationality', 'Customer_id' => $Customer_id])?>")' />
-    </div>
-    <div class="colorGrey">
+    <div class="f33 bgffffff borderEF7E2E colorEF7E2E cenetr p05T p05B radius20px">
         暂不开户
     </div>
 </div>

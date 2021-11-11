@@ -1,0 +1,44 @@
+
+
+
+ input {
+	 display: none; 
+  }
+  input:checked + label {
+	 background: #EF7E2E  ; 
+  }
+  input:checked + label::before {
+	 left: calc(100% - 5px);
+	 transform: translateX(-100%);
+  }  
+  input:active + label::before {
+	 width: 130px;
+  }  
+  label {
+	  position: relative;
+	  display: block;
+	  cursor: pointer;
+	  width: 52px;
+	  height: 32px;
+	  border-radius: 100px;
+	  background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0)),#ddd;
+	  box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset,
+	  0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+  }
+  label::before {
+	  content: '';
+	  position: absolute;
+	  width: 26px;
+	  height: 26px;
+	  background: linear-gradient(#f5f5f5 10%, #eeeeee);
+	  border-radius: 90px;
+	  top: 3px;
+	  left: 5px;
+	  transition: all 0.36s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  }
+  
+  
+  
+  
+  
+  

@@ -98,9 +98,17 @@ class AccountController extends BaseController
     {
         $customer_id = Yii::$app->request->get('Customer_id', '');
 
-        $candidate = new Candidate();
-        $identity = new Identity();
-        $identity->Customer_id = $customer_id;
+        $candidate = Candidate::findOne(['Customer_id' => $customer_id]);
+        if (!$candidate)
+            $candidate = new Candidate();
+
+        $identity = Identity::findOne(['Customer_id' => $customer_id]);
+        if (!$identity)
+        {
+            $identity = new Identity();
+            $identity->Customer_id = $customer_id;
+        }
+
         $candidateLogic = new CandidateLogic();
         $identityLogic = new IdentityLogic();
 
@@ -110,13 +118,10 @@ class AccountController extends BaseController
             $reponse_identity = $reponse[Identity::className()];
             $identity->type = $reponse_identity['type'];
             $condition = ['Customer_id' => $customer_id];
-            $candidateLogic->UpdateCandidate($condition, ['citizenship' => $reponse_candidate['citizenship']]);
+            $candidateLogic->UpdateCandidate($condition, $reponse_candidate);
+            //插入或者更新candidate
             $identityLogic->InsertNewIdentity($identity->attributes);
-            if($candidate->same_citizen == $candidate::SAME_CITIZEN_YES)
-            {
-
-            }
-            return $this->redirect(Url::to(['account/identity', 'Customer_id'=> $customer_id]));
+            return $this->redirect(Url::to(['account/identity-card', 'Customer_id'=> $customer_id]));
         }
         else
         {
@@ -129,13 +134,39 @@ class AccountController extends BaseController
         }
 
         return $this->render('nationality', [
+            'Customer_id' => $customer_id,
             'candidate' => $candidate,
             'identity' => $identity,
         ]);
     }
 
-    public function actionIdentity()
+    public function actionIdentityCard()
     {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
 
+        $identity = new Identity();
+        $identity->Customer_id = $customer_id;
+        $identityLogic = new IdentityLogic();
+        $candidateLogic = new CandidateLogic();
+
+        if (Yii::$app->request->isPost) {
+            $reponse = Yii::$app->request->post();
+            $reponse_identity = $reponse[Identity::className()];
+            $identity->type = $reponse_identity['type'];
+        }
+        else
+        {
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+
+            $data = ['step' => TAB_IDENTITYCARD];
+            $candidateLogic->UpdateStep($customer_id, $data);
+        }
+
+        return $this->render('identitycard', [
+            'Customer_id' => $customer_id,
+            'identity' => $identity,
+        ]);
     }
 }

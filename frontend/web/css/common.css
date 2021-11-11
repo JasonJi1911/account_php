@@ -1,0 +1,538 @@
+input {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	outline: none;
+}
+.checkbox input[type=checkbox]:checked{
+   background:url(../img/checked.png);
+   background-size:100% 100%;
+}
+
+
+
+
+@font-face {
+	font-family:catFont;
+	src:url('../font/PingFang.ttc')
+}
+body{
+	font-size:16px;
+	font-family:catFont;
+}
+
+		
+*{
+	margin: 0;
+	padding: 0;
+}
+		
+ul {
+	list-style: none;
+}
+
+select{
+	border: 0;
+	outline: none;
+	display: block;
+	position: relative;
+	appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+#haveSj{
+	border: 0;
+	outline: none;
+	display: block;
+	position: relative;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+		
+input {
+	cursor: pointer;
+	font-family: "微软雅黑";
+	border: none;
+	border-radius: 0;
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-border-radius: 0;
+	-webkit-border: none;
+	outline: none;
+}
+		
+textarea {
+	outline: none;
+	resize: none;
+	font-family: "微软雅黑";
+	appearance: none;
+	border: none;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-webkit-border: none;
+	-webkit-appearance: none;
+	text-align: center;
+}
+
+.fontFamilySC{
+	font-family: PingFang SC;
+}
+
+/* 字体颜色 */
+.color272727{
+	color: #272727 ;
+} 
+.color474747{
+	color: #474747 ;
+} 
+.color656565{
+	color: #656565 ;
+}
+.colorFFF{
+	color: #FFF;
+}
+.color999{
+	color: #999;
+}
+.colorEF7E2E{
+	color:#EF7E2E;
+}
+.color303030{
+	color:#303030;
+}
+.color000{
+	color: #000000;
+}
+.colorADADAD{
+	color: #ADADAD;
+}
+.color878787{
+	color: #878787;
+}
+.color464646{
+	color: #464646;
+}
+.colorFF7F24{
+	color: #FF7F24;
+}
+.color232323{
+	color: #232323;
+}
+.color0547C1{
+	color:#0547C1;
+}
+.colorbcbcbc{
+	color: #BCBCBC;
+}
+
+.colorAAA{
+	color: #AAAAAA;
+}
+/* 字体颜色深重 */
+
+.fontWeight400{
+	font-weight: 400;
+}
+
+.fon500{
+	font-weight:500;
+}
+
+
+/* 字体大小 */
+
+.f40{
+	font-size: 1.25rem;
+}
+.f38{
+	font-size: 1.18rem;
+}
+.f34{
+	font-size: 1.06rem;
+}
+.f33{
+	font-size: 1.03rem;
+}
+.f30{
+	font-size: 0.9rem;
+}
+.f24{
+	font-size: 0.75rem;
+}
+.f27{
+	font-size: 0.84rem;
+}
+
+
+
+
+/* 背景颜色 */
+
+.bgEF7E2E{
+	background:#EF7E2E;
+}
+.bgF8F8F8{
+	background: #f8f8f8;
+}
+.bgF9F9F9{
+	background: #f9f9f9;
+}
+.bgfef1e6{
+	background:#fef1e6;
+}
+.bgffffff{
+	background:#FFFFFF;
+}
+
+
+
+
+
+
+/* 外边距 */
+
+.m1L{
+	margin-left: 1rem;
+}
+.m1R{
+	margin-right: 1rem;
+}
+.m1T{
+	margin-top: 1rem;
+}
+.m1B{
+	margin-bottom: 1rem;
+}
+.m2B{
+	margin-bottom: 2rem;
+}
+.m15L{
+	margin-left:1.5rem;
+}
+.m15R{
+	margin-right:1.5rem;
+}
+.m15T{
+	margin-top:1.5rem;
+}
+.m15B{
+	margin-bottom:1.5rem;
+}
+.m2B{
+	margin-bottom:2rem;
+}
+.m05L{
+	margin-left:0.5rem;
+}
+.m05R{
+	margin-right:0.5rem;
+}
+.m05T{
+	margin-top:0.5rem;
+}
+.m05B{
+	margin-bottom:0.5rem;
+}
+
+.m53-37{
+	margin:1.65rem 0 1.65rem 1.156rem;
+}
+
+
+
+
+
+/* 内边距 */
+
+.p1L{
+	padding-left:1rem;
+}
+.p1R{
+	padding-right:1rem;
+}
+.p1T{
+	padding-top:1rem;
+}
+.p1B{
+	padding-bottom:1rem;
+}
+.p05L{
+	padding-left:0.5rem;
+}
+.p05R{
+	padding-right:0.5rem;
+}
+.p05T{
+	padding-top:0.5rem;
+}
+.p05B{
+	padding-bottom:0.5rem;
+}
+
+/* 宽度 */
+
+.W31{
+	width:3.1rem;
+	height:3.1rem;
+}
+.icon{
+	width: 1.4rem;
+	height: 1.18rem;
+}
+.w100{
+	width: 100%;
+}
+.wBtnBox{
+	width: calc(100% - 2rem);
+}
+
+
+
+
+
+.w25{
+	
+	width:calc(25% - 0.4rem)
+}
+
+.w140{
+	width: 140px;
+}
+.w160{
+	width: 160px;
+}
+
+.w70{
+	width: 70px;
+}
+.w100_{
+	width:calc(100% - 2rem)
+}
+/* 圆角 */
+
+.radius10px{
+	border-radius:0.3rem;
+}
+.radius20px{
+	border-radius:0.6rem;
+}
+.radius14px{
+	border-radius:0.43rem;
+}
+
+
+
+.radius50{
+	border-radius:50%;
+}
+.bold{
+	font-weight: bold;
+}
+.borderB{
+	border-bottom:1px solid #DDDDDD;
+}
+.borderT{
+	border-top:1px solid #DDDDDD;
+}
+.borderL{
+	border-left:1px solid #DDDDDD;
+}
+.borderR{
+	border-right:1px solid #DDDDDD;
+}
+.borderAll{
+	border: 1px solid #CACACA;
+}
+.borderEF7E2E{
+	border: 1px solid #EF7E2E;
+}
+.borderCACACA{
+	border: 1px solid #CACACA;
+}
+
+
+
+
+/* 布局 */
+
+/* 两侧分布  无边距  */
+.flexBox1{   
+	display: flex;
+	flex-wrap:nowrap;
+	justify-content:space-between;
+	align-items:center;
+}
+.flexBox5{   
+	display: flex;
+	flex-wrap:nowrap;
+	justify-content:flex-start;
+	align-items:center;
+}
+
+/* 两侧分布  有边距  */
+.flexBox4{   
+	display: flex;
+	flex-wrap:nowrap;
+	justify-content:space-around;
+	align-items:center;
+}
+
+/* 左侧分布 */
+.flexBox2{   
+	display: flex;
+	flex-wrap:nowrap;
+	justify-content:flex-start;
+	align-content: flex-start;
+}
+/* 中间分布 */
+.flexBox3{   
+	display: flex;
+	flex-wrap:nowrap;
+	justify-content:center;
+	align-items:center;
+}
+
+.cenetr{
+	text-align: center;
+}
+
+.relative{
+	position: relative;
+}
+.absolute{
+	position: absolute;
+}
+.fixed{
+	position: fixed;
+}
+.left{
+	left: 0;
+}
+.right{
+	left: 0;
+}
+.text::-webkit-input-placeholder{
+	transform:translate(-80px,10px);
+	color: #ADADAD;
+}
+
+
+/* 底部按钮距离 */
+.bottom{  
+	bottom:2rem;
+}
+
+.zIndex1{
+	z-index: 1;
+}
+.zIndex2{
+	z-index: 2;
+}
+
+/* 按钮样式 */
+
+.nextBtn{
+	width:68%;
+}
+.prevBtn{
+	width:30%;
+}
+
+
+
+/* 倒立三角形 */
+.sj{
+	width: 0px;
+	height: 0px;
+	border-top:5px solid #000;
+	border-bottom:5px solid transparent;
+	border-left:5px solid transparent;
+	border-right:5px solid transparent;
+}
+
+.mask{
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0;
+	top:0;
+	background: rgba(0,0,0,0.4);
+	z-index:0;
+	display: none !important;
+}
+.box{
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	z-index:2;
+	background:#FFFFFF;
+}
+
+.none{
+	display: none;
+}
+.show{
+	display: block;
+}
+
+
+/* 图标大小 */
+
+.icon1{
+	width:16px;
+	position: relative;
+	top:1px;
+}
+.phoneIcon{
+	width: 16px;
+	height: 21px;
+}
+
+.fixed{
+	position: fixed;
+	bottom: 2rem;
+	left: 0;
+}
+.H80{
+	height:2.5rem;
+}
+
+/* 输入框 */
+
+input::-webkit-input-placeholder{
+	color: #ADADAD;
+	font-size: 1.06rem;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+	color: #ADADAD;
+	font-size: 1.06rem;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+	color: #ADADAD;
+	font-size: 1.06rem;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+	color: #ADADAD;
+	font-size: 1.06rem;
+}
+
+.inputH{
+	height:3.28rem;
+	line-height:3.28rem;
+}
+
+
+.linH80{
+	line-height:2.5rem;
+}
+
+.textpos{
+	position: relative;
+	top: -72px;
+}
+
+.Winput{
+	width: calc(100% - 140px);
+}
+
+.divHide {
+	display: none;
+}

@@ -28,9 +28,9 @@ class Phone extends ActiveRecord
     const COUNTRY_AUS = 'AUS'; // 澳大利亚
 
     public static $countrys = [
-        self::COUNTRY_CHINA => '中国',
-        self::COUNTRY_USA => '美国',
-        self::COUNTRY_AUS => '澳大利亚',
+//        self::COUNTRY_CHINA => '+86',
+//        self::COUNTRY_USA => '+1',
+        self::COUNTRY_AUS => '+61',
     ];
 
     public function rules()
