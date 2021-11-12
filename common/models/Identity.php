@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\behaviors\UploadBehavior;
+use phpDocumentor\Reflection\Types\This;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
@@ -42,6 +44,28 @@ class Identity extends ActiveRecord
             [['issue_state'], 'required', 'message' => '签发州省不能为空.'],
             [['expiration'], 'required', 'message' => '过期时间不能为空.'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors['upload'] = [
+            'class'  => UploadBehavior::className(),
+            'config' => [
+                'picture' => [
+                    'extensions' => UploadBehavior::$imageExtensions,
+                    'maxSize'    => 1024 * 1024 * 10 , // 10M
+                    'required'   => true,
+                    'dir'        => 'identity/'.$this->Customer_id.'/',
+                ]
+            ],
+        ];
+
+        return $behaviors;
     }
 
     /**

@@ -5,10 +5,10 @@ use yii\helpers\Url;
 use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
+use common\metronic\widgets\ActiveForm;
 use common\models\Candidate;
 use common\models\Phone;
-use metronic\widgets\ActiveField;
+use common\metronic\widgets\ActiveField;
 
 $this->title = '上传证件-财猫证券开户';
 AppAsset::register($this);
@@ -55,17 +55,19 @@ $this->registerJs($js);
     <img src="/img/icon_9.png" style="width:0.8rem;height:1rem"/>
     &nbsp仅用于开户审核，隐私信息严格保密！
 </div>
-
 <div id="app">
-    <div class="m15L m15R radius20px bgF9F9F9 m1T cenetr">
-        <img :src="imgUrl" class="w100"/>
-        <div v-if="tips" class="cenetr textpos">证件正面照片</div>
-    </div>
-    <div class="fon500 bgF9F9F9 H80 linH80 cenetr m15L m15R radius14px m05T pos-relative">
-        从相册中选择
-        <?= $form->field($identity, 'picture')->fileInput(['class'=>'fileInput', '@change'=>"upload"])->label(false) ?>
-    </div>
+<?= $form->field($identity, 'picture')->imageUpload(['class'=>'fileInput', 'width' => '366px', 'height' => '210px', '@change'=>"upload"])->label(false) ?>
 </div>
+<!--<div id="app">-->
+<!--    <div class="m15L m15R radius20px bgF9F9F9 m1T cenetr">-->
+<!--        <img :src="imgUrl" class="w100"/>-->
+<!--        <div v-if="tips" class="cenetr textpos">证件正面照片</div>-->
+<!--    </div>-->
+<!--    <div class="fon500 bgF9F9F9 H80 linH80 cenetr m15L m15R radius14px m05T pos-relative">-->
+<!--        从相册中选择-->
+<!--        --><?//= $form->field($identity, 'picture')->imageUpload(['class'=>'fileInput', 'width' => '366px', 'height' => '210px'])->label(false) ?>
+<!--    </div>-->
+<!--</div>-->
 
 <!-- <div class="m15L m15R radius20px bgF9F9F9 m1T cenetr">
     <img src="../img/icon_8.png" class="w100"/>
@@ -109,8 +111,12 @@ $this->registerJs($js);
     var app = new Vue({
         el:"#app",
         data: {
-            imgUrl: "/img/icon_7.png",
+            imgUrl: "",
             tips: true
+        },
+        mounted: function () {
+            console.log(324);
+            this.imgUrl = '<?= $identity->picture != null ? $identity->picture : '/img/icon_7.png'?>';
         },
         methods: {
             upload:function(e){

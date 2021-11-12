@@ -21,8 +21,8 @@ class IdentityDao extends BaseDao
 
     public function InsertIdentity($data)
     {
-        $identity = new Identity();
-        $identity::findOne(['Customer_id' => 0]);
+//        $identity = new Identity();
+        $identity = Identity::findOne(['Customer_id' => $data['Customer_id']]);
 //        $candidate->attributes = $data;
         foreach ($data as $k=>$v)
         {

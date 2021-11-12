@@ -92,7 +92,7 @@ $this->registerJs($js);
 <?php ActiveForm::end() ?>
 
 <script type="text/javascript">
-    new Vue({
+    var vm = new Vue({
         el:"#country" ,
         data:{
             on:'',
@@ -115,14 +115,14 @@ $this->registerJs($js);
                 {'name':'美国', 'value':'USA'},
                 {'name':'中国', 'value':'CHN'}
             ],
-            choseData0:'澳大利亚',
-            choseValue0:'AUS',
-            choseData1:'澳洲驾照(推荐)',
-            choseValue1:'DriversLicense',
-            choseData2:'与国家地区一致',
-            choseValue2:'1',
-            choseData3:'澳大利亚',
-            choseValue3:'AUS',
+            choseData0: '澳大利亚',
+            choseValue0: 'AUS',
+            choseData1: '澳洲驾照(推荐)',
+            choseValue1: 'DriversLicense',
+            choseData2: '与国家地区一致',
+            choseValue2: '1',
+            choseData3: '澳大利亚',
+            choseValue3: 'AUS',
             active:false,
             obj:[
                 {
@@ -143,13 +143,33 @@ $this->registerJs($js);
                 }
             ]
         },
+        watch:{
+            choseValue0:{
+                deep: true,
+                handler: function (newVal,oldVal){
+                    console.log('newValue', newVal);
+                    console.log('oldValue', oldVal);
+                }
+            }
+        },
+        mounted: function () {
+            console.log(324);
+            this.choseValue0 = '<?= $candidate->citizenship != null ? $candidate->citizenship : 'AUS'?>';
+            this.doChange(0);
+            this.choseValue1 = '<?= $identity->type != null ? $identity->type : 'DriversLicense'?>';
+            this.doChange(1);
+            this.choseValue2 = '<?= $candidate->same_citizen ?>';
+            this.doChange(2);
+            this.choseValue3 = '<?= $candidate->countryOfBirth != null ? $candidate->countryOfBirth : 'AUS'?>';
+            this.doChange(3);
+        },
         computed:{
             isShow:function(){
                 return this.active?'show':''
             }
         },
         methods:{
-            chose:function(data,index){
+            chose:function(data,index,isInit=false){
                 if(data.name=='与国家地区不一致'){
                     this.active=true
                 }else if(data.name=='与国家地区一致') {
@@ -165,23 +185,31 @@ $this->registerJs($js);
                 }
                 this['choseData'+index]=data.name
                 this['choseValue'+index]=data.value
-                this.obj[index].switch=!this.obj[index].switch
-                this.obj[index].switch?this.obj[index].on='show':this.obj[index].on=''
-                this.obj[index].switch?this.on='show':this.on=''
+                if (!isInit)
+                {
+                    this.obj[index].switch=!this.obj[index].switch
+                    this.obj[index].switch?this.obj[index].on='show':this.obj[index].on=''
+                    this.obj[index].switch?this.on='show':this.on=''
+                }
             },
             show:function(index){
                 this.obj[index].switch=!this.obj[index].switch
                 this.obj[index].switch?this.obj[index].on='show':this.obj[index].on=''
                 this.obj[index].switch?this.on='show':this.on=''
             },
-            doChange:function(index){
-                alert(index);
-                // var packJson = this['list'+index];
-                // for (var p in packJson) {//遍历json数组时，这么写p为索引，0,1
-                //     if (packJson[p].value == data)
-                //         this.chose(packJson[p], index)
-                // }
+            doChange(index)
+            {
+                var iniVal = this['choseValue' + index]
+                var packJson = this['list' + index]
+                for (var val in packJson) {
+                    if (packJson[val].value == iniVal)
+                    {
+
+                        this.chose(packJson[val], index, true);
+                        break;
+                    }
+                }
             }
-        }
+        },
     });
 </script>

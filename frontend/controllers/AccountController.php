@@ -143,19 +143,14 @@ class AccountController extends BaseController
     public function actionIdentityCard()
     {
         $customer_id = Yii::$app->request->get('Customer_id', '');
-
-        $identity = new Identity();
-        $identity->Customer_id = $customer_id;
-        $identityLogic = new IdentityLogic();
-        $candidateLogic = new CandidateLogic();
-
-        if (Yii::$app->request->isPost) {
-            $reponse = Yii::$app->request->post();
-            $reponse_identity = $reponse[Identity::className()];
-            $identity->type = $reponse_identity['type'];
+        $identity = Identity::findOne(['Customer_id' => $customer_id]);
+        if (Yii::$app->request->isPost && $identity->load(Yii::$app->request->post())) {
+            $identity->Customer_id = $customer_id;
+            $identity->save(false);
         }
         else
         {
+            $candidateLogic = new CandidateLogic();
             $result = $this->ValidateCustomer($customer_id);
             if(!$result)
                 return $this->redirect(Url::to(['/site/error']));

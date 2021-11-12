@@ -2,8 +2,13 @@
 
 namespace common\helpers;
 
+use common\models\setting\SettingOss;
+use Yii;
 use OSS\OssClient;
 
+/**
+ * 阿里云图片URL生成类
+ */
 class OssUrlHelper
 {
     const RESIZE_MODE_LFIT  = 'lfit';//等比缩放 默认   https://help.aliyun.com/document_detail/44688.html
@@ -191,8 +196,46 @@ class OssUrlHelper
         return $this->_base_url . self::OSSPROCESS . 'style/' . $style;
     }
 
+    public function __toString()
+    {
+        return $this->toUrl();
+    }
+
+
+    public function toUrl()
+    {
+        if (!$this->_base_url) {
+            return '';
+        }
+
+        //检测是否url链接 是直接返回
+        if(preg_match('/^(http|https|ftp):\/\//i', $this->_base_url)) {
+            return $this->_base_url;
+        }
+
+        $this->_base_url = ltrim($this->_base_url, '/');
+
+        $options = [];
+
+        // 如果是oss添加param参数
+        if (Yii::$app->setting->get('oss.save_type') == SettingOss::SAVE_TYPE_OSS && $this->_process) {
+            $options[OssClient::OSS_PROCESS] = $this->getProcess();
+        }
+
+        $this->_width = '';
+
+        //获取地址
+        $ossHelper = new OssHelper();
+        if (Yii::$app->setting->get('oss.save_type') == SettingOss::SAVE_TYPE_OSS) { //阿里云oss存储
+            return $ossHelper->getOssSignUrl($this->_base_url, $options);
+        } else {  // 本地存储,直接用域名拼接
+            return Yii::$app->setting->get('oss.server_point') . '/' . $this->_base_url;
+        }
+    }
+
     public function getBaseUrl()
     {
         return $this->_base_url;
     }
+
 }

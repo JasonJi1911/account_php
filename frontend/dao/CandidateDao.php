@@ -27,7 +27,7 @@ class CandidateDao extends BaseDao
     public function InsertCandidate($data)
     {
         $candidate = new Candidate();
-        $candidate::findOne(['Customer_id' => 0]);
+        $candidate::findOne(['Customer_id' => $data['Customer_id']]);
 //        $candidate->attributes = $data;
         foreach ($data as $k=>$v)
         {
