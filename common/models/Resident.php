@@ -52,4 +52,12 @@ class Resident extends \yii\db\ActiveRecord
     {
         return '{{%resident}}';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function ClassName()
+    {
+        return 'Resident';
+    }
 }

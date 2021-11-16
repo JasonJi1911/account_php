@@ -31,4 +31,12 @@ class Tax extends \yii\db\ActiveRecord
     {
         return '{{%tax}}';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function ClassName()
+    {
+        return 'Tax';
+    }
 }
