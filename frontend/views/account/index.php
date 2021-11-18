@@ -93,8 +93,9 @@ $this->registerJs($js);
         line-height: 1.5rem;
     }
 
-    .help-block {
-        color: red;
+    .help-block_padding {
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
     }
 </style>
 
@@ -117,7 +118,7 @@ $this->registerJs($js);
 <!--            <input placeholder="请输入您的手机号" value="" class="color474747 f33"/>-->
             <?= $form->field($model, 'number')
                 ->textInput(['maxlength' => 11, 'placeholder' => '请输入您的手机号', 'pattern'=>"[0-9]*", 'id'=>'phone', 'class' => 'color474747 f33'])
-                ->label(false) ?>
+                ->label(false)->error(['class'=> $model->hasErrors('number') ? "help-block  help-block_padding": 'help-block']) ?>
         </div>
         <span class="colorEF7E2E f33" id='identity-btn'>获取验证码</span>
         <div id='identity-count' class="olorEF7E2E f33 divHide">
@@ -125,7 +126,9 @@ $this->registerJs($js);
         </div>
     </div>
     <div class="f33 m1L borderB p1R p1T p1B">
-        <?= $form->field($model, 'identity_code')->textInput(['maxlength' => 6, 'placeholder' => '请输入验证码', 'pattern'=>"[0-9]*", 'class'=>'color474747 f33'])->label(false) ?>
+        <?= $form->field($model, 'identity_code')
+            ->textInput(['maxlength' => 6, 'placeholder' => '请输入验证码', 'pattern'=>"[0-9]*", 'class'=>'color474747 f33'])
+            ->label(false)->error(['class'=> $model->hasErrors('identity_code') ? "help-block  help-block_padding": 'help-block']) ?>
     </div>
     <div class="color999 f24 m1L m1R p1T flexBox2">
         <img src="/img/icon_2.png" class="icon1" style="height:13px;"/>

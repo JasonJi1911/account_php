@@ -41,6 +41,11 @@ $this->registerJs($js);
     .pos-relative{
         position: relative;
     }
+
+    .help-block_padding {
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -56,7 +61,8 @@ $this->registerJs($js);
     &nbsp仅用于开户审核，隐私信息严格保密！
 </div>
 <div id="app">
-<?= $form->field($identity, 'picture')->imageUpload(['class'=>'fileInput', 'width' => '366px', 'height' => '210px', '@change'=>"upload"])->label(false) ?>
+<?= $form->field($identity, 'picture')->imageUpload(['class'=>'fileInput', 'width' => '366px', 'height' => '210px', '@change'=>"upload"])
+    ->label(false)->error(['class'=> $identity->hasErrors('picture') ? "help-block  help-block_padding": 'help-block']) ?>
 </div>
 <!--<div id="app">-->
 <!--    <div class="m15L m15R radius20px bgF9F9F9 m1T cenetr">-->

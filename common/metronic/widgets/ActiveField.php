@@ -101,9 +101,11 @@ class ActiveField extends \yii\widgets\ActiveField
                 $value = OssUrlHelper::set($value);
             }
             $thumb = $value;
+            $imgUrl = $thumb->resize($width, $height);
+            $html .= "<img src='" . $imgUrl . "' :src='imgUrl' class='w100' onerror='this.src=\"/img/icon_7.png\"'/>";
 
-            $html .= '<img src="' . $thumb->resize($width, $height) . '" :src="imgUrl" class="w100"/>';
-            $html .= '<div class="cenetr textpos">证件正面照片</div>';
+            if (!$imgUrl->__toString())
+                $html .= '<div class="cenetr textpos">证件正面照片</div>';
             $html .= '</div>';
         }
 

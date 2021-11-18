@@ -23,6 +23,13 @@ JS;
 $this->registerJs($js);
 ?>
 
+<style>
+    .help-block_padding {
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
+    }
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <?php $form = ActiveForm::begin([
     'id' => 'contact-form',
@@ -36,7 +43,9 @@ $this->registerJs($js);
             <div class="flexBox2 f34">
                 <div class="w140">国家 / 地区 <span class="colorEF7E2E">*</span></div>
                 <span class="color232323">{{choseData0}}</span>
-                <?= $form->field($candidate, 'citizenship')->textInput(['class'=>'none', ':value' => 'choseValue0'])->label(false) ?>
+                <?= $form->field($candidate, 'citizenship')
+                    ->textInput(['class'=>'none', ':value' => 'choseValue0'])
+                    ->label(false)->error(['class'=> $candidate->hasErrors('citizenship') ? "help-block  help-block_padding": 'help-block']) ?>
             </div>
             <div class="sj m1R"></div>
         </div>
@@ -48,7 +57,9 @@ $this->registerJs($js);
             <div class="flexBox2 f34">
                 <div class="w140">出生地<span class="colorEF7E2E">*</span></div>
                 <span class="color232323">{{choseData2}}</span>
-                <?= $form->field($candidate, 'same_citizen')->textInput(['class'=>'none', ':value' => 'choseValue2'])->label(false) ?>
+                <?= $form->field($candidate, 'same_citizen')
+                    ->textInput(['class'=>'none', ':value' => 'choseValue2'])
+                    ->label(false)->error(['class'=> $candidate->hasErrors('same_citizen') ? "help-block  help-block_padding": 'help-block']) ?>
             </div>
             <div class="sj m1R"></div>
         </div>
@@ -61,7 +72,9 @@ $this->registerJs($js);
                 <div class="flexBox2 f34">
                     <div class="w140"></div>
                     <span class="color232323">{{choseData3}}</span>
-                    <?= $form->field($candidate, 'countryOfBirth')->textInput(['class'=>'none', ':value' => 'choseValue3'])->label(false) ?>
+                    <?= $form->field($candidate, 'countryOfBirth')
+                        ->textInput(['class'=>'none', ':value' => 'choseValue3'])
+                        ->label(false)->error(['class'=> $candidate->hasErrors('countryOfBirth') ? "help-block  help-block_padding": 'help-block']) ?>
                 </div>
                 <div class="sj m1R"></div>
             </div>
@@ -74,7 +87,9 @@ $this->registerJs($js);
             <div class="flexBox2 f34">
                 <div class="w140">证件类型 <span class="colorEF7E2E">*</span></div>
                 <span class="color232323">{{choseData1}}</span>
-                <?= $form->field($identity, 'type')->textInput(['class'=>'none', ':value' => 'choseValue1'])->label(false) ?>
+                <?= $form->field($identity, 'type')
+                    ->textInput(['class'=>'none', ':value' => 'choseValue1'])
+                    ->label(false)->error(['class'=> $identity->hasErrors('type') ? "help-block  help-block_padding": 'help-block']) ?>
             </div>
             <div class="sj m1R"></div>
         </div>
