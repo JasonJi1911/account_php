@@ -20,7 +20,7 @@ return [
         TAB_TIPS => 'tips',
         TAB_NATIONALITY => 'nationality',
         TAB_IDENTITYCARD => 'identity-card',
-        TAB_IDENTITY => 'identity',
+        TAB_IDENTITY => 'identity-info',
         TAB_ADDRESS => 'address',
         TAB_OCCUPATION => 'occupation',
         TAB_ACCOUNTTYPE => 'account-type',

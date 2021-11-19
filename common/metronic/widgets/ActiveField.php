@@ -5,6 +5,7 @@ namespace common\metronic\widgets;
 use common\helpers\OssHelper;
 use common\helpers\OssUrlHelper;
 use yii\helpers\Html;
+use common\metronic\assets\DatePickerAsset;
 
 class ActiveField extends \yii\widgets\ActiveField
 {
@@ -116,5 +117,26 @@ class ActiveField extends \yii\widgets\ActiveField
         $this->parts['{input}'] = $html;
 
         return $this;
+    }
+
+    /**
+     * 日期控件
+     */
+    public function datePickerInput($options = [])
+    {
+        DatePickerAsset::register($this->form->getView());
+        Html::addCssClass($options, 'form-control date-picker');
+        return parent::textInput($options)->wrapper(['width' => 3]);
+    }
+
+    /**
+     * 日期时间控件
+     */
+    public function datetimePickerInput($options = [])
+    {
+        DateTimePickerAsset::register($this->form->getView());
+
+        Html::addCssClass($options, 'datetime-picker');
+        return parent::textInput($options)->wrapper(['width' => 3]);
     }
 }

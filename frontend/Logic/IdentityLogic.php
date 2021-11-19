@@ -9,12 +9,12 @@ use frontend\dao\IdentityDao;
 
 class IdentityLogic
 {
-    public function InsertNewIdentity($candiData)
+    public function InsertNewIdentity($candiData, $ifValidate=false)
     {
         if ($candiData)
         {
             $identityDao = new IdentityDao();
-            $result = $identityDao->InsertIdentity($candiData);
+            $result = $identityDao->InsertIdentity($candiData, $ifValidate);
         }
 
         if (!$result)

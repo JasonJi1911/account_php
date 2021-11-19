@@ -168,7 +168,6 @@ $this->registerJs($js);
             }
         },
         mounted: function () {
-            console.log(324);
             this.choseValue0 = '<?= $candidate->citizenship != null ? $candidate->citizenship : 'AUS'?>';
             this.doChange(0);
             this.choseValue1 = '<?= $identity->type != null ? $identity->type : 'DriversLicense'?>';

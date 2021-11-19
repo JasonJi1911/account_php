@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\helpers\Tool;
+use common\models\Country;
 use common\models\Identity;
 use frontend\Logic\IdentityLogic;
 use Yii;
@@ -147,6 +148,7 @@ class AccountController extends BaseController
         if (Yii::$app->request->isPost && $identity->load(Yii::$app->request->post())) {
             $identity->Customer_id = $customer_id;
             $identity->save(false);
+            return $this->redirect(Url::to(['account/identity-info', 'Customer_id'=> $customer_id]));
         }
         else
         {
@@ -162,6 +164,41 @@ class AccountController extends BaseController
         return $this->render('identitycard', [
             'Customer_id' => $customer_id,
             'identity' => $identity,
+        ]);
+    }
+
+    public function actionIdentityInfo()
+    {
+        $identityLogic = new IdentityLogic();
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $identity = Identity::findOne(['Customer_id' => $customer_id]);
+        if (Yii::$app->request->isPost && $identity->load(Yii::$app->request->post())) {
+            if ($identity->validate())
+            {
+                $identity->Customer_id = $customer_id;
+                //插入或者更新candidate
+                $identityLogic->InsertNewIdentity($identity->attributes, true);
+                return $this->redirect(Url::to(['info/contactinfo', 'Customer_id'=> $customer_id]));
+            }
+        }
+        else
+        {
+            $candidateLogic = new CandidateLogic();
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+
+            $data = ['step' => TAB_IDENTITY];
+            $candidateLogic->UpdateStep($customer_id, $data);
+        }
+
+        $state = Country::find()->select('state_en as des,state_cn as name,state_code as value')
+            ->groupBy('state_en,state_cn,state_code')->asArray()->all();
+
+        return $this->render('identityinfo', [
+            'Customer_id' => $customer_id,
+            'identity' => $identity,
+            'state'      => json_encode($state),
         ]);
     }
 }
