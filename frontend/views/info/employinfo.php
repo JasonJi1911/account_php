@@ -15,7 +15,7 @@ AppAsset::register($this);
 ]) ?>
 <style>
     input{font-size: 16px;}
-    /*.help-block{display: none;}*/
+    .help-block{display: none;}
     .fileInput{
         position: absolute;
         top: 0;
