@@ -9,10 +9,12 @@ use common\models\EmployerBusiness;
 use common\models\Phone;
 use common\models\Resident;
 use common\models\Tax;
+use common\models\Wealth;
 use frontend\Logic\CandidateLogic;
 use frontend\Logic\EmploymentLogic;
 use frontend\Logic\ResidentLogic;
 use frontend\Logic\TaxLogic;
+use frontend\Logic\WealthLogic;
 use Yii;
 use yii\helpers\Url;
 
@@ -218,8 +220,7 @@ class InfoController extends BaseController
 
             $employmentLogic = new EmploymentLogic();
             $employmentLogic->SaveEmployment($condition, $reponse_employment);
-            return $this->redirect(Url::to(['account/index']));
-//            return $this->redirect(Url::to(['info/employinfo', 'Customer_id'=> $customer_id]));
+            return $this->redirect(Url::to(['info/wealthsource', 'Customer_id'=> $customer_id]));
         }
 
         return $this->render('employinfo', [
@@ -231,6 +232,72 @@ class InfoController extends BaseController
             'embs' => json_encode($em_bs),
             'emoc' => json_encode($em_oc),
             'rel' => json_encode($rel),
+            'data' => $data,
+        ]);
+    }
+
+    /*
+     * 财富来源
+     */
+    public function actionWealthsource(){
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $data = [];
+        $wealthmodel = Wealth::find()->select('source_type id,percentage percent, description')
+                    ->andWhere(['Customer_id'=>$customer_id])
+                    ->asArray()->all();
+        if(!$wealthmodel){
+            $wealthmodel = [];
+        }
+
+        $ws = Dict::find()->select('dkey id, dvalue name')
+            ->andWhere(['type'=>'wealthsource'])
+            ->asArray()->all();
+        if(!$ws){
+            $ws = [];
+        }else{
+            foreach ($ws as $k=>&$w){
+                $w['percent'] = '10';
+                if($wealthmodel){
+                    foreach ($wealthmodel as &$w2){
+                        if(isset($w2['id']) && $w['id'] == $w2['id']){
+                            $w2['name'] = $w['name'];
+                            unset($ws[$k]);
+                        }
+                    }
+                }
+            }
+        }
+        $ws = array_values($ws);
+        $wealthmodel = array_values($wealthmodel);
+
+        if (Yii::$app->request->isPost) {
+            $reponse = Yii::$app->request->post();
+            $condition = ['Customer_id' => $customer_id];
+            $param = [];
+            foreach ($reponse as $k=>$v){
+                $wsone = Dict::findOne(['type'=>'wealthsource','dkey'=>$k]);
+                if (!empty($v) && $wsone){
+                    $wealth = new Wealth();
+                    $wealth['percentage'] = $v;
+                    $wealth['source_type'] = $wsone['dkey'];
+                    if($k=='SOW-IND-Other'){
+                        $wealth['description'] = $reponse['othertext'];
+                    }
+                    $param[] = $wealth;
+                }
+            }
+//            $data['re'] = $param;
+
+            $wealthLogic = new WealthLogic();
+            $wealthLogic->SaveWealth($condition, $param);
+            return $this->redirect(Url::to(['account/index']));
+//            return $this->redirect(Url::to(['info/wealthsource', 'Customer_id'=> $customer_id]));
+        }
+
+        return $this->render('wealthsource', [
+            'Customer_id' => $customer_id,
+            'wealthsource' => json_encode($ws),
+            'wealthmodel' => json_encode($wealthmodel),
             'data' => $data,
         ]);
     }
