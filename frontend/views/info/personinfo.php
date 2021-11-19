@@ -7,25 +7,10 @@ $this->title = '财猫证券开户';
 AppAsset::register($this);
 
 ?>
-<?php $form = ActiveForm::begin([
-    'id' => 'contact-form',
-    'enableClientValidation' => true,
-//    'enableAjaxValidation' => true,
-]) ?>
+<?php $form = ActiveForm::begin() ?>
 <style>
     input{font-size: 16px;}
-    .heightAuto{height:auto;}
-    .help-block{
-        color: #ff0000;
-        height: 1px;
-        line-height: 1px;
-        margin-top: -10px;
-        padding-bottom: 5px;
-    }
-    .help-nonediv{
-        margin-left: 1rem;
-        padding-left: 140px;
-    }
+    .help-block{display: none;}
     .fileInput{
         position: absolute;
         top: 0;
@@ -63,19 +48,19 @@ AppAsset::register($this);
             <div class="sj m1R"></div>
         </div>
         <ul class="color303030 f33 none" :class="obj['0'].on" ref="select0">
-            <li class="p05T p05B borderB p1L" v-for='item in list0' @click="chose(item,'0')">{{item}}</li>
+            <li class="p05T p05B borderB p1L" v-for='item in list0' @click="chose(item,'0')">{{item.dvalue}}</li>
         </ul>
-        <div class="help-nonediv">
-            <?= $form->field($candidate, 'maritalStatus')->textInput(['class'=>'none', ':value' => 'choseData0','style'=>'margin-left:140px;'])->label(false) ?>
-        </div>
+        <?= $form->field($candidate, 'maritalStatus')->textInput(['class'=>'none', ':value' => 'choseDataMS','style'=>'margin-left:140px;'])->label(false) ?>
+        <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war0"></div>
 
         <div class="m1L borderB color656565 flexBox1 inputH heightAuto">
             <div class="flexBox2">
                 <div class="w140">家庭成员数量<span class="colorEF7E2E">*</span></div>
-<!--                <input class="inputW" placeholder='请输入家庭成员数量' value=""/>-->
-                <?= $form->field($candidate, 'numDependents')->textInput(['placeholder'=>'请输入家庭成员数量', 'class' => 'inputW', 'pattern'=>"[0-9]*",'value'=>$candidate['numDependents']])->label(false) ?>
+<!--                <input type="number" id="candidate-numdependents" name="Candidate[numDependents]" placeholder="请输入家庭成员数量" aria-required="true" class="inputW valimessage1" @blur="valimessage('1','家庭成员数量')" />-->
+                <?= $form->field($candidate, 'numDependents')->textInput(['placeholder'=>'请输入家庭成员数量', 'class' => 'inputW valimessage1', 'pattern'=>"[0-9]*",'value'=>$candidate['numDependents'], '@blur'=>"valimessage('1','家庭成员数量')"])->label(false) ?>
             </div>
         </div>
+        <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war1"></div>
 
         <div class="m1L m1T p1B borderB color656565 flexBox1" @click="show('2')">
             <div class="flexBox2">
@@ -91,9 +76,10 @@ AppAsset::register($this);
 
         <div class="m1L borderB color656565 flexBox2 inputH heightAuto">
             <div class="w140">税号（TEN）<span class="colorEF7E2E">*</span></div>
-<!--            <input class="inputW" placeholder="请输入税号（TEN）" value="" />-->
-            <?= $form->field($tax, 'TIN')->textInput(['placeholder'=>'请输入税号（TEN）', 'class' => 'inputW'])->label(false) ?>
+<!--            <input type="text" id="tax-tin" name="Tax[TIN]" placeholder="请输入税号（TEN）" aria-required="true" class="inputW " @blur="valimessage('2','税号（TEN）')" />-->
+            <?= $form->field($tax, 'TIN')->textInput(['placeholder'=>'请输入税号（TEN）', 'class' => 'inputW valimessage2', '@blur'=>"valimessage('2','税号（TEN）')"])->label(false) ?>
         </div>
+        <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war2"></div>
 
         <div class="flexBox1 m1L m1R m1T fixed wBtnBox">
             <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B">
@@ -116,9 +102,10 @@ AppAsset::register($this);
         el:"#vertify" ,
         data:{
             on:'',
-            list0:['未婚-S','已婚-M','离异-D','丧偶-W','同居-C'],
+            list0:<?=$maritalStatus?>,//['未婚-S','已婚-M','离异-D','丧偶-W','同居-C'],
             list2:[{'name':'澳大利亚', 'value':'AUS'},{'name':'美国', 'value':'USA'},{'name':'中国', 'value':'CHN'}],
-            choseData0:'<?=($candidate['maritalStatus']!='' ? $candidate['maritalStatus'] : '')?>',
+            choseData0:'<?=($data['maritalStatusName']!='' ? $data['maritalStatusName'] : '')?>',
+            choseDataMS:'<?=$candidate['maritalStatus']!='' ? $candidate['maritalStatus'] : ''?>',
             choseData2:'<?=$tax['country']=='USA' ? '美国' : ($tax['country']=='CHN' ? '中国' : '澳大利亚')?>',
             choseId2:'<?=$tax['country']!='' ? $tax['country'] : 'AUS'?>',
             choseDOB:'<?=$candidate['DOB']!='' ? $candidate['DOB'] : date('Y-m-d',time())?>',
@@ -168,10 +155,11 @@ AppAsset::register($this);
             },
             chose:function(data,index){
                 if(index=='0'){
-                    this['choseData0']=data
+                    this['choseData0']=data.dvalue;
+                    this['choseDataMS']=data.dkey;
                 }else if(index=='2'){
-                    this['choseData2']=data.name
-                    this['choseId2']=data.value
+                    this['choseData2']=data.name;
+                    this['choseId2']=data.value;
                 }
                 this.obj[index].switch=!this.obj[index].switch
                 this.obj[index].switch?this.obj[index].on='show':this.obj[index].on=''
@@ -182,8 +170,44 @@ AppAsset::register($this);
                 this.obj[index].switch?this.obj[index].on='show':this.obj[index].on=''
                 this.obj[index].switch?this.on='show':this.on=''
             },
+            valimessage:function(index,title){
+                if(index=='0'){//州/省、城市
+                    if(this['choseData0']!=''&&this['choseData0']!='请选择'){
+                        //通过验证
+                        $(".war"+index).hide();
+                        return true;
+                    }else{
+                        $(".war"+index).text("请选择"+title);
+                        $(".war"+index).show();
+                        return false;
+                    }
+                }else{
+                    //输入框验证
+                    var value = $(".valimessage"+index).val();
+                    if(value.trim() != ""){
+                        var reg2 = /^[0-9]*$/;
+                        if (index=='1' && !reg2.test(value)) {
+                            $(".war"+index).text(title+"必须是数字");
+                            $(".war"+index).show();
+                            return false;
+                        }else{
+                            //通过验证
+                            $(".war"+index).hide();
+                            return true;
+                        }
+                    }else{
+                        $(".war"+index).text(title+"不能为空");
+                        $(".war"+index).show();
+                        return false;
+                    }
+                }
+            },
             nextsubmit:function(){
-                $('#next').trigger('click');
+                if(this.valimessage('0','婚姻状况')
+                    && this.valimessage('1','家庭成员数量')
+                    && this.valimessage('2','税号（TEN）')){
+                    $('#next').trigger('click');
+                }
             }
         }
     });

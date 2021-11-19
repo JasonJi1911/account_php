@@ -4,7 +4,7 @@ namespace common\models;
 use yii\db\ActiveRecord;
 
 /**
- * Phone model
+ * Country model
  *
  * @property string $state_en
  * @property string $state_cn

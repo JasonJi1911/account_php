@@ -65,4 +65,19 @@ class Employment extends \yii\db\ActiveRecord
             }
         }
     }
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%employment}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function ClassName()
+    {
+        return 'Employment';
+    }
 }
