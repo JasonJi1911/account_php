@@ -119,6 +119,18 @@ class ActiveField extends \yii\widgets\ActiveField
         return $this;
     }
 
+    public function MySwitch($options = [])
+    {
+        $options = array_merge($this->inputOptions, $options);
+        $html = '<div>';
+        $html .= Html::activeCheckbox($this->model, $this->attribute, $options);
+        $html .= '<label for="'.$options['id'].'"></label>';
+        $html .= '</div>';
+
+        $this->parts['{input}'] = $html;
+        return $this;
+    }
+
     /**
      * 日期控件
      */

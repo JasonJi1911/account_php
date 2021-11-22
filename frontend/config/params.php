@@ -11,7 +11,8 @@ define('TAB_ACCOUNTTYPE', 7); // 首页
 define('TAB_ASSETS', 8); // 首页
 define('TAB_AUTOGRAPH', 9); // 首页
 define('TAB_COMMISSION', 10); // 首页
-define('TAB_END', 11); // 首页
+define('TAB_REGULATORY', 11); // 首页
+define('TAB_END', 12); // 首页
 
 return [
     'adminEmail' => 'admin@example.com',
@@ -27,6 +28,7 @@ return [
         TAB_ASSETS => 'assets',
         TAB_AUTOGRAPH => 'autograph',
         TAB_COMMISSION => 'commission',
+        TAB_REGULATORY => 'regulatory',
         TAB_END => 'end',
     ],
 ];

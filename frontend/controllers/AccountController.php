@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\helpers\Tool;
 use common\models\Country;
 use common\models\Identity;
+use common\models\Regulatory;
 use frontend\Logic\IdentityLogic;
 use Yii;
 use yii\helpers\Url;
@@ -199,6 +200,41 @@ class AccountController extends BaseController
             'Customer_id' => $customer_id,
             'identity' => $identity,
             'state'      => json_encode($state),
+        ]);
+    }
+
+    public function actionRegulatory()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $regulatory = Regulatory::findOne(['Customer_id' => $customer_id]);
+        if (!$regulatory)
+        {
+            $regulatory = new Regulatory();
+            $regulatory->Customer_id = $customer_id;
+        }
+        if (Yii::$app->request->isPost && $regulatory->load(Yii::$app->request->post())) {
+            if ($regulatory->validate())
+            {
+                $regulatory->Customer_id = $customer_id;
+                //插入或者更新regulatory
+                $regulatory->save(true);
+//                return $this->redirect(Url::to(['info/contactinfo', 'Customer_id'=> $customer_id]));
+            }
+        }
+        else
+        {
+            $candidateLogic = new CandidateLogic();
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+
+            $data = ['step' => TAB_IDENTITY];
+            $candidateLogic->UpdateStep($customer_id, $data);
+        }
+
+        return $this->render('regulatory', [
+            'Customer_id' => $customer_id,
+            'regulatory' => $regulatory,
         ]);
     }
 }
