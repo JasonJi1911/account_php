@@ -14,6 +14,8 @@ define('TAB_COMMISSION', 10); // 首页
 define('TAB_REGULATORY', 11); // 首页
 define('TAB_END', 12); // 首页
 
+define('uploadDir','uploadfile/');//图片上传路径
+
 return [
     'adminEmail' => 'admin@example.com',
     'pageTab' => [

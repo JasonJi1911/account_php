@@ -46,9 +46,9 @@ AppAsset::register($this);
             <div class="sj m1R"></div>
         </div>
         <ul class="color303030 f33 none" :class="obj['0'].on" ref="select0">
-            <li class="p05T p05B borderB p1L" v-for='item in list0' @click="chose(item.dvalue,'0')">{{item.dvalue}}</li>
+            <li class="p05T p05B borderB p1L" v-for='item in list0' @click="chose(item,'0')">{{item.name}}</li>
         </ul>
-        <?= $form->field($employment, 'street_2')->textInput(['class'=>'none', ':value' => 'choseData0'])->label(false) ?>
+        <?= $form->field($candidate, 'employment_type')->textInput(['class'=>'none', ':value' => 'choseId0'])->label(false) ?>
         <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war0"></div>
 
         <div :class="isShowEM">
@@ -270,10 +270,10 @@ AppAsset::register($this);
         el:"#vertify" ,
         data:{
             on:'',
-            activeEM:'<?=$employment['street_2']?>'=='受雇' ? true : false,
+            activeEM:'<?=$data['employStatus']?>'=='受雇' ? true : false,
             active:'<?=$employment['affiliation']?>'==1 ? true : false,
             active2:true,
-            activeFixed:'<?=$employment['street_2']?>'=='受雇' ? false : true,
+            activeFixed:'<?=$data['employStatus']?>'=='受雇' ? false : true,
             list0:<?=$employStatus?>,
             list1:[{'name':'澳大利亚', 'value':'AUS'}],//,{'name':'美国', 'value':'USA'},{'name':'中国', 'value':'CHN'}
             list2:<?=$state?>,
@@ -284,7 +284,7 @@ AppAsset::register($this);
             list7:[{'name':'澳大利亚', 'value':'AUS'}],//,{'name':'美国', 'value':'USA'},{'name':'中国', 'value':'CHN'}
             list8:<?=$state?>,
             list9:<?=$city?>,
-            choseData0:'<?=$employment['street_2']?>',
+            choseData0:'<?=$data['employStatus']?>',
             choseData1:'<?=$employment['country']=='USA' ? '美国' : ($employment['country']=='CHN' ? '中国' : '澳大利亚')?>',
             choseData2:'<?=($data['state_cn']!='' ? $data['state_cn'] : '请选择')?>',
             choseData3:'<?=($data['city_cn']!='' ? $data['city_cn'] : '请选择')?>',
@@ -294,6 +294,7 @@ AppAsset::register($this);
             choseData7:'<?=$employment['affliation_company_country']=='USA' ? '美国' : ($employment['affliation_company_country']=='CHN' ? '中国' : '澳大利亚')?>',
             choseData8:'<?=($data['aff_state_cn']!='' ? $data['aff_state_cn'] : '请选择')?>',
             choseData9:'<?=($data['aff_city_cn']!='' ? $data['aff_city_cn'] : '请选择')?>',
+            choseId0:'<?=($candidate['employment_type']!='' ? $candidate['employment_type'] : '')?>',
             choseId1:'<?=$employment['country']!='' ? $employment['country'] : 'AUS'?>',
             choseId2:'<?=($employment['state']!='' ? $employment['state'] : '')?>',
             choseId3:'<?=($employment['city']!='' ? $employment['city'] : '')?>',
@@ -340,18 +341,16 @@ AppAsset::register($this);
         methods:{
             chose:function(data,index){
                 if(index=='0'){//就业状况
-                    if(data == '受雇'){
+                    if(data.name == '受雇'){
                         this.activeEM = true;
                         this.activeFixed = false;
                     }else{
                         this.activeEM = false;
                         this.activeFixed = true;
                     }
-                    this['choseData'+index]=data
-                }else{
-                    this['choseData'+index]=data.name
-                    this['choseId'+index]=data.value
                 }
+                this['choseData'+index]=data.name
+                this['choseId'+index]=data.value
                 this.show(index);
             },
             choseRelated:function(data,index,otherindex){//关联下拉点击事件
@@ -391,12 +390,7 @@ AppAsset::register($this);
                 }
             },
             valiselect:function(index,title,tab){//下拉框验证
-                var value = '';
-                if(tab == 'select0'){
-                    value = this['choseData0'];
-                }else if(tab == 'select'){
-                    value = this['choseId'+index];
-                }
+                var value = this['choseId'+index];
                 if(value.trim()!=''&&value.trim()!='请选择'){
                     //通过验证
                     $(".war"+index).hide();
@@ -410,7 +404,7 @@ AppAsset::register($this);
             valiinput:function(index,title){//输入框验证
                 var value = $(".valimessage"+index).val();
                 var reg2 = /^[0-9]*$/;
-                if(index=='13' && !reg2.test(value)){
+                if((index=='13' || index=='19') && !reg2.test(value)){
                     $(".war"+index).text(title+"必须是数字");
                     $(".war"+index).show();
                     return false;
@@ -427,23 +421,23 @@ AppAsset::register($this);
             valimessage:function(index,title,tab){
                 var i = parseInt(index);
                 var vali1 = '受雇';
-                var choseData0 = this['choseData0'];
+                var employStatus = this['choseData0'];
                 var switch1 = $("#switch1").is(':checked');
                 var switch2 = $("#switch2").is(':checked');
                 //亲属关系，公司所在国家、州、城市
-                if(i==0 || (i==6 && choseData0==vali1 && switch1)
-                    || (i<6 && i>=1 && choseData0==vali1)
-                    || (i<10 && i>6 && choseData0==vali1 && switch1 && switch2)){
+                if(i==0 || (i==6 && employStatus==vali1 && switch1)
+                    || (i<6 && i>=1 && employStatus==vali1)
+                    || (i<10 && i>6 && employStatus==vali1 && switch1 && switch2)){
                     return this.valiselect(index,title,tab);
-                }else if((i>=11 && i<14 && choseData0==vali1)
-                    || (i>=14 && i<=19 && choseData0==vali1 && switch1 && switch2)){
+                }else if((i>=11 && i<14 && employStatus==vali1)
+                    || (i>=14 && i<=19 && employStatus==vali1 && switch1 && switch2)){
                     return this.valiinput(index,title);
                 }else{
                     return true;
                 }
             },
             nextsubmit:function(){
-                if(this.valimessage('0','就业状况','select0') && this.valimessage('11','雇佣单位','input') && this.valimessage('1','国家/地区','select')
+                if(this.valimessage('0','就业状况','select') && this.valimessage('11','雇佣单位','input') && this.valimessage('1','国家/地区','select')
                     && this.valimessage('2','签发州/省','select') && this.valimessage('3','城市','select') && this.valimessage('12','地址','input')
                     && this.valimessage('13','邮编','input') && this.valimessage('4','商业性质','select') && this.valimessage('5','职位','select')
                     && this.valimessage('6','亲属关系','select')

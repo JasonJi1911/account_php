@@ -21,7 +21,6 @@ AppAsset::register($this);
         /*color: #ADADAD;*/
     }
 
-    }
     .fileInput{
         position: absolute;
         top: 0;
@@ -39,7 +38,7 @@ AppAsset::register($this);
 <div id="vertify">
     <div class="bold f40 color272727 m1T m1L p05B">财富来源</div>
     <div class="f24 color878787 m1L m1B">请填写财富来源并说明占比，法规要求我们收集该信息</div>
-    <input type="hidden" value="<?php print_r($data)?>" />
+
     <div v-for='(item,index) in list2'>
         <div class="flexBox1 m1L m1R borderB m1B p05B">
             <div class="flexBox2 p05T p05B">
