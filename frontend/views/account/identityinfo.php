@@ -207,6 +207,7 @@ $this->registerJs($js);
             this.doChange(1);
             this.choseValue2 = '<?= $identity->issue_country != null ? $identity->issue_country : 'AUS'?>';
             this.doChange(2);
+            this.choseDOB= '<?= $identity->expiration != null ? $identity->expiration : ''?>'
         },
         methods:{
             time2str(t){

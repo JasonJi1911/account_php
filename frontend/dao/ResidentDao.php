@@ -1,10 +1,16 @@
 <?php
 namespace frontend\dao;
 
+use common\models\Candidate;
 use common\models\Resident;
 
 class ResidentDao extends BaseDao
 {
+    public function SearchResident($condition)
+    {
+        return Resident::findOne($condition);
+    }
+
     //修改居住地
     public function UpdateResident($condition, $data)
     {

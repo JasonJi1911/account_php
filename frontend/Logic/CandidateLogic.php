@@ -2,9 +2,15 @@
 
 namespace frontend\Logic;
 
+use common\models\Candidate;
+use common\models\Dict;
+use common\models\Identity;
 use common\models\Phone;
+use frontend\dao\IdentityDao;
 use frontend\dao\PhoneDao;
 use frontend\dao\CandidateDao;
+use frontend\dao\ResidentDao;
+use frontend\dao\TaxDao;
 
 class CandidateLogic
 {
@@ -102,5 +108,45 @@ class CandidateLogic
         $candidateDao = new CandidateDao();
         $result = $candidateDao->UpdateCandidate($condition, $data);
         return $result;
+    }
+
+    public function GetCandidateInfo($candiCondition)
+    {
+        $data = [];
+        $dict = Dict::find()->all();
+        $marry_dict  = array_column(array_filter($dict, function ($var) {
+            return ($var['type'] == 'maritalStatus');
+        }), 'dvalue', 'dkey');
+
+        $employ_dict  = array_column(array_filter($dict, function ($var) {
+            return ($var['type'] == 'employStatus');
+        }), 'dvalue', 'dkey');
+
+        $phoneDao = new PhoneDao();
+        $phone = $phoneDao->SearchPhone($candiCondition);
+
+        $candidateDao = new CandidateDao();
+        $candidate = $candidateDao->SearchCandidate($candiCondition);
+        $candidate['maritalStatus'] = $marry_dict[$candidate['maritalStatus']];
+        $candidate['countryOfBirth'] = Candidate::$citizenships[$candidate['countryOfBirth']];
+        $candidate['employment_type'] = $employ_dict[$candidate['employment_type']];
+
+        $identityDao = new IdentityDao();
+        $identity = $identityDao->SearchIdentity($candiCondition);
+        $identity['type'] = Identity::$types[$identity['type']];
+
+        $taxDao = new TaxDao();
+        $tax = $taxDao->SearchTax($candiCondition);
+
+        $residentDao = new ResidentDao();
+        $resident = $residentDao->SearchResident($candiCondition);
+
+        $data['phone'] = $phone;
+        $data['candidata'] = $candidate;
+        $data['resident'] = $resident;
+        $data['identity'] = $identity;
+        $data['tax'] = $tax;
+
+        return $data;
     }
 }

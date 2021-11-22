@@ -43,8 +43,8 @@ class Candidate extends ActiveRecord
     const CITIZEN_AUS = 'AUS'; // 澳大利亚
     public static $citizenships = [
         self::CITIZEN_AUS => '澳大利亚',
-//        self::CITIZEN_CHINA => '中国',
-//        self::CITIZEN_USA => '美国',
+        self::CITIZEN_CHINA => '中国',
+        self::CITIZEN_USA => '美国',
     ];
 
     const SAME_CITIZEN_YES = 1; // 是

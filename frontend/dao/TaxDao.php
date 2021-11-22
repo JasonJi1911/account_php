@@ -5,6 +5,11 @@ use common\models\Tax;
 
 class TaxDao extends BaseDao
 {
+    public function SearchTax($condition)
+    {
+        return Tax::findOne($condition);
+    }
+
     //修改居住地
     public function UpdateTax($condition, $data)
     {

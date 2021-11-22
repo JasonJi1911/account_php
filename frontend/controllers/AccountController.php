@@ -218,7 +218,7 @@ class AccountController extends BaseController
                 $regulatory->Customer_id = $customer_id;
                 //插入或者更新regulatory
                 $regulatory->save(true);
-//                return $this->redirect(Url::to(['info/contactinfo', 'Customer_id'=> $customer_id]));
+                return $this->redirect(Url::to(['sure-info', 'Customer_id'=> $customer_id]));
             }
         }
         else
@@ -228,13 +228,47 @@ class AccountController extends BaseController
             if(!$result)
                 return $this->redirect(Url::to(['/site/error']));
 
-            $data = ['step' => TAB_IDENTITY];
+            $data = ['step' => TAB_REGULATORY];
             $candidateLogic->UpdateStep($customer_id, $data);
         }
 
         return $this->render('regulatory', [
             'Customer_id' => $customer_id,
             'regulatory' => $regulatory,
+        ]);
+    }
+
+    public function actionSureInfo()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $result = $this->ValidateCustomer($customer_id);
+        if(!$result)
+            return $this->redirect(Url::to(['/site/error']));
+
+        $candidateLogic = new CandidateLogic();
+        $candiCondition = ['Customer_id' => $customer_id];
+        $candiInfo = $candidateLogic->GetCandidateInfo($candiCondition);
+
+        $data = ['step' => TAB_SUREINFO];
+        $candidateLogic->UpdateStep($customer_id, $data);
+        return $this->render('sureinfo', [
+            'Customer_id' => $customer_id,
+            'data' => $candiInfo,
+        ]);
+    }
+
+    public function actionSureSign()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $result = $this->ValidateCustomer($customer_id);
+        if(!$result)
+            return $this->redirect(Url::to(['/site/error']));
+
+        $candidateLogic = new CandidateLogic();
+        $data = ['step' => TAB_SURESIGN];
+        $candidateLogic->UpdateStep($customer_id, $data);
+        return $this->render('suresign', [
+
         ]);
     }
 }
