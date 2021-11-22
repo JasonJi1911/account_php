@@ -6,15 +6,21 @@ use common\models\Country;
 use common\models\Dict;
 use common\models\Employment;
 use common\models\EmployerBusiness;
+use common\models\Financial;
+use common\models\FinancialRange;
+use common\models\info\Account;
 use common\models\Phone;
 use common\models\Resident;
 use common\models\Tax;
 use common\models\Wealth;
 use frontend\Logic\CandidateLogic;
 use frontend\Logic\EmploymentLogic;
+use frontend\Logic\InfoLogic;
 use frontend\Logic\ResidentLogic;
 use frontend\Logic\TaxLogic;
 use frontend\Logic\WealthLogic;
+use frontend\models\UploadForm;
+use yii\web\UploadedFile;
 use Yii;
 use yii\helpers\Url;
 
@@ -54,10 +60,10 @@ class InfoController extends BaseController
 
         $state = Country::find()->select('state_en,state_cn,state_code')
                 ->groupBy('state_en,state_cn,state_code')->asArray()->all();
-        if(!$state) $state = [''];
+        if(!$state) $state = [];
 
         $city = Country::find()->select('state_code,city_en,city_cn')->asArray()->all();
-        if(!$city) $city = [''];
+        if(!$city) $city = [];
 
         if (Yii::$app->request->isPost) {
             $reponse = Yii::$app->request->post();
@@ -115,7 +121,7 @@ class InfoController extends BaseController
             ->andWhere(['type'=>'maritalStatus'])
             ->asArray()->all();
         if(!$maritalStatus) {
-            $maritalStatus = [''];
+            $maritalStatus = [];
         }else{
             foreach($maritalStatus as &$m){
                 $m['dvalue'] = $m['dvalue'].'-'.$m['dkey'];
@@ -151,6 +157,15 @@ class InfoController extends BaseController
     public function actionEmployinfo(){
         $customer_id = Yii::$app->request->get('Customer_id', '');
         $data = [];
+
+        $candidate = Candidate::findOne(['Customer_id' => $customer_id]);
+        if (!$candidate){
+            $candidate = new Candidate();
+        }else{
+            $dict_rel = Dict::findOne(['type'=>'employStatus','dkey'=>$candidate['employment_type']]);
+            $data['employStatus'] = $dict_rel['dvalue'];
+        }
+
         $employment = Employment::findOne(['Customer_id'=>$customer_id]);
         if(!$employment){
             $employment = new Employment();
@@ -184,24 +199,24 @@ class InfoController extends BaseController
         }
 
         //所有就业状态
-        $employStatus = Dict::find()->select('dvalue')
+        $employStatus = Dict::find()->select('dkey value, dvalue name')
                         ->andWhere(['type'=>'employStatus'])
                         ->asArray()->all();
-        if(!$employStatus)  $employStatus = [''];
+        if(!$employStatus)  $employStatus = [];
         //所有州
         $state = Country::find()->select('state_en value,state_cn name,state_code id')
             ->groupBy('state_en,state_cn,state_code')->asArray()->all();
-        if(!$state) $state = [''];
+        if(!$state) $state = [];
         //所有城市
         $city = Country::find()->select('state_code id,city_en value,city_cn name')->asArray()->all();
-        if(!$city) $city = [''];
+        if(!$city) $city = [];
         //所有商业性质
         $em_bs = EmployerBusiness::find()->select('name value,text name')
             ->groupBy('name,text')->asArray()->all();
-        if(!$em_bs) $em_bs = [''];
+        if(!$em_bs) $em_bs = [];
         //所有职业
         $em_oc = EmployerBusiness::find()->select('name id,occupation value,occupation_cn name')->asArray()->all();
-        if(!$em_oc) $em_oc = [''];
+        if(!$em_oc) $em_oc = [];
         //所有亲属关系
         $rel = Dict::find()->select('dkey value,dvalue name')
             ->andWhere(['type'=>'affliation_relationship'])
@@ -209,14 +224,18 @@ class InfoController extends BaseController
 
         if (Yii::$app->request->isPost) {
             $reponse = Yii::$app->request->post();
+            $reponse_candidate = $reponse[Candidate::className()];
             $reponse_employment = $reponse[Employment::className()];
-            if($reponse_employment['street_2']!='受雇'){
+            if($reponse_candidate['employment_type']!='受雇'){
                 $reponse_employment['country'] = '';
                 $reponse_employment['affliation_company_country'] = '';
-            }else if($reponse_employment['street_2']=='受雇' && $reponse_employment['affiliation']==0){
+            }else if($reponse_candidate['employment_type']=='受雇' && $reponse_employment['affiliation']==0){
                 $reponse_employment['affliation_company_country'] = '';
             }
             $condition = ['Customer_id' => $customer_id];
+
+            $candidateLogic = new CandidateLogic();
+            $candidateLogic->UpdateCandidate($condition, $reponse_candidate);
 
             $employmentLogic = new EmploymentLogic();
             $employmentLogic->SaveEmployment($condition, $reponse_employment);
@@ -225,8 +244,9 @@ class InfoController extends BaseController
 
         return $this->render('employinfo', [
             'Customer_id' => $customer_id,
-            'employStatus' => json_encode($employStatus),
+            'candidate' => $candidate,
             'employment' => $employment,
+            'employStatus' => json_encode($employStatus),
             'state' => json_encode($state),
             'city' => json_encode($city),
             'embs' => json_encode($em_bs),
@@ -286,18 +306,168 @@ class InfoController extends BaseController
                     $param[] = $wealth;
                 }
             }
-//            $data['re'] = $param;
 
             $wealthLogic = new WealthLogic();
             $wealthLogic->SaveWealth($condition, $param);
-            return $this->redirect(Url::to(['account/index']));
-//            return $this->redirect(Url::to(['info/wealthsource', 'Customer_id'=> $customer_id]));
+            return $this->redirect(Url::to(['info/incomeasset', 'Customer_id'=> $customer_id]));
         }
 
         return $this->render('wealthsource', [
             'Customer_id' => $customer_id,
             'wealthsource' => json_encode($ws),
             'wealthmodel' => json_encode($wealthmodel),
+            'data' => $data,
+        ]);
+    }
+
+    /*
+     * 收入和资产总值
+     */
+    public function actionIncomeasset(){
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $data = [];
+
+        $financial = Financial::findOne(['Customer_id'=>$customer_id]);
+        if(!$financial) $financial = new Financial();
+
+        //净收入
+        $annual_net_income = [];
+        //净资产
+        $net_worth = [];
+        //净流动资产
+        $liquid_net_worth = [];
+        $financialRange = FinancialRange::find()->andWhere(['currency'=>'AUD'])->asArray()->all();
+
+        if($financialRange){
+            foreach ($financialRange as $k=>$fr){
+                $fdata = [];
+                $fdata['value'] = $fr['range_id'];
+                if($fr['lower_bound']==null || $fr['lower_bound']=='' || $fr['lower_bound']==0){
+                    $fdata['name'] = '<'.$fr['upper_bound'];
+                }else if($fr['upper_bound']==null || $fr['upper_bound']=='' || $fr['upper_bound']==0){
+                    $fdata['name'] = '>'.$fr['lower_bound'];
+                }else{
+                    $fdata['name'] = $fr['lower_bound']."-".$fr['upper_bound'];
+                }
+                if($fr['criteria'] == 'annual_net_income'){
+                    $annual_net_income[] = $fdata;
+                    if($financial['annual_net_income'] == $fr['range_id']){
+                        $data['annual_net_income'] = $fdata['name'];
+                    }
+                }else if($fr['criteria'] == 'net_worth'){
+                    $net_worth[] = $fdata;
+                    if($financial['net_worth'] == $fr['range_id']){
+                        $data['net_worth'] = $fdata['name'];
+                    }
+                }else if($fr['criteria'] == 'liquid_net_worth'){
+                    $liquid_net_worth[] = $fdata;
+                    if($financial['liquid_net_worth'] == $fr['range_id']){
+                        $data['liquid_net_worth'] = $fdata['name'];
+                    }
+                }
+            }
+        }
+
+        if (Yii::$app->request->isPost) {
+            $reponse = Yii::$app->request->post();
+            $condition = ['Customer_id' => $customer_id];
+            $reponse_financial = $reponse[Financial::className()];
+
+            $infoLogic = new InfoLogic();
+            $infoLogic->SaveFinancial($condition, $reponse_financial);
+            return $this->redirect(Url::to(['info/uploadproof', 'Customer_id'=> $customer_id]));
+        }
+        return $this->render('incomeasset', [
+            'Customer_id' => $customer_id,
+            'financial'=>$financial,
+            'annual_net_income' => json_encode($annual_net_income),
+            'net_worth' => json_encode($net_worth),
+            'liquid_net_worth' => json_encode($liquid_net_worth),
+            'data' => $data,
+        ]);
+    }
+
+    /*
+     * 证明上传
+     */
+    public function actionUploadproof(){
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $financial = Financial::findOne(['Customer_id'=>$customer_id]);
+        if(!$financial) $financial = new Financial();
+
+        $model = new UploadForm();//图片上传
+        if (Yii::$app->request->isPost) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->upload()) {
+                // 文件上传成功，插入图片链接
+                $financial->picture = uploadDir . $model->imageFile->name;
+                $financial->Customer_id = $customer_id;
+                $financial->save(false);
+                return $this->redirect(Url::to(['info/accountinfo', 'Customer_id'=> $customer_id]));
+            }
+        }
+
+        return $this->render('uploadproof', [
+            'Customer_id' => $customer_id,
+            'financial'=>$financial,
+            'model'=>$model,
+        ]);
+    }
+
+    /*
+     * 账户信息
+     */
+    public function actionAccountinfo(){
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $data = [];
+
+        $account = Account::findOne(['Customer_id'=>$customer_id]);
+        if(!$account) $account = new Account();
+
+        $accountType = Dict::find()->select('dkey value, dvalue name')
+            ->andWhere(['type'=>'AccountType'])
+            ->asArray()->all();
+        if(!$accountType){
+            $accountType = [];
+        }else{
+            $data['AccountType'] = $accountType[0]['name'];
+            foreach ($accountType as $a) {
+                if($a['value'] == $account['AccountType']){
+                    $data['AccountType'] = $a['name'];
+                }
+            }
+        }
+
+        $base_currency = Dict::find()->select('dkey value, dvalue name')
+            ->andWhere(['type'=>'base_currency'])
+            ->asArray()->all();
+        if(!$base_currency){
+            $base_currency = [];
+        }else{
+            $data['base_currency'] = $base_currency[0]['name'];
+            foreach ($base_currency as $a) {
+                if($a['value'] == $account['base_currency']){
+                    $data['base_currency'] = $a['name'];
+                }
+            }
+        }
+
+        if (Yii::$app->request->isPost) {
+            $reponse = Yii::$app->request->post();
+            $condition = ['Customer_id' => $customer_id];
+            $reponse_account = $reponse[Account::className()];
+
+            $infoLogic = new InfoLogic();
+            $infoLogic->SaveAccount($condition, $reponse_account);
+            return $this->redirect(Url::to(['account/index']));
+//            return $this->redirect(Url::to(['info/accountinfo', 'Customer_id'=> $customer_id]));
+        }
+
+        return $this->render('accountinfo', [
+            'Customer_id' => $customer_id,
+            'account'=>$account,
+            'accountType' => json_encode($accountType),
+            'base_currency' => json_encode($base_currency),
             'data' => $data,
         ]);
     }
