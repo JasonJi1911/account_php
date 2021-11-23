@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\behaviors\UploadBehavior;
 use yii\db\ActiveRecord;
 /**
  * financial model
@@ -16,6 +17,55 @@ use yii\db\ActiveRecord;
  */
 class Financial extends ActiveRecord
 {
+
+    public $imageFile;
+
+    public function rules()
+    {
+        return [
+            [['imageFile'], 'file',  'extensions' => 'png, jpg, jpeg'],//'skipOnEmpty' => false,
+        ];
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            $uploadDir = uploadDir;
+            if( !file_exists($uploadDir) ) {
+                if( !mkdir( $uploadDir ) ) {
+                    getjson('创建目录失败:'.$uploadDir);
+                    return;
+                }
+            }
+            $this->imageFile->saveAs($uploadDir . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+{
+    $behaviors = parent::behaviors();
+
+    $behaviors['upload'] = [
+        'class'  => UploadBehavior::className(),
+        'config' => [
+            'picture' => [
+                'extensions' => UploadBehavior::$imageExtensions,
+                'maxSize'    => 1024 * 1024 * 10 , // 10M
+                'required'   => true,
+                'dir'        => uploadDir,
+            ]
+        ],
+    ];
+
+    return $behaviors;
+}
+
     /**
      * {@inheritdoc}
      */

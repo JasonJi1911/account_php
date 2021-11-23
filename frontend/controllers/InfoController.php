@@ -9,6 +9,7 @@ use common\models\EmployerBusiness;
 use common\models\Financial;
 use common\models\FinancialRange;
 use common\models\info\Account;
+use common\models\Investment;
 use common\models\Phone;
 use common\models\Resident;
 use common\models\Tax;
@@ -16,6 +17,7 @@ use common\models\Wealth;
 use frontend\Logic\CandidateLogic;
 use frontend\Logic\EmploymentLogic;
 use frontend\Logic\InfoLogic;
+use frontend\Logic\InvestmentLogic;
 use frontend\Logic\ResidentLogic;
 use frontend\Logic\TaxLogic;
 use frontend\Logic\WealthLogic;
@@ -392,25 +394,32 @@ class InfoController extends BaseController
      */
     public function actionUploadproof(){
         $customer_id = Yii::$app->request->get('Customer_id', '');
+        $data = [];
+
         $financial = Financial::findOne(['Customer_id'=>$customer_id]);
         if(!$financial) $financial = new Financial();
 
-        $model = new UploadForm();//图片上传
         if (Yii::$app->request->isPost) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->upload()) {
-                // 文件上传成功，插入图片链接
-                $financial->picture = uploadDir . $model->imageFile->name;
-                $financial->Customer_id = $customer_id;
-                $financial->save(false);
+            $financial->imageFile = UploadedFile::getInstance($financial, 'imageFile');
+            if($financial->imageFile){
+                if ($financial->upload()) {
+                    // 文件上传成功，插入图片链接
+                    $financial->picture = uploadDir . $financial->imageFile->name;
+                    $financial->Customer_id = $customer_id;
+                    $financial->save(false);
+                    return $this->redirect(Url::to(['info/accountinfo', 'Customer_id'=> $customer_id]));
+                }
+            }else if($financial['picture']!=''){
                 return $this->redirect(Url::to(['info/accountinfo', 'Customer_id'=> $customer_id]));
+            }else{
+                $data['error'] = '请上传图片文件证明';
             }
         }
 
         return $this->render('uploadproof', [
             'Customer_id' => $customer_id,
             'financial'=>$financial,
-            'model'=>$model,
+            'data'=>$data,
         ]);
     }
 
@@ -459,8 +468,7 @@ class InfoController extends BaseController
 
             $infoLogic = new InfoLogic();
             $infoLogic->SaveAccount($condition, $reponse_account);
-            return $this->redirect(Url::to(['account/index']));
-//            return $this->redirect(Url::to(['info/accountinfo', 'Customer_id'=> $customer_id]));
+            return $this->redirect(Url::to(['info/objective', 'Customer_id'=> $customer_id]));
         }
 
         return $this->render('accountinfo', [
@@ -468,6 +476,123 @@ class InfoController extends BaseController
             'account'=>$account,
             'accountType' => json_encode($accountType),
             'base_currency' => json_encode($base_currency),
+            'data' => $data,
+        ]);
+    }
+
+    /*
+     * 投资目标
+     */
+    public function actionObjective(){
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $data = [];
+
+        $account = Account::findOne(['Customer_id'=>$customer_id]);
+        if(!$account) $account = new Account();
+
+        $investObj = Dict::find()->select('dkey value, dvalue name')
+            ->andWhere(['type'=>'InvestmentObjectives'])
+            ->asArray()->all();
+        if(!$investObj){
+            $investObj = [];
+        }else{
+            foreach ($investObj as &$obj){
+                $obj['checked'] = false;
+                if($account['InvestmentObjectives']) {
+                    foreach (explode('+',$account['InvestmentObjectives']) as $v){
+                        if($obj['value'] == $v){
+                            $obj['checked'] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (Yii::$app->request->isPost) {
+            $reponse = Yii::$app->request->post();
+            $condition = ['Customer_id' => $customer_id];
+            $reponse_account = $reponse[Account::className()];
+//
+            $infoLogic = new InfoLogic();
+            $infoLogic->SaveAccount($condition, $reponse_account);
+            return $this->redirect(Url::to(['info/experience', 'Customer_id'=> $customer_id]));
+        }
+
+        return $this->render('objective', [
+            'Customer_id' => $customer_id,
+            'account'=>$account,
+            'investObj' => json_encode($investObj),
+//            'data' => $data,
+        ]);
+    }
+
+    /*
+     * 投资经验
+     */
+    public function actionExperience(){
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $data = [];
+
+        $stk = Investment::findOne(['Customer_id' => $customer_id, 'asset_class'=>'STK']);
+        if(!$stk){
+            $data['STK'] = new Investment();
+        }else{
+            $data['STK'] = $stk;
+        }
+        $cash = Investment::findOne(['Customer_id' => $customer_id, 'asset_class'=>'CASH']);
+        if(!$cash){
+            $data['CASH'] = new Investment();
+        }else{
+            $data['CASH'] = $cash;
+        }
+
+        $data['stklevel'] = '';
+        $data['cashlevel'] = '';
+        $level = Dict::find()->select('dkey value, dvalue name')
+            ->andWhere(['type'=>'knowledge_level'])
+            ->asArray()->all();
+        if(!$level){
+            $level = [];
+        }else{
+            foreach ($level as $l){
+                if($l['value'] == $data['CASH']['knowledge_level']){
+                    $data['cashlevel'] = $l['name'];
+                }
+                if($l['value'] == $data['STK']['knowledge_level']){
+                    $data['stklevel'] = $l['name'];
+                }
+            }
+        }
+
+        if (Yii::$app->request->isPost) {
+            $reponse = Yii::$app->request->post();
+            $condition = ['Customer_id' => $customer_id];
+            $reponse_account = [];
+            if($reponse['asset_class0'] == '是'){
+                $invest0 = new Investment();
+                $invest0->asset_class = 'STK';
+                $invest0->years_trading = $reponse['year0'];
+                $invest0->trades_per_year = $reponse['trades0'];
+                $invest0->knowledge_level = $reponse['level0'];
+                $reponse_account[] = $invest0;
+             }
+            if($reponse['asset_class1'] == '是'){
+                $invest1 = new Investment();
+                $invest1->asset_class = 'CASH';
+                $invest1->years_trading = $reponse['year1'];
+                $invest1->trades_per_year = $reponse['trades1'];
+                $invest1->knowledge_level = $reponse['level1'];
+                $reponse_account[] = $invest1;
+            }
+
+            $investmentLogic = new InvestmentLogic();
+            $investmentLogic->SaveInvestment($condition, $reponse_account);
+            return $this->redirect(Url::to(['account/regulatory', 'Customer_id'=> $customer_id]));
+        }
+
+        return $this->render('experience', [
+            'Customer_id' => $customer_id,
+            'level' => json_encode($level),
             'data' => $data,
         ]);
     }

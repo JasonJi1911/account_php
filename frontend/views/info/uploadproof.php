@@ -39,12 +39,11 @@ AppAsset::register($this);
             <p class="p1B">支持jpeg、png、pdf格式文件</p>
         </div>
         <div :class="isShow2">
-            <img :src="imgUrl" style="width:100%;height:100%"  id="aaa"/>
+            <img :src="imgUrl" style="width:100%;height:100%" />
         </div>
-        <?= $form->field($model, 'imageFile')->fileInput(['@change'=>"upload",'class'=>'fileInput']) ?>
+        <?= $form->field($financial, 'imageFile')->fileInput([ '@change'=>"upload",'class'=>'fileInput']) ?>
     </div>
 
-    <input type="hidden" name="img" value="" />
     <div class="flexBox1 m1L m1R m1T wBtnBox" :class="isFixed">
         <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
             上一步
@@ -63,11 +62,16 @@ AppAsset::register($this);
         data:{
             active:'<?=$financial['picture']?>'!=''?false:true,
             active2:'<?=$financial['picture']?>'!=''?true:false,
-            imgUrl:'<?=$financial['picture']!=''? '/'.$financial['picture'] : ''?>',
+            imgUrl:'<?=$financial['picture']!=''? $financial['picture'] : ''?>',
             activeFixed:true,
         },
         mounted:function(){
-
+            var msg = '<?=$data['error']?>';
+            if(msg!=''){
+                document.getElementsByClassName("help-block")[0].innerHTML = msg;
+            }else{
+                document.getElementsByClassName("help-block")[0].innerHTML = '';
+            }
         },
         computed: {
             isShow: function () {
@@ -103,7 +107,7 @@ AppAsset::register($this);
             upload:function(e){
                 //e.target指向事件执行时鼠标所点击区域的那个元素，那么为input的标签，
                 // 可以输出 e.target.files 看看，这个files对象保存着选中的所有的图片的信息。
-                console.log(e.target.files);
+                // console.log(e.target.files);
                 //------------------------------------------------------
                 // 既然如此，循环这个files对象，用for of 循环，
                 for(let item of e.target.files){
