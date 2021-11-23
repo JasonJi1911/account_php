@@ -47,8 +47,8 @@ AppAsset::register($this);
         line-height: 30px;
     }
     .btnBox button {
-        border: 1px solid dodgerblue;
-        background: dodgerblue;
+        border: 1px solid snow;
+        background: #EF7E2E;
         color: #fff;
         border-radius: 4px;
         padding: 2px 30px;
@@ -323,6 +323,7 @@ AppAsset::register($this);
                     // this.$emit("surewrite",false);
                     this.signImg = imgBase64;
                     this.$refs.canvasImg.style.width = '100%';
+                    this.close();
                 } else {
                     alert("请签名后再确认！");
                 }
