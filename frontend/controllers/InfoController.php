@@ -77,6 +77,8 @@ class InfoController extends BaseController
             $candidateLogic->UpdateCandidate($condition, $reponse_candidate);
 //
             $redisentLogic = new ResidentLogic();
+            $country_code = Country::findOne(['state_code'=>$reponse_resident['state'],'city_en'=>$reponse_resident['city']]);
+            $reponse_resident['country'] = $country_code['country_code'];
             $redisentLogic->SaveResident($condition,$reponse_resident);
             return $this->redirect(Url::to(['info/personinfo', 'Customer_id'=> $customer_id]));
         }
@@ -236,10 +238,10 @@ class InfoController extends BaseController
             $reponse = Yii::$app->request->post();
             $reponse_candidate = $reponse[Candidate::className()];
             $reponse_employment = $reponse[Employment::className()];
-            if($reponse_candidate['employment_type']!='受雇'){
+            if($reponse_candidate['employment_type']!='EMPLOYED'){
                 $reponse_employment['country'] = '';
                 $reponse_employment['affliation_company_country'] = '';
-            }else if($reponse_candidate['employment_type']=='受雇' && $reponse_employment['affiliation']==0){
+            }else if($reponse_candidate['employment_type']=='EMPLOYED' && $reponse_employment['affiliation']==0){
                 $reponse_employment['affliation_company_country'] = '';
             }
             $condition = ['Customer_id' => $customer_id];
@@ -478,7 +480,7 @@ class InfoController extends BaseController
         if(!$accountType){
             $accountType = [];
         }else{
-            $data['AccountType'] = $accountType[0]['name'];
+//            $data['AccountType'] = $accountType[0]['name'];
             foreach ($accountType as $a) {
                 if($a['value'] == $account['AccountType']){
                     $data['AccountType'] = $a['name'];
@@ -492,7 +494,7 @@ class InfoController extends BaseController
         if(!$base_currency){
             $base_currency = [];
         }else{
-            $data['base_currency'] = $base_currency[0]['name'];
+//            $data['base_currency'] = $base_currency[0]['name'];
             foreach ($base_currency as $a) {
                 if($a['value'] == $account['base_currency']){
                     $data['base_currency'] = $a['name'];

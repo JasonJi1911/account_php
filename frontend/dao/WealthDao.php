@@ -5,6 +5,12 @@ use common\models\Wealth;
 
 class WealthDao extends BaseDao
 {
+    public function SearchWealth($condition){
+        $wealth = Wealth::find()->andWhere($condition)->asArray()->all();
+        if(!$wealth) $wealth = new Wealth();
+        return $wealth;
+    }
+
     //修改居住地
     public function DeleteWealth($condition)
     {

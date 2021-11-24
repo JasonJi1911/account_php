@@ -39,6 +39,7 @@ AppAsset::register($this);
 <!--            <input placeholder="请选择日期" value="2021-23-23" />-->
             <?= $form->field($candidate, 'DOB')->textInput(['class'=>'sp-date', 'placeholder'=>'请选择日期', ':value' => 'choseDOB'])->label(false) ?>
         </div>
+        <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war-DOB"></div>
 
         <div class="m1L m1T p1B borderB color656565 flexBox1 heightAuto" @click="show('0')">
             <div class="flexBox2">
@@ -146,6 +147,7 @@ AppAsset::register($this);
                 timeBoo: false,  //是否显示时分this.time
                 afterAction:  (d1, d2, d3, d4, d5)=>{
                     this['choseDOB'] = d1 + '-' + d2 + '-' + d3;// + '  ' + d4 + ':' + d5
+                    this.valiage();
                 }
             });
         },
@@ -169,6 +171,23 @@ AppAsset::register($this);
                 this.obj[index].switch=!this.obj[index].switch
                 this.obj[index].switch?this.obj[index].on='show':this.obj[index].on=''
                 this.obj[index].switch?this.on='show':this.on=''
+            },
+            valiage:function (){
+                var birthdays = new Date(this['choseDOB'].replace(/-/g, "/"));
+                var d = new Date();
+                var age = d.getFullYear() - birthdays.getFullYear() -
+                    (d.getMonth() < birthdays.getMonth() ||
+                    (d.getMonth() == birthdays.getMonth() &&
+                        d.getDate() < birthdays.getDate())
+                        ? 1 : 0);
+                if(age < 18){
+                    $(".war-DOB").text("年龄必须要大于18岁");
+                    $(".war-DOB").show();
+                    return false;
+                }else{
+                    $(".war-DOB").hide();
+                    return true;
+                }
             },
             valimessage:function(index,title){
                 if(index=='0'){//州/省、城市
@@ -203,9 +222,10 @@ AppAsset::register($this);
                 }
             },
             nextsubmit:function(){
-                if(this.valimessage('0','婚姻状况')
+                if(this.valiage() && this.valimessage('0','婚姻状况')
                     && this.valimessage('1','家庭成员数量')
                     && this.valimessage('2','税号（TEN）')){
+
                     $('#next').trigger('click');
                 }
             }

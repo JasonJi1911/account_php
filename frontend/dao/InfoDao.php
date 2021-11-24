@@ -8,6 +8,11 @@ use common\models\info\Account;
 class InfoDao extends BaseDao
 {
 
+    public function SearchFinancial($condition)
+    {
+        return Financial::findOne($condition);
+    }
+
     //修改Financial
     public function UpdateFinancial($condition, $data)
     {
@@ -40,6 +45,10 @@ class InfoDao extends BaseDao
     }
 
 
+    public function SearchAccount($condition)
+    {
+        return Account::findOne($condition);
+    }
 
     //修改Account
     public function UpdateAccount($condition, $data)

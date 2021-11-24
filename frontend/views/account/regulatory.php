@@ -31,6 +31,19 @@ AppAsset::register($this);
         position: relative;
         z-index: 100;
     }
+    .fileInput{
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         margin: 0;
+         font-size: 23px;
+         cursor: pointer;
+         filter: alpha(opacity=0);
+         opacity: 0;
+         direction: ltr;
+     }
 </style>
 <link rel="stylesheet" type="text/css" href="/css/label.css" />
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -173,8 +186,8 @@ AppAsset::register($this);
 <!--            </div>-->
 <!--        </div>-->
 <!--    </div>-->
-    <div class="flexBox1 m1L m1R m1T fixed wBtnBox" style="z-index: 10">
-        <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B">
+    <div class="flexBox1 m1L m1R m1T wBtnBox" :class="isFixed" style="z-index: 10">
+        <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
             上一步
             <a href="<?= Url::to(['nationality', 'Customer_id' => $Customer_id])?>" class="fileInput"></a>
         </div>
@@ -192,6 +205,7 @@ AppAsset::register($this);
         data:{
             on:'',
             active:[false,false,false,true],
+            activeFixed:true,
             list0:[
                 {'name':'配偶', 'value':'Spouse'},
                 {'name':'父母', 'value':'Parent'},
@@ -224,6 +238,7 @@ AppAsset::register($this);
             this.active['1'] = <?= $regulatory->political != null && $regulatory->political == '1' ? 'true' : 'false'?>;
             this.$set(this.active, 0, this.active[0])
             this.$set(this.active, 1, this.active[1])
+            this.activeFixed = (this.active['1']?false:true)
         },
         computed:{
             isShow1:function(){
@@ -238,6 +253,10 @@ AppAsset::register($this);
             isShow4:function(){
                 return this.active['3']?'show':'none'
             },
+            isFixed:function(){
+                return this.activeFixed?'fixed':''
+            },
+
         },
         methods:{
             chose:function(data,index){

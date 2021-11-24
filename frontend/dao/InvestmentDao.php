@@ -5,6 +5,10 @@ use common\models\Investment;
 
 class InvestmentDao extends BaseDao
 {
+    public function SearchInvestment($condition){
+        return Investment::findOne($condition);
+    }
+
     //修改
     public function DeleteInvestment($condition)
     {

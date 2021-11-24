@@ -403,15 +403,22 @@ AppAsset::register($this);
             },
             valiinput:function(index,title){//输入框验证
                 var value = $(".valimessage"+index).val();
+                var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
                 var reg2 = /^[0-9]*$/;
-                if((index=='13' || index=='19') && !reg2.test(value)){
-                    $(".war"+index).text(title+"必须是数字");
-                    $(".war"+index).show();
-                    return false;
-                }else if(value.trim() != ""){
-                    //通过验证
-                    $(".war"+index).hide();
-                    return true;
+                if(value.trim() != ""){
+                    if(index=='16' && !reg.test(value)){
+                        $(".war"+index).text(title+"格式不正确");
+                        $(".war"+index).show();
+                        return false;
+                    }else if((index=='13' || index=='19' || index=='17') && !reg2.test(value)){
+                        $(".war"+index).text(title+"必须是数字");
+                        $(".war"+index).show();
+                        return false;
+                    }else{
+                        //通过验证
+                        $(".war"+index).hide();
+                        return true;
+                    }
                 }else{
                     $(".war"+index).text(title+"不能为空");
                     $(".war"+index).show();

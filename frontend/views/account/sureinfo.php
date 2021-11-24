@@ -68,16 +68,17 @@ AppAsset::register($this);
             ],
             list2:[
                 {'title':'就业类型','value':'<?= $data['candidata']['employment_type']?>'},
-                {'title':'年度净收入','value':'雇员'},
-                {'title':'资产净值','value':'雇员'},
-                {'title':'流动资产净值','value':'雇员'},
-                {'title':'投资目标','value':'雇员'},
-                {'title':'股票交易经验','value':'雇员'}
+                {'title':'年度净收入','value':'<?= $data['financial']['annual_net_income_value']?>'},
+                {'title':'资产净值','value':'<?= $data['financial']['net_worth_value']?>'},
+                {'title':'流动资产净值','value':'<?= $data['financial']['liquid_net_worth_value']?>'},
+                {'title':'投资目标','value':'<?= $data['investname']?>'},
+                {'title':'股票交易经验','value':('<?=$data['experience']['years_trading']?>'+'年, '
+                                                +'<?=$data['experience']['trades_per_year']?>'+'次 / 年')},
+                {'title':'','value':('<?=$data['experience']['knowledge_level']?>')}
             ],
-            list3:[
-                {'title':'财富来源','value':'90%'},
-                {'title':'工作收入','value':'90%'}
-            ]
+            list3:<?=$data['wealth']?>
+                // [{'title':'财富来源','value':'90%'},
+                // {'title':'工作收入','value':'90%'}]
         },
         mounted:function(){
 

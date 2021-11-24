@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
  * @property string $state_code
  * @property string $city_en
  * @property string $city_cn
+ * @property string $country_code
  */
 
 class Country extends ActiveRecord

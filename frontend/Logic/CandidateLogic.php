@@ -7,10 +7,13 @@ use common\models\Dict;
 use common\models\Identity;
 use common\models\Phone;
 use frontend\dao\IdentityDao;
+use frontend\dao\InfoDao;
+use frontend\dao\InvestmentDao;
 use frontend\dao\PhoneDao;
 use frontend\dao\CandidateDao;
 use frontend\dao\ResidentDao;
 use frontend\dao\TaxDao;
+use frontend\dao\WealthDao;
 
 class CandidateLogic
 {
@@ -141,11 +144,44 @@ class CandidateLogic
         $residentDao = new ResidentDao();
         $resident = $residentDao->SearchResident($candiCondition);
 
+        $infoLogic = new InfoLogic();
+        $financial = $infoLogic->FindIncomeAndAsset($candiCondition,'AUD');
+        $investname = $infoLogic->FindInvestmentObjectives($candiCondition);
+
+        $investmentDao = new InvestmentDao();
+        $cdt['Customer_id'] = $candiCondition['Customer_id'];
+        $cdt['asset_class'] = 'STK';
+        $experience = $investmentDao->SearchInvestment($cdt);
+
+        $knowledge_level  = array_column(array_filter($dict, function ($var) {
+            return ($var['type'] == 'knowledge_level');
+        }), 'dvalue', 'dkey');
+        $experience['knowledge_level'] = $knowledge_level[$experience['knowledge_level']];
+
+        $wealthdao = new WealthDao();
+        $wealth = $wealthdao->SearchWealth($candiCondition);
+        $wealthsource  = array_column(array_filter($dict, function ($var) {
+            return ($var['type'] == 'wealthsource');
+        }), 'dvalue', 'dkey');
+        $wealthdata = [];
+        foreach ($wealth as $w){
+            $wl['title'] = $wealthsource[$w['source_type']];
+            if($w['source_type'] == 'SOW-IND-Other'){
+                $wl['title'] = $wl['title'].'('.$w['description'].')';
+            }
+            $wl['value'] = $w['percentage'].'%';
+            $wealthdata[] = $wl;
+        }
+
         $data['phone'] = $phone;
         $data['candidata'] = $candidate;
         $data['resident'] = $resident;
         $data['identity'] = $identity;
         $data['tax'] = $tax;
+        $data['financial'] = $financial;
+        $data['investname'] = $investname;
+        $data['experience'] = $experience;
+        $data['wealth'] = json_encode($wealthdata);
 
         return $data;
     }
