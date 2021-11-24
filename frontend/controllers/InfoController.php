@@ -67,26 +67,26 @@ class InfoController extends BaseController
         $city = Country::find()->select('state_code,city_en,city_cn')->asArray()->all();
         if(!$city) $city = [];
 
+        $candidateLogic = new CandidateLogic();
         if (Yii::$app->request->isPost) {
             $reponse = Yii::$app->request->post();
             $reponse_candidate = $reponse[Candidate::className()];
             $reponse_resident = $reponse[Resident::className()];
             $condition = ['Customer_id' => $customer_id];
 
-            $candidateLogic = new CandidateLogic();
             $candidateLogic->UpdateCandidate($condition, $reponse_candidate);
 //
             $redisentLogic = new ResidentLogic();
             $redisentLogic->SaveResident($condition,$reponse_resident);
             return $this->redirect(Url::to(['info/personinfo', 'Customer_id'=> $customer_id]));
         }
-//        else{ 
-//            $result = $this->ValidateCustomer($customer_id);
-//            if(!$result)
-//                return $this->redirect(Url::to(['/site/error']));
-//            $data = ['step' => TAB_NATIONALITY];
-//            $candidateLogic->UpdateStep($customer_id, $data);
-//        }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_CONTACTINFO];
+            $candidateLogic->UpdateStep($customer_id, $step);
+        }
 
         return $this->render('contactinfo', [
             'candidate'  => $candidate,
@@ -130,18 +130,25 @@ class InfoController extends BaseController
             }
         }
 
+        $candidateLogic = new CandidateLogic();
         if (Yii::$app->request->isPost) {
             $reponse = Yii::$app->request->post();
             $reponse_candidate = $reponse[Candidate::className()];
             $reponse_tax = $reponse[Tax::className()];
             $condition = ['Customer_id' => $customer_id];
 
-            $candidateLogic = new CandidateLogic();
             $candidateLogic->UpdateCandidate($condition, $reponse_candidate);
 
             $taxLogic = new TaxLogic();
             $taxLogic->SaveTax($condition,$reponse_tax);
             return $this->redirect(Url::to(['info/employinfo', 'Customer_id'=> $customer_id]));
+        }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_PERSONINFO];
+            $candidateLogic->UpdateStep($customer_id, $step);
         }
 
         return $this->render('personinfo', [
@@ -224,6 +231,7 @@ class InfoController extends BaseController
             ->andWhere(['type'=>'affliation_relationship'])
             ->asArray()->all();
 
+        $candidateLogic = new CandidateLogic();
         if (Yii::$app->request->isPost) {
             $reponse = Yii::$app->request->post();
             $reponse_candidate = $reponse[Candidate::className()];
@@ -236,12 +244,18 @@ class InfoController extends BaseController
             }
             $condition = ['Customer_id' => $customer_id];
 
-            $candidateLogic = new CandidateLogic();
             $candidateLogic->UpdateCandidate($condition, $reponse_candidate);
 
             $employmentLogic = new EmploymentLogic();
             $employmentLogic->SaveEmployment($condition, $reponse_employment);
             return $this->redirect(Url::to(['info/wealthsource', 'Customer_id'=> $customer_id]));
+        }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_EMPLOYINFO];
+            $candidateLogic->UpdateStep($customer_id, $step);
         }
 
         return $this->render('employinfo', [
@@ -313,6 +327,14 @@ class InfoController extends BaseController
             $wealthLogic->SaveWealth($condition, $param);
             return $this->redirect(Url::to(['info/incomeasset', 'Customer_id'=> $customer_id]));
         }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_WEALTHSOURCE];
+            $candidateLogic = new CandidateLogic();
+            $candidateLogic->UpdateStep($customer_id, $step);
+        }
 
         return $this->render('wealthsource', [
             'Customer_id' => $customer_id,
@@ -379,6 +401,15 @@ class InfoController extends BaseController
             $infoLogic->SaveFinancial($condition, $reponse_financial);
             return $this->redirect(Url::to(['info/uploadproof', 'Customer_id'=> $customer_id]));
         }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_INCOMEASSET];
+            $candidateLogic = new CandidateLogic();
+            $candidateLogic->UpdateStep($customer_id, $step);
+        }
+
         return $this->render('incomeasset', [
             'Customer_id' => $customer_id,
             'financial'=>$financial,
@@ -414,6 +445,14 @@ class InfoController extends BaseController
             }else{
                 $data['error'] = '请上传图片文件证明';
             }
+        }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_UPLOADPROOF];
+            $candidateLogic = new CandidateLogic();
+            $candidateLogic->UpdateStep($customer_id, $step);
         }
 
         return $this->render('uploadproof', [
@@ -470,6 +509,14 @@ class InfoController extends BaseController
             $infoLogic->SaveAccount($condition, $reponse_account);
             return $this->redirect(Url::to(['info/objective', 'Customer_id'=> $customer_id]));
         }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_ACCOUNTINFO];
+            $candidateLogic = new CandidateLogic();
+            $candidateLogic->UpdateStep($customer_id, $step);
+        }
 
         return $this->render('accountinfo', [
             'Customer_id' => $customer_id,
@@ -516,6 +563,14 @@ class InfoController extends BaseController
             $infoLogic = new InfoLogic();
             $infoLogic->SaveAccount($condition, $reponse_account);
             return $this->redirect(Url::to(['info/experience', 'Customer_id'=> $customer_id]));
+        }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_OBJECTIVE];
+            $candidateLogic = new CandidateLogic();
+            $candidateLogic->UpdateStep($customer_id, $step);
         }
 
         return $this->render('objective', [
@@ -589,11 +644,32 @@ class InfoController extends BaseController
             $investmentLogic->SaveInvestment($condition, $reponse_account);
             return $this->redirect(Url::to(['account/regulatory', 'Customer_id'=> $customer_id]));
         }
+        else{
+            $result = $this->ValidateCustomer($customer_id);
+            if(!$result)
+                return $this->redirect(Url::to(['/site/error']));
+            $step = ['step' => TAB_EXPERIENCE];
+            $candidateLogic = new CandidateLogic();
+            $candidateLogic->UpdateStep($customer_id, $step);
+        }
 
         return $this->render('experience', [
             'Customer_id' => $customer_id,
             'level' => json_encode($level),
             'data' => $data,
         ]);
+    }
+
+    private function ValidateCustomer($customer_id)
+    {
+        if(!$customer_id)
+            return false;
+
+        $candidateLogic = new CandidateLogic();
+        $candidate = $candidateLogic->GetCandidate($customer_id);
+        if(!$candidate)
+            return false;
+
+        return true;
     }
 }
