@@ -53,14 +53,19 @@ class AccountController extends BaseController
     public function actionIndex()
     {
         $customer_id = Yii::$app->request->get('Customer_id', '');
+        $uid = Yii::$app->request->get('uid', '');
+        if (!$uid)
+            return $this->redirect(Url::to(['/site/error']));
+
         $this->SwitchTag($customer_id, TAB_INDEX);
 
         $model = new Phone();
         $candidate = new Candidate();
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
+                $candidate->uid = $uid;
                 $candidate->Customer_id = time();
-                $candidate->external_id = "moneycat" . $candidate->Customer_id;
+                $candidate->external_id = "mcat" . $candidate->Customer_id;
                 $candidate->step = TAB_INDEX;
                 $candidateLogic = new CandidateLogic();
                 $result = $candidateLogic->RegisterNewCandidate($model->attributes, $candidate->attributes);
