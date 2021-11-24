@@ -674,4 +674,19 @@ class InfoController extends BaseController
 
         return true;
     }
+
+    public function actionSuccess(){
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $data = [];
+        $candidate = Candidate::findOne(['Customer_id' => $customer_id]);
+        if (!$candidate)
+            $candidate = new Candidate();
+
+        $data['name'] = $candidate['last_name'] .' '. $candidate['first_name'];
+
+        return $this->render('success', [
+            'Customer_id' => $customer_id,
+            'data' => $data,
+        ]);
+    }
 }
