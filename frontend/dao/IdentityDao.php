@@ -23,6 +23,9 @@ class IdentityDao extends BaseDao
     {
 //        $identity = new Identity();
         $identity = Identity::findOne(['Customer_id' => $data['Customer_id']]);
+        if (!$identity)
+            $identity = new Identity();
+
 //        $candidate->attributes = $data;
         foreach ($data as $k=>$v)
         {

@@ -68,6 +68,7 @@ class AccountController extends BaseController
                 $candidate->external_id = "mcat" . $candidate->Customer_id;
                 $candidate->step = TAB_INDEX;
                 $candidateLogic = new CandidateLogic();
+                $model->type = "Mobile";
                 $result = $candidateLogic->RegisterNewCandidate($model->attributes, $candidate->attributes);
                 if ($result['status'] != 200)
                     $model->addError('number', $result['message']);

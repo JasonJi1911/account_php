@@ -102,7 +102,7 @@ class UploadBehavior extends Behavior
             }
 
             // 否则去验证
-            if (!(new FileValidator($config))->validate($file, $error)) {
+            if ($model->$attribute && !(new FileValidator($config))->validate($file, $error)) {
                 $model->addError($attribute, $error);
                 $event->isValid = false;
                 return;
