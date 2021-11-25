@@ -86,6 +86,7 @@ $this->registerJs($js);
         <?php if($identity->hasErrors('number')):?>
             <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6"><?= $identity->getErrors('number')[0]?></div>
         <?php endif;?>
+        <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war0">证件号码格式不正确</div>
 
         <div class="m1L m1T p1B color656565 flexBox1 borderB" @click="show('1')">
             <div class="flexBox2">
@@ -242,7 +243,14 @@ $this->registerJs($js);
                 }
             },
             nextSubmit:function(){
-                $('#next').trigger('click');
+                var reg =  /^.{0,64}$/;
+                var num = $("#identity-number").val();
+                if(this['choseValue0']=='DriversLicense' && !reg.test(num)){
+                    $(".war0").show();
+                }else{
+                    $(".war0").hide();
+                    $('#next').trigger('click');
+                }
             }
         }
     });
