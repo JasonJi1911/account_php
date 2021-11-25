@@ -14,7 +14,7 @@ AppAsset::register($this);
     <div class="cenetr m1T m15B color272727 bold f33">开户完成，审核中...</div>
     <div class="flexBox1 p05T p05B">
         <span class="color656565">账户类型</span>
-        <span>个人</span>
+        <span><?=$data['accountType']?></span>
     </div>
     <div class="flexBox1 p05T p05B">
         <span class="color656565">账户名称</span>
@@ -22,7 +22,7 @@ AppAsset::register($this);
     </div>
     <div class="flexBox1 p05T p05B">
         <span class="color656565">交易账号</span>
-        <span>U6917355</span>
+        <span><?=$data['account']?></span>
     </div>
     <div class="flexBox1 p05T p05B borderB">
         <span class="color656565">顾问 / 经济商账户名称</span>

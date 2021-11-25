@@ -86,6 +86,63 @@ AppAsset::register($this);
             overflow: visible;
         }
     }
+
+    .spinner {
+        /* margin: 100px auto; */
+        width: 200px;
+        height: 80px;
+        text-align: center;
+        font-size: 10px;
+        top: 50%;
+        left: 25%;
+        position: fixed;
+        display: none;
+    }
+
+    .spinner .ani {
+        background-color: #EF7E2E;
+        height: 100%;
+        width: 6px;
+        display: inline-block;
+
+        -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+        animation: stretchdelay 1.2s infinite ease-in-out;
+    }
+
+    .spinner .rect2 {
+        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
+    }
+
+    .spinner .rect3 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+    }
+
+    .spinner .rect4 {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+    }
+
+    .spinner .rect5 {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+    }
+
+    @-webkit-keyframes stretchdelay {
+        0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+        20% { -webkit-transform: scaleY(1.0) }
+    }
+
+    @keyframes stretchdelay {
+        0%, 40%, 100% {
+            transform: scaleY(0.4);
+            -webkit-transform: scaleY(0.4);
+        }  20% {
+               transform: scaleY(1.0);
+               -webkit-transform: scaleY(1.0);
+           }
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <div id="vertify">
@@ -98,7 +155,7 @@ AppAsset::register($this);
     </div>
     <div class="flexBox1 m1L m1R m1T fixed wBtnBox">
         <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B">上一步</div>
-        <div class="nextBtn f33 bgEF7E2E colorFFF cenetr  p05T p05B radius20px">
+        <div class="nextBtn f33 bgEF7E2E colorFFF cenetr  p05T p05B radius20px" @click="nextSubmit()">
             下一步
         </div>
     </div>
@@ -124,6 +181,15 @@ AppAsset::register($this);
             </div>
         </div>
     </div>
+</div>
+
+<div class="spinner">
+    <div class="spintitle"> 处理中...</div>
+    <div class="rect1 ani"></div>
+    <div class="rect2 ani"></div>
+    <div class="rect3 ani"></div>
+    <div class="rect4 ani"></div>
+    <div class="rect5 ani"></div>
 </div>
 
 <script type="text/javascript">
@@ -327,7 +393,35 @@ AppAsset::register($this);
                 } else {
                     alert("请签名后再确认！");
                 }
-            }
+            },
+            nextSubmit:function (){
+                $('.spinner').show();
+                var arrIndex = {};
+                arrIndex['Customer_id'] = '<?= $Customer_id?>';
+                $.get('/account/submit-application', arrIndex, function(s) {
+                    var realData = s.data;
+                    console.log(realData);
+                    if (realData.status == 1 )
+                    {
+                        $('.spinner').hide();
+                        alert("开户失败，请检查填写的信息");
+                        return;
+                    }
+                    console.log(realData.data);
+                    if(realData.data == undefined)
+                    {
+                        $('.spinner').hide();
+                        alert("网络波动，请稍后再试");
+                        return;
+                    }
+
+                    console.log(realData.data.accountType);
+                    console.log(realData.data.tradingAccount);
+                    var accountType = realData.data.accountType;
+                    var account = realData.data.tradingAccount;
+                    window.location.href = "/info/success?Customer_id="+<?= $Customer_id?>+"&accountType="+accountType+"&account="+account;
+                });
+            },
         }
     });
 </script>

@@ -681,12 +681,16 @@ class InfoController extends BaseController
 
     public function actionSuccess(){
         $customer_id = Yii::$app->request->get('Customer_id', '');
+        $accountType = Yii::$app->request->get('accountType', '');
+        $account = Yii::$app->request->get('account', '');
         $data = [];
         $candidate = Candidate::findOne(['Customer_id' => $customer_id]);
         if (!$candidate)
             $candidate = new Candidate();
 
         $data['name'] = $candidate['last_name'] .' '. $candidate['first_name'];
+        $data['accountType'] = $accountType;
+        $data['account'] = $account;
 
         return $this->render('success', [
             'Customer_id' => $customer_id,

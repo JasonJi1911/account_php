@@ -273,7 +273,15 @@ class AccountController extends BaseController
         $data = ['step' => TAB_SURESIGN];
         $candidateLogic->UpdateStep($customer_id, $data);
         return $this->render('suresign', [
-
+            'Customer_id' => $customer_id,
         ]);
+    }
+
+    public function actionSubmitApplication()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $res = Tool::httpPost('https://api.moneycatrading.com/index.php?app=account&act=create', ['Customer_id'=>$customer_id]);
+        $data = json_decode($res['data'], true);
+        return Tool::responseJson(0, '操作成功', $data);
     }
 }

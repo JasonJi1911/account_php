@@ -342,7 +342,7 @@ class Tool
         return $ret;
     }
 
-    public static function httpPost($url, $data, $type = 'form', $timeout = 5)
+    public static function httpPost($url, $data, $type = 'form', $timeout = 300)
     {
         $ret = [
             'errno' => 0,
@@ -386,6 +386,8 @@ class Tool
         curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt ( $ch, CURLOPT_USERAGENT, "Mozilla/5.0 QianZhuangApi/2.0");
         curl_setopt ( $ch, CURLOPT_POSTFIELDS, $post_data );
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
         $data = curl_exec($ch);
 
@@ -396,6 +398,7 @@ class Tool
             $ret['errno'] = 1;
             $ret['error'] = curl_error($ch);
         } else {
+            $ret['errno'] = 0;
             $ret['data'] = $data;
         }
         curl_close($ch);
