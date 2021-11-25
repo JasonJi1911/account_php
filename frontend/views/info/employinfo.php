@@ -414,6 +414,10 @@ AppAsset::register($this);
                         $(".war"+index).text(title+"必须是数字");
                         $(".war"+index).show();
                         return false;
+                    }else if(index=='18' && $(".valimessage12").val() == value){
+                        $(".war"+index).text("雇主的地址不能和申请人的居住地址一致");
+                        $(".war"+index).show();
+                        return false;
                     }else{
                         //通过验证
                         $(".war"+index).hide();

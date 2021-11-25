@@ -150,6 +150,7 @@ AppAsset::register($this);
             choseId1:'<?=$data['STK']['knowledge_level']?>',
             choseId2:'<?=$data['CASH']['asset_class']?>'=='CASH'? '是' : '否',
             choseId3:'<?=$data['CASH']['knowledge_level']?>',
+            choseDOB:'<?=$data['DOB']?>',
             activeFixed:true,
             obj:[
                 {on:'',switch:false},{on:'',switch:false},
@@ -205,13 +206,46 @@ AppAsset::register($this);
                 var i = parseInt(index);
                 var reg2 = /^[0-9]*$/;
                 if(value.trim()!=''){
-                    if((index=='1'||index=='2'||index=='5'||index=='6') && !reg2.test(value)){
-                        $(".war"+index).text(title+"必须是数字");
-                        $(".war"+index).show();
-                        return false;
-                    }else{
-                        if(index=='1' && parseFloat(value)<1){
+                    if(index=='1'||index=='5'){//年限1/5
+                        if(!reg2.test(value)){
+                            $(".war"+index).text(title+"必须是数字");
+                            $(".war"+index).show();
+                            return false;
+                        }else if(index=='1' && parseInt(value)<1){
                             $(".war"+index).text("股票交易年限需大于等于一年");
+                            $(".war"+index).show();
+                            return false;
+                        }else if(!this.valiEX(parseInt(value))){
+                            $(".war"+index).text("交易经验年头不能大于年龄-18");
+                            $(".war"+index).show();
+                            return false;
+                        }else{
+                            $(".war"+index).hide();
+                            return true;
+                        }
+                    }else if((index=='2'||index=='6')){//笔数2/6
+                        if(!reg2.test(value)){
+                            $(".war"+index).text(title+"必须是数字");
+                            $(".war"+index).show();
+                            return false;
+                        }else if(index=='6' && parseInt(value)<10 && parseInt($(".valimessage5").val())==1){
+                            $(".war"+index).text("换汇交易经验年头 = 1时，换汇每年交易笔数须大于等于10");
+                            $(".war"+index).show();
+                            return false;
+                        }else{
+                            $(".war"+index).hide();
+                            return true;
+                        }
+                    }else{//水平3/7
+                        var i = parseInt(index);
+                        var year = parseInt($(".valimessage" + (index-2)).val());
+                        var trades = parseInt($(".valimessage" + (index-1)).val());
+                        if(index=='3' && year==1 && trades < 10 && (this['choseId1']=='None' || this['choseId1']=='Limited')){
+                            $(".war"+index).text("股票交易经验年头 = 1 以及股票每年交易笔数 < 10的情况下，股票知识水平须是良好或丰富");
+                            $(".war"+index).show();
+                            return false;
+                        }else if(index=='7' && year==2 && trades < 10 && (this['choseId3']=='None' || this['choseId3']=='Limited')){
+                            $(".war"+index).text("换汇经验年头 = 2 以及换汇每年交易笔数 < 10的情况下， 换汇知识水平须是丰富或良好");
                             $(".war"+index).show();
                             return false;
                         }else{
@@ -225,6 +259,20 @@ AppAsset::register($this);
                     return false;
                 }
                 this.valiheight();
+            },
+            valiEX:function (year){
+                var birthdays = new Date(this['choseDOB'].replace(/-/g, "/"));
+                var d = new Date();
+                var age = d.getFullYear() - birthdays.getFullYear() -
+                    (d.getMonth() < birthdays.getMonth() ||
+                    (d.getMonth() == birthdays.getMonth() &&
+                        d.getDate() < birthdays.getDate())
+                        ? 1 : 0);
+                if( year > age - 18){
+                    return false;
+                }else{
+                    return true;
+                }
             },
             nextsubmit:function(){
                 var that = this;

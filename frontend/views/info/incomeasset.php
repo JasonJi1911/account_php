@@ -33,7 +33,7 @@ AppAsset::register($this);
         <div class="m1L m1T p1B borderB color656565 flexBox1" @click="show('0')">
             <div class="flexBox2">
                 <div class="w140">年度净收入<span class="colorEF7E2E">*</span></div>
-                <span class="colorADADAD">{{choseData0?choseData0:'请选择'}}</span>
+                <span class="colorADADAD">{{choseData0?choseData0:list0[4].name}}</span>
             </div>
             <div class="sj m1R"></div>
         </div>
@@ -46,7 +46,7 @@ AppAsset::register($this);
         <div class="m1L m1T p1B borderB color656565 flexBox1" @click="show('1')">
             <div class="flexBox2">
                 <div class="w140">资产净值<span class="colorEF7E2E">*</span></div>
-                <span class="colorADADAD">{{choseData1?choseData1:'请选择'}}</span>
+                <span class="colorADADAD">{{choseData1?choseData1:list1[4].name}}</span>
             </div>
             <div class="sj m1R"></div>
         </div>
@@ -59,7 +59,7 @@ AppAsset::register($this);
         <div class="m1L m1T p1B borderB color656565 flexBox1" @click="show('2')">
             <div class="flexBox2">
                 <div class="w140">流动资产净值<span class="colorEF7E2E">*</span></div>
-                <span class="colorADADAD">{{choseData2?choseData2:'请选择'}}</span>
+                <span class="colorADADAD">{{choseData2?choseData2:list2[4].name}}</span>
             </div>
             <div class="sj m1R"></div>
         </div>
@@ -94,9 +94,9 @@ AppAsset::register($this);
             choseData0:'<?=$data['annual_net_income']?>',
             choseData1:'<?=$data['net_worth']?>',
             choseData2:'<?=$data['liquid_net_worth']?>',
-            choseId0:'<?=$financial['annual_net_income']?>',
-            choseId1:'<?=$financial['net_worth']?>',
-            choseId2:'<?=$financial['liquid_net_worth']?>',
+            choseId0:'<?=$financial['annual_net_income']==""? 4 : $financial['annual_net_income']?>',
+            choseId1:'<?=$financial['net_worth']==""? 4 : $financial['net_worth']?>',
+            choseId2:'<?=$financial['liquid_net_worth']==""? 4 : $financial['liquid_net_worth']?>',
             activeFixed:true,
             obj:[
                 {on:'',switch:false},{on:'',switch:false},{on:'',switch:false}
@@ -149,8 +149,8 @@ AppAsset::register($this);
                     var d0 = this.getnumber(this['choseData0'],1);
                     var d1 = this.getnumber(this['choseData1'],0);
                     var d2 = this.getnumber(this['choseData2'],1);
-                    if(d1<d0 && d1<d2){
-                        $(".war2").text("资产净值大于年度净收入或资产净值大于流动资产净值");
+                    if(d1<d2){//d1<d0 &&
+                        $(".war2").text("资产净值须大于流动资产净值");
                         $(".war2").show();
                     }else{
                         $(".war2").hide();

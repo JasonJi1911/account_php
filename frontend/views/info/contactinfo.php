@@ -1,6 +1,7 @@
 <?php
 use frontend\assets\AppAsset;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 $this->title = '财猫证券开户';
 AppAsset::register($this);
@@ -14,6 +15,19 @@ AppAsset::register($this);
     }
     .m2T{
         margin-top: 2rem;
+    }
+    .fileInput{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-size: 23px;
+        cursor: pointer;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        direction: ltr;
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -104,8 +118,9 @@ AppAsset::register($this);
         <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war4"></div>
 
         <div class="flexBox1 m1L m1R m1T wBtnBox m2B m2T">
-            <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B" @click="lastpage()">
+            <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
                 上一步
+                <a href="<?= Url::to(['account/identity-info', 'Customer_id' => $Customer_id])?>" class="fileInput"></a>
             </div>
             <div class="nextBtn f33 bgEF7E2E colorFFF cenetr  p05T p05B radius20px" @click="nextsubmit()">
                 下一步
@@ -218,10 +233,6 @@ AppAsset::register($this);
                     $('#next').trigger('click');
                 }
             },
-            lastpage:function(){
-                // this.$router.go(-1);
-                history.go(-1);
-            }
         },
         computed: {
             filterlist2: function () {

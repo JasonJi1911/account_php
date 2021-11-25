@@ -204,9 +204,14 @@ AppAsset::register($this);
                     //输入框验证
                     var value = $(".valimessage"+index).val();
                     if(value.trim() != ""){
+                        var reg1 = /^(\d{8}|\d{9})$/;
                         var reg2 = /^[0-9]*$/;
                         if (index=='1' && !reg2.test(value)) {
                             $(".war"+index).text(title+"必须是数字");
+                            $(".war"+index).show();
+                            return false;
+                        }else if (index=='2' && !reg1.test(value)) {
+                            $(".war"+index).text(title+"必须是8-9位数字");
                             $(".war"+index).show();
                             return false;
                         }else{

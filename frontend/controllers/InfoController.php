@@ -91,6 +91,7 @@ class InfoController extends BaseController
         }
 
         return $this->render('contactinfo', [
+            'Customer_id'=> $customer_id,
             'candidate'  => $candidate,
             'resident'   => $resident,
             'data'       => $data,
@@ -589,6 +590,9 @@ class InfoController extends BaseController
     public function actionExperience(){
         $customer_id = Yii::$app->request->get('Customer_id', '');
         $data = [];
+
+        $candidate = Candidate::findOne(['Customer_id' => $customer_id]);
+        $data['DOB'] = (!$candidate) ? '' : $candidate['DOB'];
 
         $stk = Investment::findOne(['Customer_id' => $customer_id, 'asset_class'=>'STK']);
         if(!$stk){
