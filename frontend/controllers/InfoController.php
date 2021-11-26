@@ -363,7 +363,10 @@ class InfoController extends BaseController
         $net_worth = [];
         //净流动资产
         $liquid_net_worth = [];
-        $financialRange = FinancialRange::find()->andWhere(['currency'=>'AUD'])->asArray()->all();
+        $financialRange = FinancialRange::find()
+                    ->andWhere(['currency'=>'AUD'])
+                    ->andWhere(['>', 'range_id', 1])
+                    ->asArray()->all();
 
         if($financialRange){
             foreach ($financialRange as $k=>$fr){
@@ -548,19 +551,22 @@ class InfoController extends BaseController
             $investObj = [];
         }else{
             foreach ($investObj as &$obj){
-                if($obj['value']=='Growth' || $obj['value']=='Trading' || $obj['value']=='Speculation'){
-                    $obj['checked'] = true;
-                }else{
+                if($account['InvestmentObjectives']!=''){
                     $obj['checked'] = false;
+                    if($account['InvestmentObjectives']) {
+                        foreach (explode('+',$account['InvestmentObjectives']) as $v){
+                            if($obj['value'] == $v){
+                                $obj['checked'] = true;
+                            }
+                        }
+                    }
+                }else{
+                    if($obj['value']=='Growth' || $obj['value']=='Trading' || $obj['value']=='Speculation'){
+                        $obj['checked'] = true;
+                    }else{
+                        $obj['checked'] = false;
+                    }
                 }
-//                $obj['checked'] = false;
-//                if($account['InvestmentObjectives']) {
-//                    foreach (explode('+',$account['InvestmentObjectives']) as $v){
-//                        if($obj['value'] == $v){
-//                            $obj['checked'] = true;
-//                        }
-//                    }
-//                }
             }
         }
 

@@ -59,7 +59,11 @@ AppAsset::register($this);
         <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war0">请勾选所有适用选项</div>
         <div v-for='(item,index) in list1'  class="flexBox1 m1L p1R p05T p05B borderB">
             <span>{{item.name}}</span>
-            <div>
+            <div v-if="item.value=='Growth' || item.value=='Trading' || item.value=='Speculation'">
+                <input type="checkbox" :id="item.value" name="invest-obj" v-model="item.checked" />
+                <label :for="item.value" v-model="item.checked"></label>
+            </div>
+            <div v-else>
                 <input type="checkbox" :id="item.value" name="invest-obj" disabled v-model="item.checked" />
                 <label :for="item.value" v-model="item.checked"></label>
             </div>
