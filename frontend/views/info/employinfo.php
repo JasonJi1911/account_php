@@ -8,7 +8,8 @@ AppAsset::register($this);
 
 ?>
 <link rel="stylesheet" type="text/css" href="/css/label.css" />
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
+<script type="text/javascript" src="/js/vue@2.js"></script>
 <?php $form = ActiveForm::begin([
     'id' => 'contact-form',
     'enableClientValidation' => false,

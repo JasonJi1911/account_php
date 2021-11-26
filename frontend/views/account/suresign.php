@@ -157,7 +157,8 @@ AppAsset::register($this);
         direction: ltr;
     }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
+<script type="text/javascript" src="/js/vue@2.js"></script>
 <div id="vertify">
     <div class="bold f40 color272727 m1T m1L m1B">阅读签署并签名</div>
     <div class="f33 color272727 m1L">1.本人已核对并确认填写信息无误;</div>

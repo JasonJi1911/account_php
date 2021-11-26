@@ -5,7 +5,8 @@ $this->title = '财猫证券开户';
 AppAsset::register($this);
 
 ?>
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
+<script type="text/javascript" src="/js/vue@2.js"></script>
 
 <div id="vertify" class="m1L m1R">
     <div class="cenetr">

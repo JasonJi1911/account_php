@@ -25,7 +25,8 @@ AppAsset::register($this);
         direction: ltr;
     }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
+<script type="text/javascript" src="/js/vue@2.js"></script>
 <div id="vertify">
     <div class="bold f40 color272727 m1T m1L m1B">阅读&签署协议</div>
     <div class="bold f40 color272727 m1T m1L m1B">第一账户持有人信息</div>

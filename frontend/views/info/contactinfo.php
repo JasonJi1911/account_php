@@ -30,7 +30,8 @@ AppAsset::register($this);
         direction: ltr;
     }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
+<script type="text/javascript" src="/js/vue@2.js"></script>
 <?php $form = ActiveForm::begin() ?>
 <div id="vertify">
     <div class="box">

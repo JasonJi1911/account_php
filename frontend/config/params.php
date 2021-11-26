@@ -39,6 +39,6 @@ return [
         TAB_REGULATORY => 'regulatory',
         TAB_SUREINFO => 'sure-info',
         TAB_SURESIGN => 'sure-sign',
-        TAB_END => 'end',
+        TAB_END => '../info/success',
     ],
 ];
