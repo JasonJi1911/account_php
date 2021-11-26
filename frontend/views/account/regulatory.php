@@ -103,12 +103,13 @@ AppAsset::register($this);
     <div class="bold f40 color272727 m1T m1L p05B">规管信息承诺协议</div>
     <div>
         <p>本人承诺：</p>
-        <p>1.本人及亲属无任职上市公司或交易所金融产品之发行人/承销商的董事、高级雇员或官员；</p>
-        <p>2.本人及亲属无任意国家的高级政府官员；</p>
-        <p>3.本人及亲属无澳大利亚或非澳大利亚领事馆的高级外交人员、大使、或高级专员；</p>
-        <p>4.本人及亲属无任意国家武装部队的高级别人士；</p>
-        <p>5.本人及亲属无任意国家国有企业的高级管理人员（CEO、CFO或同等职位管理人员）；</p>
-        <p>6.本人及亲属无人受雇于任何经纪交易商、投资顾问、期货佣金商、对冲基金、交易所或其他金融服务公司（即"金融公司"）、或在该等机构进行过登记；</p>
+        <p>1.本人不是法定的美国居民、绿卡持有者、美国税收居民或SSN号码持有者；；</p>
+        <p>2.本人及亲属无任职上市公司或交易所金融产品之发行人/承销商的董事、高级雇员或官员；</p>
+        <p>3.本人及亲属无任意国家的高级政府官员；</p>
+        <p>4.本人及亲属无澳大利亚或非澳大利亚领事馆的高级外交人员、大使、或高级专员；</p>
+        <p>5.本人及亲属无任意国家武装部队的高级别人士；</p>
+        <p>6.本人及亲属无任意国家国有企业的高级管理人员（CEO、CFO或同等职位管理人员）；</p>
+        <p>7.本人及亲属无人受雇于任何经纪交易商、投资顾问、期货佣金商、对冲基金、交易所或其他金融服务公司（即"金融公司"）、或在该等机构进行过登记；</p>
     </div>
     <div class="m1T m1L m1R">
         <div class="relative labeldiv" >
@@ -247,7 +248,7 @@ AppAsset::register($this);
 <!--            </div>-->
 <!--        </div>-->
 <!--    </div>-->
-    <div class="flexBox1 m1L m1R m1T fixed wBtnBox" style="z-index: 10">
+    <div class="flexBox1 m1L m1R m1T  wBtnBox" style="z-index: 10"><!-- fixed -->
         <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
             上一步
             <a href="<?= Url::to(['info/experience', 'Customer_id' => $Customer_id])?>" class="fileInput"></a>
