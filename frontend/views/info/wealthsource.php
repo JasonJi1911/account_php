@@ -157,7 +157,7 @@ AppAsset::register($this);
                     this.otherwar = true;
                 }else{
                     this.otherwar = false;
-                    if(total_percent < 100){
+                    if(total_percent != 100){
                         this.showmessage = true;
                     }else{
                         this.showmessage = false;
