@@ -29,6 +29,19 @@ $this->registerJs($js);
         padding-bottom: 0.5rem;
         padding-top: 0.5rem;
     }
+    .fileInput{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-size: 23px;
+        cursor: pointer;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        direction: ltr;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <?php $form = ActiveForm::begin([
@@ -128,7 +141,9 @@ $this->registerJs($js);
         <?php endif;?>
 
         <div class="flexBox1 m1L m1R m1T fixed wBtnBox">
-            <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B">上一步</div>
+            <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
+                上一步
+                <a href="<?= Url::to(['identity-card', 'Customer_id' => $Customer_id])?>" class="fileInput"></a></div>
             <div class="nextBtn f33 bgEF7E2E colorFFF cenetr  p05T p05B radius20px" @click="nextSubmit()">
                 下一步
                 <input type="submit" class="divHide" id="next">

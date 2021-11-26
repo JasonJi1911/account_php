@@ -432,13 +432,14 @@ class InfoController extends BaseController
 
         $financial = Financial::findOne(['Customer_id'=>$customer_id]);
         if(!$financial) $financial = new Financial();
+        $financial->imageFile = $financial->picture;
 
         if (Yii::$app->request->isPost) {
             $financial->imageFile = UploadedFile::getInstance($financial, 'imageFile');
             if($financial->imageFile){
                 if ($financial->upload()) {
                     // 文件上传成功，插入图片链接
-                    $financial->picture = uploadDir . $financial->imageFile->name;
+                    $financial->picture = 'income/' . md5($financial->imageFile->baseName.$customer_id) . '.' . $financial->imageFile->extension;
                     $financial->Customer_id = $customer_id;
                     $financial->save(false);
                     return $this->redirect(Url::to(['info/accountinfo', 'Customer_id'=> $customer_id]));
@@ -547,14 +548,19 @@ class InfoController extends BaseController
             $investObj = [];
         }else{
             foreach ($investObj as &$obj){
-                $obj['checked'] = false;
-                if($account['InvestmentObjectives']) {
-                    foreach (explode('+',$account['InvestmentObjectives']) as $v){
-                        if($obj['value'] == $v){
-                            $obj['checked'] = true;
-                        }
-                    }
+                if($obj['value']=='Growth' || $obj['value']=='Trading' || $obj['value']=='Speculation'){
+                    $obj['checked'] = true;
+                }else{
+                    $obj['checked'] = false;
                 }
+//                $obj['checked'] = false;
+//                if($account['InvestmentObjectives']) {
+//                    foreach (explode('+',$account['InvestmentObjectives']) as $v){
+//                        if($obj['value'] == $v){
+//                            $obj['checked'] = true;
+//                        }
+//                    }
+//                }
             }
         }
 

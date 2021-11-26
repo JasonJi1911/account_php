@@ -10,6 +10,21 @@ $this->title = '阅读&签署协议-财猫证券开户';
 AppAsset::register($this);
 ?>
 
+<style>
+    .fileInput{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-size: 23px;
+        cursor: pointer;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        direction: ltr;
+    }
+</style>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <div id="vertify">
     <div class="bold f40 color272727 m1T m1L m1B">阅读&签署协议</div>
@@ -40,7 +55,7 @@ AppAsset::register($this);
         <input class="m1L m15T"type="checkbox" checked/>&nbsp;我已阅读并同意以上协议
     </div>
     <div class="flexBox1 m1L m1R m1T m2B">
-        <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B">
+        <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
             上一步
             <a href="<?= Url::to(['regulatory', 'Customer_id' => $Customer_id])?>" class="fileInput"></a>
         </div>

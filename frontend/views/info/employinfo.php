@@ -135,7 +135,7 @@ AppAsset::register($this);
             <?= $form->field($employment, 'occupation')->textInput(['class'=>'none', ':value' => 'choseId5'])->label(false) ?>
             <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war5"></div>
 
-            <div class="flexBox1  m1L m1R m1T p1B borderB">
+            <div class="flexBox1  m1L m1R m1T p1B borderB none" >
                 <div class="color878787 f24 m1R">
                     您或您的任何知悉亲属是否受雇于任何经济
                     交易商，投资顾问，期货佣金商，对冲基金，
@@ -145,7 +145,7 @@ AppAsset::register($this);
                 <div>
                     <input id="switch1" v-model="active" type="checkbox" @click="getSwitch('1',$event)">
                     <label for="switch1" v-model="active"></label>
-                    <?= $form->field($employment, 'affiliation')->textInput(['class'=>'none', ':value' => 'choseSwitch'])->label(false) ?>
+                    <?= $form->field($employment, 'affiliation')->textInput(['class'=>'none', 'value' => '0'])->label(false) ?>
                 </div>
             </div>
             <div class="none" :class="isShow">
@@ -271,7 +271,7 @@ AppAsset::register($this);
         data:{
             on:'',
             activeEM:'<?=$data['employStatus']?>'=='受雇' ? true : false,
-            active:'<?=$employment['affiliation']?>'==1 ? true : false,
+            active:false,
             active2:true,
             activeFixed:'<?=$data['employStatus']?>'=='受雇' ? false : true,
             list0:<?=$employStatus?>,
@@ -304,7 +304,7 @@ AppAsset::register($this);
             choseId7:'<?=$employment['affliation_company_country']!='' ? $employment['affliation_company_country'] : 'AUS'?>',
             choseId8:'<?=($employment['affliation_company_state']!='' ? $employment['affliation_company_state'] : '')?>',
             choseId9:'<?=($employment['affliation_company_city']!='' ? $employment['affliation_company_city'] : '')?>',
-            choseSwitch:'<?=($employment['affiliation']!='' ? $employment['affiliation'] : '0')?>',
+            choseSwitch:'0',
             obj:[
                 {on:'',switch:false},{on:'',switch:false},{on:'',switch:false},
                 {on:'',switch:false},{on:'',switch:false},{on:'',switch:false},

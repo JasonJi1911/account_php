@@ -19,8 +19,6 @@ define('TAB_SUREINFO', 15); // 信息确认
 define('TAB_SURESIGN', 16); // 签字确认
 define('TAB_END', 17); // 首页
 
-define('uploadDir','uploadfile/');//图片上传路径
-
 return [
     'adminEmail' => 'admin@example.com',
     'pageTab' => [

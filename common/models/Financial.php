@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\behaviors\UploadBehavior;
 use yii\db\ActiveRecord;
+use Yii;
 /**
  * financial model
  *
@@ -30,14 +31,14 @@ class Financial extends ActiveRecord
     public function upload()
     {
         if ($this->validate()) {
-            $uploadDir = uploadDir;
-            if( !file_exists($uploadDir) ) {
-                if( !mkdir( $uploadDir ) ) {
-                    getjson('创建目录失败:'.$uploadDir);
-                    return;
-                }
-            }
-            $this->imageFile->saveAs($uploadDir . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            $uploadDir = Yii::$app->basePath.'/../uploads/income/';
+//            if( !file_exists($uploadDir) ) {
+//                if( !mkdir( $uploadDir ) ) {
+//                    getjson('创建目录失败:'.$uploadDir);
+//                    return;
+//                }
+//            }
+            $this->imageFile->saveAs($uploadDir . md5($this->imageFile->baseName.$this->Customer_id) . '.' . $this->imageFile->extension);
             return true;
         } else {
             return false;
@@ -58,7 +59,7 @@ class Financial extends ActiveRecord
                 'extensions' => UploadBehavior::$imageExtensions,
                 'maxSize'    => 1024 * 1024 * 10 , // 10M
                 'required'   => true,
-                'dir'        => uploadDir,
+                'dir'        => 'income/',
             ]
         ],
     ];

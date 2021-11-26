@@ -59,7 +59,7 @@ AppAsset::register($this);
         <div v-for='(item,index) in list1'  class="flexBox1 m1L p1R p05T p05B borderB">
             <span>{{item.name}}</span>
             <div>
-                <input type="checkbox" :id="item.value" name="invest-obj" v-model="item.checked" />
+                <input type="checkbox" :id="item.value" name="invest-obj" disabled v-model="item.checked" />
                 <label :for="item.value" v-model="item.checked"></label>
             </div>
         </div>
@@ -145,8 +145,8 @@ AppAsset::register($this);
                     }
                 }
                 if(tab) {
-                    $('.war0').hide();
-                    this.choseId1 = investObjs;
+                   $('.war0').hide();
+                   this.choseId1 = investObjs;
                    $('#next').trigger('click');
                 }else{
                     $('.war0').show();
