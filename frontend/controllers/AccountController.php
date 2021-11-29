@@ -285,4 +285,23 @@ class AccountController extends BaseController
         $data = json_decode($res['data'], true);
         return Tool::responseJson(0, '操作成功', $data);
     }
+
+    public function actionSubmission()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $account_id = Yii::$app->request->get('account_id', '');
+        $res = Tool::httpPost('https://api.moneycatrading.com/index.php?app=account&act=DocumentSubmission'
+            , ['Customer_id'=>$customer_id, 'account_id'=>$account_id]);
+        $data = json_decode($res['data'], true);
+        return Tool::responseJson(0, '操作成功', $data);
+    }
+
+    public function actionFetchAccount()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $res = Tool::httpPost('https://api.moneycatrading.com/index.php?app=account&act=fetchAccountInfo'
+            , ['Customer_id'=>$customer_id]);
+        $data = json_decode($res['data'], true);
+        return Tool::responseJson(0, '操作成功', $data);
+    }
 }

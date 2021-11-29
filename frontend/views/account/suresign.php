@@ -435,9 +435,33 @@ AppAsset::register($this);
                     console.log(realData.data.tradingAccount);
                     var accountType = realData.data.accountType;
                     var account = realData.data.tradingAccount;
+                    arrIndex['account_id'] = account;
+                    $.get('/account/submit-application', arrIndex, function(s) {
+
+                    });
                     window.location.href = "/info/success?Customer_id="+<?= $Customer_id?>+"&accountType="+accountType+"&account="+account;
                 });
+                var int=self.setInterval(this.tickleData,1000);
             },
+            tickleData:function ()
+            {
+                var arrIndex = {};
+                arrIndex['Customer_id'] = '<?= $Customer_id?>';
+                $.get('/account/fetch-account', arrIndex, function(s) {
+                    var realData = s.data;
+                    console.log(realData);
+                    if (realData.status == 1 )
+                        return;
+
+                    var accountType = realData.data.accountType;
+                    var account = realData.data.tradingAccount;
+                    arrIndex['account_id'] = account;
+                    $.get('/account/submit-application', arrIndex, function(s) {
+
+                    });
+                    window.location.href = "/info/success?Customer_id="+<?= $Customer_id?>+"&accountType="+accountType+"&account="+account;
+                });
+            }
         }
     });
 </script>
