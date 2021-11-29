@@ -35,12 +35,13 @@ AppAsset::register($this);
     <div class="f33 bgEF7E2E colorFFF cenetr p05T p05B radius20px m1B">
         立即入金
     </div>
-    <div class="f33 bgffffff colorEF7E2E borderEF7E2E cenetr p05T p05B radius20px ">
+    <div class="f33 bgffffff colorEF7E2E borderEF7E2E cenetr p05T p05B radius20px " @click="closePage">
         返回财猫
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="module">
+    import {viewPageDismiss} from '/js/utils.js'
     new Vue({
         el:"#vertify" ,
         data:{
@@ -50,7 +51,10 @@ AppAsset::register($this);
 
         },
         methods:{
-
+            closePage:function ()
+            {
+                viewPageDismiss('{reload:false}');
+            },
         }
     });
 </script>

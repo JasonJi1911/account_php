@@ -450,8 +450,15 @@ AppAsset::register($this);
                 $.get('/account/fetch-account', arrIndex, function(s) {
                     var realData = s.data;
                     console.log(realData);
-                    if (realData.status == 1 )
+                    if (realData.status == 1)
                         return;
+
+                    if (realData.status == 500)
+                    {
+                        $('.spinner').hide();
+                        alert("网络波动，请稍后再试");
+                        return;
+                    }
 
                     var accountType = realData.data.accountType;
                     var account = realData.data.tradingAccount;
