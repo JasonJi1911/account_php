@@ -155,7 +155,8 @@ class AccountController extends BaseController
         if (Yii::$app->request->isPost && $identity->load(Yii::$app->request->post())) {
             $identity->Customer_id = $customer_id;
             $identity->save(false);
-            return $this->redirect(Url::to(['account/identity-info', 'Customer_id'=> $customer_id]));
+            if (!$identity->hasErrors('picture'))
+                return $this->redirect(Url::to(['account/identity-info', 'Customer_id'=> $customer_id]));
         }
         else
         {
