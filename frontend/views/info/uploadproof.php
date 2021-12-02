@@ -101,6 +101,25 @@ AppAsset::register($this);
             },
         },
         methods:{
+            imgevent:function(){
+                var that = this;
+                //加载图片获取图片真实宽度和高度
+                var image = new Image();
+                image.src = this.imgUrl;
+                image.onload = function () {
+                    var imgW = this.width;
+                    var imgH = this.height;
+                    var screenW = window.screen.width;
+                    var screenH = window.screen.height;
+                    if(imgW / screenW * screenH < imgH){
+                        that.imgW = 'auto';
+                        that.imgH = (screenH-230)+'px';
+                    }else{
+                        that.imgW = '100%';
+                        that.imgH = 'auto';
+                    }
+                };
+            },
             errorImg:function(){
                 this.active = true;
                 this.active2 = false;
@@ -134,6 +153,7 @@ AppAsset::register($this);
                         _this.imgUrl = this.result
                         _this.active = false
                         _this.active2 = true
+                        _this.imgevent();
                     });
                 }
             },

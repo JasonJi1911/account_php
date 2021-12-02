@@ -633,9 +633,9 @@ class InfoController extends BaseController
             ->asArray()->all();
 
         $levelcash = Dict::findOne(['type'=>'knowledge_level','dkey'=>$data['CASH']['knowledge_level']]);
-        $data['cashlevel'] = $levelcash['name'];
+        $data['cashlevel'] = $levelcash['dvalue'];
         $levelstk = Dict::findOne(['type'=>'knowledge_level','dkey'=>$data['STK']['knowledge_level']]);
-        $data['stklevel'] = $levelstk['name'];
+        $data['stklevel'] = $levelstk['dvalue'];
 
         //years
         $years = Dict::find()->select('dkey value, dvalue name')
@@ -643,18 +643,18 @@ class InfoController extends BaseController
             ->asArray()->all();
 
         $yearcash = Dict::findOne(['type'=>'experience_years','dkey'=>$data['CASH']['years_trading']]);
-        $data['cashyear'] = $yearcash['name'];
+        $data['cashyear'] = $yearcash['dvalue'];
         $yearstk = Dict::findOne(['type'=>'experience_years','dkey'=>$data['STK']['years_trading']]);
-        $data['stkyear'] = $yearstk['name'];
+        $data['stkyear'] = $yearstk['dvalue'];
 
         //trades_per_years
         $trades = Dict::find()->select('dkey value, dvalue name')
             ->andWhere(['type'=>'experience_trades'])
             ->asArray()->all();
         $tradecash = Dict::findOne(['type'=>'experience_trades','dkey'=>$data['CASH']['trades_per_year']]);
-        $data['cashtrade'] = $tradecash['name'];
+        $data['cashtrade'] = $tradecash['dvalue'];
         $tradestk = Dict::findOne(['type'=>'experience_trades','dkey'=>$data['STK']['trades_per_year']]);
-        $data['stktrade'] = $tradestk['name'];
+        $data['stktrade'] = $tradestk['dvalue'];
 
 
         if (Yii::$app->request->isPost) {

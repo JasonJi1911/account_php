@@ -145,6 +145,25 @@ $this->registerJs($js);
             };
         },
         methods: {
+            imgevent:function(){
+                var that = this;
+                //加载图片获取图片真实宽度和高度
+                var image = new Image();
+                image.src = this.imgUrl;
+                image.onload = function () {
+                    var imgW = this.width;
+                    var imgH = this.height;
+                    var screenW = window.screen.width;
+                    var screenH = window.screen.height;
+                    if(imgW / screenW * screenH < imgH){
+                        that.imgW = 'auto';
+                        that.imgH = (screenH-380)+'px';
+                    }else{
+                        that.imgW = '100%';
+                        that.imgH = 'auto';
+                    }
+                };
+            },
             upload:function(e){
                 //e.target指向事件执行时鼠标所点击区域的那个元素，那么为input的标签，
                 // 可以输出 e.target.files 看看，这个files对象保存着选中的所有的图片的信息。
@@ -172,6 +191,7 @@ $this->registerJs($js);
                         //给数组添加这个文件也就是图片的内容
                         _this.tips = false
                         _this.imgUrl = this.result
+                        _this.imgevent();
                     })
                 }
                 //------------------------------------------------------------
