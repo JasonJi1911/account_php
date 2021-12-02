@@ -22,7 +22,9 @@ AppAsset::register($this);
     }
     input[type='checkbox']:checked::after {
         position: absolute;
-        top: 0;
+        /*top: 0;*/
+        top: -1px;
+        left: -1px;
         display: inline-flex;
         justify-content: center;
         align-items: center;
@@ -35,6 +37,8 @@ AppAsset::register($this);
         background: url(../img/checked.png) no-repeat;
         background-size: 100% 100%;
         border-radius: 2px;
+        border: 1px solid #EF7E2E;
+        background-color: #fff;
     }
     .fileInput{
         position: absolute;
@@ -58,7 +62,7 @@ AppAsset::register($this);
     <div class="m1T">
         <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6 none war0">请勾选所有适用选项</div>
         <div v-for='(item,index) in list1'  class="flexBox1 m1L p1R p05T p05B borderB">
-            <span>{{item.name}}</span>
+            <span class="f33 color303030">{{item.name}}</span>
             <div v-if="item.value=='Growth' || item.value=='Trading' || item.value=='Speculation'">
                 <input type="checkbox" :id="item.value" name="invest-obj" v-model="item.checked" />
                 <label :for="item.value" v-model="item.checked"></label>

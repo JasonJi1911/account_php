@@ -2,6 +2,7 @@
 
 namespace frontend\Logic;
 
+use common\models\Country;
 use common\models\Dict;
 use common\models\FinancialRange;
 use common\models\info\Account;
@@ -85,4 +86,27 @@ class InfoLogic
         }
         return $str;
     }
+
+    /*
+     * 州/省 排序
+     */
+    public function getState($param=[]){
+        $state = Dict::find()->andWhere(['type'=>'state_order'])
+                ->orderBy('dkey desc')
+                ->asArray()->all();
+        if(!$state){
+            return ;
+        }
+        $param['state_en'] = isset($param['state_en'])?$param['state_en']:'state_en';
+        $param['state_cn'] = isset($param['state_cn'])?$param['state_cn']:'state_cn';
+        $param['state_code'] = isset($param['state_code'])?$param['state_code']:'state_code';
+        foreach ($state as &$s){
+            $country_state = Country::findOne(['state_code'=>$s['dvalue']]);
+            $s[$param['state_en']] = $country_state['state_en'];
+            $s[$param['state_cn']] = $country_state['state_cn'];
+            $s[$param['state_code']] = $country_state['state_code'];
+        }
+        return $state;
+    }
+
 }

@@ -7,6 +7,7 @@ use common\models\Country;
 use common\models\Identity;
 use common\models\Regulatory;
 use frontend\Logic\IdentityLogic;
+use frontend\Logic\InfoLogic;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -200,8 +201,13 @@ class AccountController extends BaseController
             $candidateLogic->UpdateStep($customer_id, $data);
         }
 
-        $state = Country::find()->select('state_en as des,state_cn as name,state_code as value')
-            ->groupBy('state_en,state_cn,state_code')->asArray()->all();
+//        $state = Country::find()->select('state_en as des,state_cn as name,state_code as value')
+//            ->groupBy('state_en,state_cn,state_code')->asArray()->all();
+        $infologic = new InfoLogic();
+        $state_parem['state_en'] = 'des';
+        $state_parem['state_cn'] = 'name';
+        $state_parem['state_code'] = 'value';
+        $state = $infologic->getState($state_parem);
 
         return $this->render('identityinfo', [
             'Customer_id' => $customer_id,

@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 //$this->registerMetaTag(['name' => 'keywords', 'content' => 'xxxx']);
-$this->title = '阅读&签署协议-财猫证券开户';
+$this->title = '财猫证券开户';
 AppAsset::register($this);
 ?>
 

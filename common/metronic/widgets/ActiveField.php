@@ -103,14 +103,14 @@ class ActiveField extends \yii\widgets\ActiveField
             }
             $thumb = $value;
             $imgUrl = $thumb->resize($width, $height);
-            $html .= "<img src='" . $imgUrl . "' :src='imgUrl' class='w100' onerror='this.src=\"/img/icon_7.png\"'/>";
-
+            $html .= "<img src='" . $imgUrl . "' :src='imgUrl' :style='{width: imgW, height: imgH}' onerror='this.src=\"/img/icon_7.png\"'/>";
+            // class='w100'
             if (!$imgUrl->__toString())
                 $html .= '<div class="cenetr textpos">证件正面照片</div>';
             $html .= '</div>';
         }
 
-        $html .= '<div class="fon500 bgF9F9F9 H80 linH80 cenetr m15L m15R radius14px m05T pos-relative">从相册中选择';
+        $html .= '<div class="fon500 bgF9F9F9 H80 linH80 cenetr m15L m15R radius14px m05T pos-relative">选择图片';
         $html .=      Html::activeFileInput($this->model, $this->attribute, $options);
         $html .= '</div>';
 

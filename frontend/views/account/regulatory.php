@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use common\metronic\widgets\ActiveForm;
 use common\metronic\widgets\ActiveField;
 
-$this->title = '规管信息-财猫证券开户';
+$this->title = '财猫证券开户';
 AppAsset::register($this);
 
 ?>
@@ -62,13 +62,20 @@ AppAsset::register($this);
     }
     input[type='radio'] {
         position: relative;
-        cursor: pointer;
-        width: 20px;
-        height: 20px; ;
-        font-size: 12px;
+        /*cursor: pointer;*/
         vertical-align: middle;
         margin-top: -2px;
-        margin-bottom: 1px
+        margin-bottom: 1px;
+        width: 20px;
+        height: 20px;
+        content: '';
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        background: url(../img/radio-no.png) no-repeat;
+        background-size: 100% 100%;
+        background-color: #fff;
+        border-radius: 2px;
     }
     input[type='radio']:checked::after {
         position: absolute;
@@ -82,10 +89,9 @@ AppAsset::register($this);
         color: #fff;
         font-size: 12px;
         font-weight: 700;
-        background: url(../img/radiochecked.png) no-repeat;
+        background: url(../img/radio.png) no-repeat;
         background-size: 100% 100%;
         background-color: #fff;
-        border-radius: 2px;
     }
     label{
         display:block;

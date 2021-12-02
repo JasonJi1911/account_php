@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 //$this->registerMetaTag(['name' => 'keywords', 'content' => 'xxxx']);
-$this->title = '证件提示-财猫证券开户';
+$this->title = '财猫证券开户';
 AppAsset::register($this);
 
 $js = <<<JS
@@ -36,7 +36,7 @@ $this->registerJs($js);
     </div>
 </div>
 <div class="fixed bottom w100_ m1L m1R">
-    <div class="f33 bgEF7E2E colorFFF cenetr p05T p05B radius20px m05B"
+    <div class="f33 bgEF7E2E colorFFF cenetr p05T p05B radius20px m05B borderEF7E2E"
          data-link="<?= Url::to(['nationality', 'Customer_id' => $Customer_id])?>"
          id="next">
         我准备好了

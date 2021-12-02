@@ -10,7 +10,7 @@ use common\models\Candidate;
 use common\models\Phone;
 use common\metronic\widgets\ActiveField;
 
-$this->title = '上传证件-财猫证券开户';
+$this->title = '财猫证券开户';
 AppAsset::register($this);
 
 $js = <<<JS
@@ -119,11 +119,30 @@ $this->registerJs($js);
         el:"#app",
         data: {
             imgUrl: "",
-            tips: true
+            tips: true,
+            imgH:'100%',
+            imgW:'100%',
         },
         mounted: function () {
             console.log(324);
             this.imgUrl = '<?= $identity->picture != null ? $identity->picture : '/img/icon_7.png'?>';
+            var that = this;
+            //加载图片获取图片真实宽度和高度
+            var image = new Image();
+            image.src = this.imgUrl;
+            image.onload = function () {
+                var imgW = this.width;
+                var imgH = this.height;
+                var screenW = window.screen.width;
+                var screenH = window.screen.height;
+                if(imgW / screenW * screenH < imgH){
+                    that.imgW = 'auto';
+                    that.imgH = (screenH-380)+'px';
+                }else{
+                    that.imgW = '100%';
+                    that.imgH = 'auto';
+                }
+            };
         },
         methods: {
             upload:function(e){

@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 use common\models\Candidate;
 use common\models\Phone;
 
-$this->title = '国家/地区-财猫证券开户';
+$this->title = '财猫证券开户';
 AppAsset::register($this);
 
 $js = <<<JS

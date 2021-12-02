@@ -11,7 +11,7 @@ use common\models\Phone;
 /* @var $model common\models\Phone */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = '首页-财猫证券开户';
+$this->title = '财猫证券开户';
 AppAsset::register($this);
 
 $js = <<<JS
@@ -97,6 +97,11 @@ $this->registerJs($js);
         padding-bottom: 0.5rem;
         padding-top: 0.5rem;
     }
+    .arrowimg{
+        width:10px;
+        height:10px;
+        margin-top: 5px;
+    }
 </style>
 
 <div class="color272727 f40 p1L p1T p1B bold">手机号验证</div>
@@ -113,7 +118,8 @@ $this->registerJs($js);
     <div class="f33 m1L borderB p1R p1T p1B flexBox1">
         <div class="flexBox2">
             <?= $form->field($model, 'country')->dropDownList(Phone::$countrys, ['id'=>'haveSj', 'class' => 'color474747'])->label(false) ?>
-            <div class="sj relative" style="top:8px;left:3px;"></div>
+            <img src="/img/downarrow.jpg" class="relative arrowimg" />
+<!--            <div class="sj relative" style="top:8px;left:3px;"></div>-->
             &nbsp;&nbsp;&nbsp;
 <!--            <input placeholder="请输入您的手机号" value="" class="color474747 f33"/>-->
             <?= $form->field($model, 'number')
@@ -127,7 +133,7 @@ $this->registerJs($js);
     </div>
     <div class="f33 m1L borderB p1R p1T p1B">
         <?= $form->field($model, 'identity_code')
-            ->textInput(['maxlength' => 6, 'placeholder' => '请输入验证码', 'pattern'=>"[0-9]*", 'class'=>'color474747 f33'])
+            ->textInput(['maxlength' => 6, 'placeholder' => '请输入验证码', 'pattern'=>"[0-9]*", 'class'=>'color474747 f33 w100'])
             ->label(false)->error(['class'=> $model->hasErrors('identity_code') ? "help-block  help-block_padding": 'help-block']) ?>
     </div>
     <div class="color999 f24 m1L m1R p1T flexBox2">

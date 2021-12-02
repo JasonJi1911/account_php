@@ -60,8 +60,10 @@ class InfoController extends BaseController
             $data['phone'] = $phone['number'];
         }
 
-        $state = Country::find()->select('state_en,state_cn,state_code')
-                ->groupBy('state_en,state_cn,state_code')->asArray()->all();
+//        $state = Country::find()->select('state_en,state_cn,state_code')
+//                ->groupBy('state_en,state_cn,state_code')->asArray()->all();
+        $infologic = new InfoLogic();
+        $state = $infologic->getState();
         if(!$state) $state = [];
 
         $city = Country::find()->select('state_code,city_en,city_cn')->asArray()->all();
@@ -216,8 +218,13 @@ class InfoController extends BaseController
                         ->asArray()->all();
         if(!$employStatus)  $employStatus = [];
         //所有州
-        $state = Country::find()->select('state_en value,state_cn name,state_code id')
-            ->groupBy('state_en,state_cn,state_code')->asArray()->all();
+//        $state = Country::find()->select('state_en value,state_cn name,state_code id')
+//            ->groupBy('state_en,state_cn,state_code')->asArray()->all();
+        $infologic = new InfoLogic();
+        $state_parem['state_en'] = 'value';
+        $state_parem['state_cn'] = 'name';
+        $state_parem['state_code'] = 'id';
+        $state = $infologic->getState($state_parem);
         if(!$state) $state = [];
         //所有城市
         $city = Country::find()->select('state_code id,city_en value,city_cn name')->asArray()->all();
@@ -479,33 +486,33 @@ class InfoController extends BaseController
         $account = Account::findOne(['Customer_id'=>$customer_id]);
         if(!$account) $account = new Account();
 
-        $accountType = Dict::find()->select('dkey value, dvalue name')
-            ->andWhere(['type'=>'AccountType'])
-            ->asArray()->all();
-        if(!$accountType){
-            $accountType = [];
-        }else{
-//            $data['AccountType'] = $accountType[0]['name'];
-            foreach ($accountType as $a) {
-                if($a['value'] == $account['AccountType']){
-                    $data['AccountType'] = $a['name'];
-                }
-            }
-        }
+//        $accountType = Dict::find()->select('dkey value, dvalue name')
+//            ->andWhere(['type'=>'AccountType'])
+//            ->asArray()->all();
+//        if(!$accountType){
+//            $accountType = [];
+//        }else{
+////            $data['AccountType'] = $accountType[0]['name'];
+//            foreach ($accountType as $a) {
+//                if($a['value'] == $account['AccountType']){
+//                    $data['AccountType'] = $a['name'];
+//                }
+//            }
+//        }
 
-        $base_currency = Dict::find()->select('dkey value, dvalue name')
-            ->andWhere(['type'=>'base_currency'])
-            ->asArray()->all();
-        if(!$base_currency){
-            $base_currency = [];
-        }else{
-//            $data['base_currency'] = $base_currency[0]['name'];
-            foreach ($base_currency as $a) {
-                if($a['value'] == $account['base_currency']){
-                    $data['base_currency'] = $a['name'];
-                }
-            }
-        }
+//        $base_currency = Dict::find()->select('dkey value, dvalue name')
+//            ->andWhere(['type'=>'base_currency'])
+//            ->asArray()->all();
+//        if(!$base_currency){
+//            $base_currency = [];
+//        }else{
+////            $data['base_currency'] = $base_currency[0]['name'];
+//            foreach ($base_currency as $a) {
+//                if($a['value'] == $account['base_currency']){
+//                    $data['base_currency'] = $a['name'];
+//                }
+//            }
+//        }
 
         if (Yii::$app->request->isPost) {
             $reponse = Yii::$app->request->post();
@@ -528,9 +535,9 @@ class InfoController extends BaseController
         return $this->render('accountinfo', [
             'Customer_id' => $customer_id,
             'account'=>$account,
-            'accountType' => json_encode($accountType),
-            'base_currency' => json_encode($base_currency),
-            'data' => $data,
+//            'accountType' => json_encode($accountType),
+//            'base_currency' => json_encode($base_currency),
+//            'data' => $data,
         ]);
     }
 
@@ -624,18 +631,31 @@ class InfoController extends BaseController
         $level = Dict::find()->select('dkey value, dvalue name')
             ->andWhere(['type'=>'knowledge_level'])
             ->asArray()->all();
-        if(!$level){
-            $level = [];
-        }else{
-            foreach ($level as $l){
-                if($l['value'] == $data['CASH']['knowledge_level']){
-                    $data['cashlevel'] = $l['name'];
-                }
-                if($l['value'] == $data['STK']['knowledge_level']){
-                    $data['stklevel'] = $l['name'];
-                }
-            }
-        }
+
+        $levelcash = Dict::findOne(['type'=>'knowledge_level','dkey'=>$data['CASH']['knowledge_level']]);
+        $data['cashlevel'] = $levelcash['name'];
+        $levelstk = Dict::findOne(['type'=>'knowledge_level','dkey'=>$data['STK']['knowledge_level']]);
+        $data['stklevel'] = $levelstk['name'];
+
+        //years
+        $years = Dict::find()->select('dkey value, dvalue name')
+            ->andWhere(['type'=>'experience_years'])
+            ->asArray()->all();
+
+        $yearcash = Dict::findOne(['type'=>'experience_years','dkey'=>$data['CASH']['years_trading']]);
+        $data['cashyear'] = $yearcash['name'];
+        $yearstk = Dict::findOne(['type'=>'experience_years','dkey'=>$data['STK']['years_trading']]);
+        $data['stkyear'] = $yearstk['name'];
+
+        //trades_per_years
+        $trades = Dict::find()->select('dkey value, dvalue name')
+            ->andWhere(['type'=>'experience_trades'])
+            ->asArray()->all();
+        $tradecash = Dict::findOne(['type'=>'experience_trades','dkey'=>$data['CASH']['trades_per_year']]);
+        $data['cashtrade'] = $tradecash['name'];
+        $tradestk = Dict::findOne(['type'=>'experience_trades','dkey'=>$data['STK']['trades_per_year']]);
+        $data['stktrade'] = $tradestk['name'];
+
 
         if (Yii::$app->request->isPost) {
             $reponse = Yii::$app->request->post();
@@ -674,6 +694,8 @@ class InfoController extends BaseController
         return $this->render('experience', [
             'Customer_id' => $customer_id,
             'level' => json_encode($level),
+            'years' => json_encode($years),
+            'trades' => json_encode($trades),
             'data' => $data,
         ]);
     }

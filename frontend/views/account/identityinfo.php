@@ -10,7 +10,7 @@ use common\models\Candidate;
 use common\models\Phone;
 use common\metronic\widgets\ActiveField;
 
-$this->title = '上传证件-财猫证券开户';
+$this->title = '财猫证券开户';
 AppAsset::register($this);
 
 $js = <<<JS
@@ -95,7 +95,7 @@ $this->registerJs($js);
         <div class="m1L m1T p1B borderB color656565 flexBox2">
             <div class="w140">证件号码 <span class="colorEF7E2E">*</span></div>
             <?= $form->field($identity, 'number')
-                ->textInput()->label(false)->error(false) ?>
+                ->textInput(['class'=>'f16'])->label(false)->error(false) ?>
         </div>
         <?php if($identity->hasErrors('number')):?>
             <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6"><?= $identity->getErrors('number')[0]?></div>
@@ -122,7 +122,7 @@ $this->registerJs($js);
         <div class="m1L m1T p1B borderB color656565 flexBox2">
             <div class="w140">RTA号码</div>
             <?= $form->field($identity, 'RTA')
-                ->textInput()->label(false)->error(false) ?>
+                ->textInput(['class'=>'f16'])->label(false)->error(false) ?>
         </div>
         <?php if($identity->hasErrors('RTA')):?>
             <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6"><?= $identity->getErrors('RTA')[0] ?></div>
@@ -132,7 +132,7 @@ $this->registerJs($js);
             <div class="flexBox2">
                 <div class="w140">证件到期 <span class="colorEF7E2E">*</span></div>
                 <?= $form->field($identity, 'expiration')
-                    ->textInput(['class'=>'sp-date', 'placeholder'=>'请选择日期', ':value' => 'choseDOB'])->label(false)
+                    ->textInput(['class'=>'sp-date f16', 'placeholder'=>'请选择日期', ':value' => 'choseDOB'])->label(false)
                     ->error(false) ?>
             </div>
             <div class="sj m1R"></div>
@@ -141,7 +141,7 @@ $this->registerJs($js);
             <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6"><?= $identity->getErrors('expiration')[0] ?></div>
         <?php endif;?>
 
-        <div class="flexBox1 m1L m1R m1T fixed wBtnBox">
+        <div class="flexBox1 m1L m1R m1T wBtnBox" :class="isFixed">
             <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
                 上一步
                 <a href="<?= Url::to(['identity-card', 'Customer_id' => $Customer_id])?>" class="fileInput"></a></div>
@@ -179,6 +179,7 @@ $this->registerJs($js);
             choseData2:'澳大利亚',
             choseValue2: 'AUS',
             choseDOB: '',
+            activeFixed:true,
             obj:[
                 {
                     on:'',
@@ -226,6 +227,11 @@ $this->registerJs($js);
             this.doChange(2);
             this.choseDOB= '<?= $identity->expiration != null ? $identity->expiration : ''?>'
         },
+        computed:{
+            isFixed:function(){
+                return this.activeFixed?'fixed':''
+            },
+        },
         methods:{
             time2str(t){
                 return t>9?t:'0'+t;
@@ -244,6 +250,14 @@ $this->registerJs($js);
                 this.obj[index].switch=!this.obj[index].switch
                 this.obj[index].switch?this.obj[index].on='show':this.obj[index].on=''
                 this.obj[index].switch?this.on='show':this.on=''
+                var flag = false;
+                for(var i=0;i<this.obj.length;i++){
+                    if(this.obj[i].switch){
+                        flag = true;
+                        break;
+                    }
+                }
+                this.activeFixed = !flag;
             },
             doChange(index)
             {

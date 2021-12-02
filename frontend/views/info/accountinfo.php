@@ -76,12 +76,12 @@ AppAsset::register($this);
         el:"#vertify" ,
         data:{
             on:'',
-            list0:<?=$accountType?>,
-            list1:<?=$base_currency?>,
-            choseData0:'<?=$data['AccountType']?>',
-            choseData1:'<?=$data['base_currency']?>',
-            choseId0:'<?=$account['AccountType']?>',
-            choseId1:'<?=$account['base_currency']?>',
+            list0:[{"value":"Investment","name":"投资"}],
+            list1:[{"value":"AUD","name":"澳元"}],
+            choseData0:'投资',
+            choseData1:'澳元',
+            choseId0:'Investment',
+            choseId1:'AUD',
             obj:[
                 {on:'',switch:false},{on:'',switch:false}
             ]

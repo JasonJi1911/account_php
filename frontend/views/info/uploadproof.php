@@ -40,12 +40,13 @@ AppAsset::register($this);
             <p class="p1B">支持jpeg、png、pdf格式文件</p>
         </div>
         <div :class="isShow2">
-            <img :src="imgUrl" style="width:100%;height:100%" />
+            <img :src="imgUrl" :style="{width: imgW, height: imgH}" @error="errorImg" />
         </div>
         <?= $form->field($financial, 'imageFile')->fileInput([ '@change'=>"upload",'class'=>'fileInput']) ?>
     </div>
+    <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6" :class="isShowError"><?=$data['error']?></div>
 
-    <div class="flexBox1 m1L m1R m1T wBtnBox" :class="isFixed">
+    <div class="flexBox1 m1L m1R m1T wBtnBox fixed" >
         <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
             上一步
             <a href="<?= Url::to(['incomeasset', 'Customer_id' => $Customer_id])?>" class="fileInput"></a>
@@ -57,22 +58,36 @@ AppAsset::register($this);
     </div>
 </div>
 <?php ActiveForm::end() ?>
+<script src="/js/jquery-1.11.0.js"></script>
 <script type="text/javascript">
     new Vue({
         el:"#vertify" ,
         data:{
             active:'<?=$financial['picture']?>'!=''?false:true,
             active2:'<?=$financial['picture']?>'!=''?true:false,
+            activeError:'<?=$data['error']?>'!=''?true:false,
             imgUrl:'<?=$financial['picture']!=''? $financial['picture'] : ''?>',
-            activeFixed:true,
+            imgH:'100%',
+            imgW:'100%',
         },
         mounted:function(){
-            var msg = '<?=$data['error']?>';
-            if(msg!=''){
-                document.getElementsByClassName("help-block")[0].innerHTML = msg;
-            }else{
-                document.getElementsByClassName("help-block")[0].innerHTML = '';
-            }
+            var that = this;
+            //加载图片获取图片真实宽度和高度
+            var image = new Image();
+            image.src = this.imgUrl;
+            image.onload = function () {
+                var imgW = this.width;
+                var imgH = this.height;
+                var screenW = window.screen.width;
+                var screenH = window.screen.height;
+                if(imgW / screenW * screenH < imgH){
+                    that.imgW = 'auto';
+                    that.imgH = (screenH-230)+'px';
+                }else{
+                    that.imgW = '100%';
+                    that.imgH = 'auto';
+                }
+            };
         },
         computed: {
             isShow: function () {
@@ -81,30 +96,15 @@ AppAsset::register($this);
             isShow2: function () {
                 return this.active2 ? 'show' : 'none'
             },
-            isFixed: function (){
-                var that = this;
-                //加载图片获取图片真实宽度和高度
-                var image = new Image();
-                image.src = this.imgUrl;
-                image.onload = function () {
-                    var imgW = this.width;
-                    var imgH = this.height;
-                    var screenW = window.screen.width;
-                    var screenH = window.screen.height;
-                    if(imgW / screenW * screenH < imgH){
-                        that.activeFixed = false;
-                    }else{
-                        that.activeFixed = true;
-                    }
-                    // console.log("===========");
-                    // console.log(imgW+","+imgH);
-                    // console.log(that.activeFixed);
-                    // console.log("===========");
-                };
-                return this.activeFixed?'fixed':''
+            isShowError: function () {
+                return this.activeError ? 'show' : 'none'
             },
         },
         methods:{
+            errorImg:function(){
+                this.active = true;
+                this.active2 = false;
+            },
             upload:function(e){
                 //e.target指向事件执行时鼠标所点击区域的那个元素，那么为input的标签，
                 // 可以输出 e.target.files 看看，这个files对象保存着选中的所有的图片的信息。
