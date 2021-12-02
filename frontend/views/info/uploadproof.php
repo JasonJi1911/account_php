@@ -29,6 +29,10 @@ AppAsset::register($this);
         direction: ltr;
     }
     .control-label{display: none;}
+    #imgmaxH{
+        width:100%;
+        max-height:410px;
+    }
 </style>
 <div id="vertify">
     <div class="bold f40 color272727 m1T m1L p05B">证明上传</div>
@@ -40,7 +44,7 @@ AppAsset::register($this);
             <p class="p1B">支持jpeg、png、pdf格式文件</p>
         </div>
         <div :class="isShow2">
-            <img :src="imgUrl" :style="{width: imgW, height: imgH}" @error="errorImg" />
+            <img :src="imgUrl" id="imgmaxH" @error="errorImg" /><!--:style="{width: imgW, height: imgH}"-->
         </div>
         <?= $form->field($financial, 'imageFile')->fileInput([ '@change'=>"upload",'class'=>'fileInput']) ?>
     </div>
@@ -71,23 +75,23 @@ AppAsset::register($this);
             imgW:'100%',
         },
         mounted:function(){
-            var that = this;
-            //加载图片获取图片真实宽度和高度
-            var image = new Image();
-            image.src = this.imgUrl;
-            image.onload = function () {
-                var imgW = this.width;
-                var imgH = this.height;
-                var screenW = window.screen.width;
-                var screenH = window.screen.height;
-                if(imgW / screenW * screenH < imgH){
-                    that.imgW = 'auto';
-                    that.imgH = (screenH-230)+'px';
-                }else{
-                    that.imgW = '100%';
-                    that.imgH = 'auto';
-                }
-            };
+            // var that = this;
+            // //加载图片获取图片真实宽度和高度
+            // var image = new Image();
+            // image.src = this.imgUrl;
+            // image.onload = function () {
+            //     var imgW = this.width;
+            //     var imgH = this.height;
+            //     var screenW = window.screen.width;
+            //     var screenH = window.screen.height;
+            //     if(imgW / screenW * screenH < imgH){
+            //         that.imgW = 'auto';
+            //         that.imgH = (screenH-230)+'px';
+            //     }else{
+            //         that.imgW = '100%';
+            //         that.imgH = 'auto';
+            //     }
+            // };
         },
         computed: {
             isShow: function () {
@@ -153,7 +157,7 @@ AppAsset::register($this);
                         _this.imgUrl = this.result
                         _this.active = false
                         _this.active2 = true
-                        _this.imgevent();
+                        // _this.imgevent();
                     });
                 }
             },

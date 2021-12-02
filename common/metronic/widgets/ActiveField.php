@@ -103,8 +103,8 @@ class ActiveField extends \yii\widgets\ActiveField
             }
             $thumb = $value;
             $imgUrl = $thumb->resize($width, $height);
-            $html .= "<img src='" . $imgUrl . "' :src='imgUrl' :style='{width: imgW, height: imgH}' onerror='this.src=\"/img/icon_7.png\"'/>";
-            // class='w100'
+            $html .= "<img src='" . $imgUrl . "' :src='imgUrl' id='imgmaxH' class='w100' onerror='this.src=\"/img/icon_7.png\"'/>";
+            // :style='{width: imgW, height: imgH}'
             if (!$imgUrl->__toString())
                 $html .= '<div class="cenetr textpos">证件正面照片</div>';
             $html .= '</div>';

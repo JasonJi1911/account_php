@@ -46,6 +46,11 @@ $this->registerJs($js);
         padding-bottom: 0.5rem;
         padding-top: 0.5rem;
     }
+
+    #imgmaxH{
+        width:100%;
+        max-height:260px;
+    }
 </style>
 
 <!--<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
@@ -126,23 +131,23 @@ $this->registerJs($js);
         mounted: function () {
             console.log(324);
             this.imgUrl = '<?= $identity->picture != null ? $identity->picture : '/img/icon_7.png'?>';
-            var that = this;
-            //加载图片获取图片真实宽度和高度
-            var image = new Image();
-            image.src = this.imgUrl;
-            image.onload = function () {
-                var imgW = this.width;
-                var imgH = this.height;
-                var screenW = window.screen.width;
-                var screenH = window.screen.height;
-                if(imgW / screenW * screenH < imgH){
-                    that.imgW = 'auto';
-                    that.imgH = (screenH-380)+'px';
-                }else{
-                    that.imgW = '100%';
-                    that.imgH = 'auto';
-                }
-            };
+            // var that = this;
+            // //加载图片获取图片真实宽度和高度
+            // var image = new Image();
+            // image.src = this.imgUrl;
+            // image.onload = function () {
+            //     var imgW = this.width;
+            //     var imgH = this.height;
+            //     var screenW = window.screen.width;
+            //     var screenH = window.screen.height;
+            //     if(imgW / screenW * screenH < imgH){
+            //         that.imgW = 'auto';
+            //         that.imgH = (screenH-380)+'px';
+            //     }else{
+            //         that.imgW = '100%';
+            //         that.imgH = 'auto';
+            //     }
+            // };
         },
         methods: {
             imgevent:function(){
@@ -191,7 +196,7 @@ $this->registerJs($js);
                         //给数组添加这个文件也就是图片的内容
                         _this.tips = false
                         _this.imgUrl = this.result
-                        _this.imgevent();
+                        // _this.imgevent();
                     })
                 }
                 //------------------------------------------------------------
