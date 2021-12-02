@@ -35,14 +35,33 @@ $this->registerJs($js);
         <p class="f33 color656565 m05T">建议使用Wi－Fi，或4G / 5G。</p>
     </div>
 </div>
-<div class="fixed bottom w100_ m1L m1R">
+<div class="fixed bottom w100_ m1L m1R" id="btn-group">
     <div class="f33 bgEF7E2E colorFFF cenetr p05T p05B radius20px m05B borderEF7E2E"
          data-link="<?= Url::to(['nationality', 'Customer_id' => $Customer_id])?>"
          id="next">
         我准备好了
     </div>
-    <div class="f33 bgffffff borderEF7E2E colorEF7E2E cenetr p05T p05B radius20px">
+    <div class="f33 bgffffff borderEF7E2E colorEF7E2E cenetr p05T p05B radius20px" @click="closePage">
         暂不开户
     </div>
 </div>
+
+<script type="module">
+    import {viewPageDismiss} from '/js/utils.js'
+    new Vue({
+        el:"#btn-group" ,
+        data:{
+
+        },
+        mounted:function(){
+
+        },
+        methods:{
+            closePage:function ()
+            {
+                viewPageDismiss('{reload:false}');
+            },
+        }
+    });
+</script>
 
