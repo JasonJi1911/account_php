@@ -436,7 +436,7 @@ AppAsset::register($this);
                     var accountType = realData.data.accountType;
                     var account = realData.data.tradingAccount;
                     arrIndex['account_id'] = account;
-                    $.get('/account/submit-application', arrIndex, function(s) {
+                    $.get('/account/submission', arrIndex, function(s) {
 
                     });
                     window.location.href = "/info/success?Customer_id="+<?= $Customer_id?>+"&accountType="+accountType+"&account="+account;
@@ -463,7 +463,7 @@ AppAsset::register($this);
                     var accountType = realData.data.accountType;
                     var account = realData.data.tradingAccount;
                     arrIndex['account_id'] = account;
-                    $.get('/account/submit-application', arrIndex, function(s) {
+                    $.get('/account/submission', arrIndex, function(s) {
 
                     });
                     window.location.href = "/info/success?Customer_id="+<?= $Customer_id?>+"&accountType="+accountType+"&account="+account;
