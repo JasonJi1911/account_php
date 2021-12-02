@@ -19,7 +19,7 @@ JS;
 
 $this->registerJs($js);
 ?>
-
+<script type="text/javascript" src="/js/vue@2.js"></script>
 <div class="f40 color272727 m53-37 bold">开户前请您准备</div>
 <div class="m1L m1T flexBox2 m1R m2B">
     <img src="/img/icon_6.png" class="W31"/>
