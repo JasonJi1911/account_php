@@ -263,6 +263,24 @@ class AccountController extends BaseController
         ]);
     }
 
+    public function actionAgreements()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $result = $this->ValidateCustomer($customer_id);
+        if(!$result)
+            return $this->redirect(Url::to(['/site/error']));
+
+        $candidateLogic = new CandidateLogic();
+        $candiInfo = $candidateLogic->GetCandidate($customer_id);
+
+        $data = ['step' => TAB_AGREEMENT];
+        $candidateLogic->UpdateStep($customer_id, $data);
+        return $this->render('agreements', [
+            'Customer_id' => $customer_id,
+            'data' => $candiInfo,
+        ]);
+    }
+
     public function actionSureSign()
     {
         $customer_id = Yii::$app->request->get('Customer_id', '');

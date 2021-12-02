@@ -252,7 +252,7 @@ AppAsset::register($this);
     <div class="flexBox1 m1L m1R m1T  wBtnBox" style="z-index: 10"><!-- fixed -->
         <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
             上一步
-            <a href="<?= Url::to(['info/experience', 'Customer_id' => $Customer_id])?>" class="fileInput"></a>
+            <a href="<?= Url::to(['info/permissions', 'Customer_id' => $Customer_id])?>" class="fileInput"></a>
         </div>
         <div class="nextBtn f33 bgEF7E2E colorFFF cenetr  p05T p05B radius20px" @click="nextSubmit()">
             下一步

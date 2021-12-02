@@ -14,10 +14,12 @@ define('TAB_UPLOADPROOF', 10); // 证明上传
 define('TAB_ACCOUNTINFO', 11); // 账户信息
 define('TAB_OBJECTIVE', 12); // 投资目标
 define('TAB_EXPERIENCE', 13); // 投资经验
-define('TAB_REGULATORY', 14); // 监管信息
-define('TAB_SUREINFO', 15); // 信息确认
-define('TAB_SURESIGN', 16); // 签字确认
-define('TAB_END', 17); // 首页
+define('TAB_PERMISSION', 14); // 股票权限
+define('TAB_REGULATORY', 15); // 监管信息
+define('TAB_SUREINFO', 16); // 信息确认
+define('TAB_AGREEMENT', 17); // 签字确认
+//define('TAB_SURESIGN', 16); // 签字确认
+define('TAB_END', 18); // 首页
 
 return [
     'adminEmail' => 'admin@example.com',
@@ -36,9 +38,11 @@ return [
         TAB_ACCOUNTINFO => '../info/accountinfo',
         TAB_OBJECTIVE => '../info/objective',
         TAB_EXPERIENCE => '../info/experience',
+        TAB_PERMISSION => '../info/permissions',
         TAB_REGULATORY => 'regulatory',
         TAB_SUREINFO => 'sure-info',
-        TAB_SURESIGN => 'sure-sign',
+        TAB_AGREEMENT => 'agreements',
+//        TAB_SURESIGN => 'sure-sign',
         TAB_END => '../info/success',
     ],
 ];

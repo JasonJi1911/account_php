@@ -660,7 +660,7 @@ class InfoController extends BaseController
 
             $investmentLogic = new InvestmentLogic();
             $investmentLogic->SaveInvestment($condition, $reponse_account);
-            return $this->redirect(Url::to(['account/regulatory', 'Customer_id'=> $customer_id]));
+            return $this->redirect(Url::to(['info/permissions', 'Customer_id'=> $customer_id]));
         }
         else{
             $result = $this->ValidateCustomer($customer_id);
@@ -704,9 +704,28 @@ class InfoController extends BaseController
         $data['accountType'] = $accountType;
         $data['account'] = $account;
 
+        $step = ['step' => TAB_END];
+        $candidateLogic = new CandidateLogic();
+        $candidateLogic->UpdateStep($customer_id, $step);
+
         return $this->render('success', [
             'Customer_id' => $customer_id,
             'data' => $data,
+        ]);
+    }
+
+    public function actionPermissions()
+    {
+        $customer_id = Yii::$app->request->get('Customer_id', '');
+        $result = $this->ValidateCustomer($customer_id);
+        if(!$result)
+            return $this->redirect(Url::to(['/site/error']));
+
+        $step = ['step' => TAB_PERMISSION];
+        $candidateLogic = new CandidateLogic();
+        $candidateLogic->UpdateStep($customer_id, $step);
+        return $this->render('permissions', [
+            'Customer_id' => $customer_id,
         ]);
     }
 }

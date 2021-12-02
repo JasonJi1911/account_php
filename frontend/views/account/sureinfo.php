@@ -45,16 +45,16 @@ AppAsset::register($this);
         <span>{{item.value}}</span>
     </div>
 
-    <div class="bold f40 color272727 m1T m1L">协议与披露</div>
-    <div class="flexBox1 color656565 f33 m1L m1R m05B m05T">请花一些时间阅读以下协议和披露</div>
-
-    <div class="flexBox1 m1L m1R m1T">
-        <a href="/agreement/agreement.pdf" target="_blank" class="color0547C1 m1R">IB Austrialia Pty ltd General Terms  andConditions </a>
-        <span>3300|4900</span>
-    </div>
-    <div class="f24 color656565">
-        <input class="m1L m15T"type="checkbox" checked/>&nbsp;我已阅读并同意以上协议
-    </div>
+<!--    <div class="bold f40 color272727 m1T m1L">协议与披露</div>-->
+<!--    <div class="flexBox1 color656565 f33 m1L m1R m05B m05T">请花一些时间阅读以下协议和披露</div>-->
+<!---->
+<!--    <div class="flexBox1 m1L m1R m1T">-->
+<!--        <a href="/agreement/agreement.pdf" target="_blank" class="color0547C1 m1R">IB Austrialia Pty ltd General Terms  andConditions </a>-->
+<!--        <span>3300|4900</span>-->
+<!--    </div>-->
+<!--    <div class="f24 color656565">-->
+<!--        <input class="m1L m15T"type="checkbox" checked/>&nbsp;我已阅读并同意以上协议-->
+<!--    </div>-->
     <div class="flexBox1 m1L m1R m1T m2B">
         <div class="prevBtn borderCACACA color000 bgffffff cenetr radius20px f33 p05T p05B relative">
             上一步
@@ -101,7 +101,7 @@ AppAsset::register($this);
         },
         methods:{
             nextSubmit:function (){
-                window.location.href = "/account/sure-sign?Customer_id="+<?= $Customer_id?>;
+                window.location.href = "/account/agreements?Customer_id="+<?= $Customer_id?>;
             },
         }
     });
