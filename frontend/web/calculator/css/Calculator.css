@@ -9,9 +9,10 @@
 	font-family:'PingFang SC';
 	src:url('../font/PingFang.ttc')
 }
-body{
+body,input{
 	font-family:'PingFang SC';
 }
+
 
 /*背景色*/
 
@@ -207,21 +208,27 @@ body{
 .searchBox{
 	position: relative;
 }
-.searchBox img{
-	position: absolute;
-	left: 1.33rem;
-	top: 1.33rem;
-}
+/*.searchBox img{*/
+	/*position: absolute;*/
+	/*left: 1.33rem;*/
+	/*top: 1.33rem;*/
+/*}*/
 
 .cancel{
 	width: 3rem;
 }
+.searchform{
+	height: 1.9375rem;
+	width: calc(100% - 3rem);
+}
+
 .search{
 	height: 1.9375rem;
 	line-height:1.9375rem;
 	background: #F8F8F8;
 	border-radius: 14px;
-	width: calc(100% - 3rem);
+	/*width: calc(100% - 3rem);*/
+	width:100%;
 	box-sizing: border-box;
 	padding-left: 30px;
 }
@@ -242,6 +249,16 @@ body{
 }
 
 .searchIcon{
+	position: absolute;
+	left: 1.33rem;
+	top: 1.33rem;
+	width: 0.906rem;
+	height: 0.906rem;
+}
+.searchX{
+	position: absolute;
+	right: 4.33rem;
+	top: 1.33rem;
 	width: 0.906rem;
 	height: 0.906rem;
 }
@@ -256,6 +273,10 @@ body{
 .H84{
 	height: 2.625rem;
     line-height: 2.625rem;
+}
+
+.w100{
+	width:100%;
 }
 
 
@@ -293,7 +314,6 @@ body{
 input{
 	border:none;
 	outline:none;
-	font-family: "Times New Roman";
 }
 
 

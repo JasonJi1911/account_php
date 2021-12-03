@@ -62,7 +62,10 @@ $this->title = '佣金计算器';
 <div id="Calculator" v-cloak>
     <div class="flexBox1 bgFFF pa26 searchBox">
         <img src="img/search.png" class="searchIcon"/>
-        <input class="search" type="text" v-model="searchName" placeholder="请输入股票名称/代码" @change="search"/>
+        <form action="javascript:return true" class="searchform">
+            <input class="search" type="text" v-model="searchName" placeholder="请输入股票名称/代码" @change="search($event)"/>
+        </form>
+<!--        <img src="/calculator/img/cha.png" class="searchX" v-if="isShow" @click="remove"/>-->
         <div class="f30 col98" class="cancel" @click="cancel">取消</div>
     </div>
     <div id="loading" class="bgFFF mT20 center" style="display: none;" >
@@ -77,7 +80,7 @@ $this->title = '佣金计算器';
         <div v-for="item in searchList" @click="chose(item.name,item.price,item.currency)">
             <div class="pa133 flexBox2">
                 <img src="/calculator/img/search.png" class="searchIcon"/>&nbsp;&nbsp;
-                <span class="f500 f30">{{item.name}}</span>&nbsp;&nbsp;
+                <span class="f500 f30 col333">{{item.name}}</span>&nbsp;&nbsp;
                 <img :src="item.icon" class="HK"/>&nbsp;
                 <span class="f28 col96999E">{{item.code}}</span>
             </div>
@@ -97,9 +100,14 @@ $this->title = '佣金计算器';
             searchList:[],
         },
         computed:{
-
+            isShow:function(){
+                return this.searchName?true:false
+            }
         },
         methods:{
+            remove:function(){
+                this.searchName='';
+            },
             cancel:function(){
                 history.back()
             },

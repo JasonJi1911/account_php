@@ -28,8 +28,8 @@ AppAsset::register($this);
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        width: 15px;
-        height: 15px;
+        width: 17px;
+        height: 17px;
         content: '';
         color: #fff;
         font-size: 12px;
@@ -37,7 +37,6 @@ AppAsset::register($this);
         background: url(../img/checked.png) no-repeat;
         background-size: 100% 100%;
         border-radius: 2px;
-        border: 1px solid #EF7E2E;
         background-color: #fff;
     }
     .fileInput{
