@@ -10,7 +10,7 @@ use common\models\Phone;
 use common\metronic\widgets\ActiveForm;
 use common\metronic\widgets\ActiveField;
 
-$this->title = '财猫证券开户';
+$this->title = '转入资金';
 AppAsset::register($this);
 
 $js = <<<JS
