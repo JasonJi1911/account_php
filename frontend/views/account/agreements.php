@@ -217,6 +217,7 @@ AppAsset::register($this);
                     {
                         $('.spinner').hide();
                         alert("开户失败，请检查填写的信息");
+                        clearInterval(int);
                         return;
                     }
                     console.log(realData.data);
