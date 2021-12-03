@@ -51,7 +51,7 @@ class CalculatorController extends BaseController
                     }else if($s['currency']=='HKD'){
                         $r['icon'] = 'img/HK.png';
                     }else{
-                        $r['icon'] = '';
+                        $r['icon'] = 'img/ASX.png';
                     }
                     $r['price'] = $s['last_price'];
                     $r['code'] = $s['ticker'];

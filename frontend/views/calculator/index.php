@@ -9,7 +9,7 @@ $this->title = '佣金计算器';
         <div class="flexBox2 H103 f30 borderB maR968">
             <div class="w left bold col333">股票</div>
             <div class="flexBox1 wInput">
-                <input v-model="name" placeholder="请输入股票名称/代码" class="H103" @click="goSearch"/>
+                <input v-model="name" placeholder="请输入股票名称/代码" class="H103 w100" @click="goSearch"/>
                 <img src="/calculator/img/cha.png" class="cha" v-if="isShow" @click="remove"/>
             </div>
         </div>
