@@ -164,7 +164,7 @@ $this->registerJs($js);
             list0:[
                 {'name':'澳洲驾照(推荐)', 'value':'DriversLicense'},
                 {'name':'澳洲photoID', 'value':'NationalCard'},
-                {'name':'护照', 'value':'Passport'}
+                {'name':'澳洲护照', 'value':'Passport'}
             ],
             list1:<?=$state?>,
             list2:[
