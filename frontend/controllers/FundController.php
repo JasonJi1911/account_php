@@ -35,16 +35,20 @@ class FundController extends BaseController
             $candidate = $candidateLogic->GetCandidateByUid($uid);
             $account = $candidate['tradingAccount'];
         }
-
-        if (Yii::$app->request->isPost && $deposit->load(Yii::$app->request->post())) {
-            if ($deposit->validate()) {
-                $deposit->uid = $uid;
-                $deposit->save(false);
+        $isNew = 1;
+        $saveModel = new Deposit();
+        if (Yii::$app->request->isPost && $saveModel->load(Yii::$app->request->post())) {
+            if ($saveModel->validate()) {
+                $saveModel->uid = $uid;
+                $saveModel->save(false);
+                $isNew = 0;
+                $deposit = $saveModel;
             }
         }
         return $this->render('index', [
             'account' => $account,
             'model'=>$deposit,
+            'isNew'=>$isNew,
         ]);
     }
 }

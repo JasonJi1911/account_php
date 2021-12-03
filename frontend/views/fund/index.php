@@ -190,13 +190,12 @@ $this->registerJs($js);
             <div class="m05B">如有疑问，<span class="colF08023 line" @click="help()">联系在线客服。</span></div>
         </div>
 
-        <div class="m1L f27 col5A5A5A flexBox5 m1T">
-<!--            <input checked type="checkbox"/> &nbsp;-->
-            <?= $form->field($model, 'isSave')
-                ->MySwitch(['id'=>"switch0", 'label'=>false, ':value' =>'switch0', '@click' => 'getSwitch(0,$event)'])
-                ->label(false) ?>
-            <span>保存为模版下次继续使用。</span>
-        </div>
+<!--        <div class="m1L f27 col5A5A5A flexBox5 m1T">-->
+<!--            --><?//= $form->field($model, 'isSave')
+//                ->MySwitch(['id'=>"switch0", 'label'=>false, ':value' =>'switch0', '@click' => 'getSwitch(0,$event)'])
+//                ->label(false) ?>
+<!--            <span>保存为模版下次继续使用。</span>-->
+<!--        </div>-->
 
         <div class="btn m1L m1R m15T m15B" @click="nextSubmit()">
             确认已汇款，通知财猫收款
@@ -256,6 +255,9 @@ $this->registerJs($js);
                 console.error('Trigger:', e.trigger);
                 alert("复制失败");
             });
+            <?php if($isNew == 0) :?>
+                alert('保存入金通知成功');
+            <? endif;?>
         },
         methods:{
             chose:function(data,index){
