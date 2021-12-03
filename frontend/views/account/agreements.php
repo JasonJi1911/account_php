@@ -80,12 +80,14 @@ AppAsset::register($this);
 
     input[type='checkbox']:checked::after {
         position: absolute;
-        top: 0;
+        /*top: 0;*/
+        top: -1px;
+        left: -1px;
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        width: 15px;
-        height: 15px;
+        width: 17px;
+        height: 17px;
         content: '';
         color: #fff;
         font-size: 12px;
@@ -93,6 +95,7 @@ AppAsset::register($this);
         background: url(/img/checked.png) no-repeat;
         background-size: 100% 100%;
         border-radius: 2px;
+        background-color: #fff;
     }
     .signBox{
         width:100%;

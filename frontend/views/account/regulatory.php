@@ -61,6 +61,7 @@ AppAsset::register($this);
         margin-right: 1rem;
     }
     input[type='radio'] {
+        -webkit-appearance: none;
         position: relative;
         /*cursor: pointer;*/
         vertical-align: middle;
@@ -78,6 +79,7 @@ AppAsset::register($this);
         border-radius: 2px;
     }
     input[type='radio']:checked::after {
+        -webkit-appearance: none;
         position: absolute;
         top: 0;
         display: inline-flex;
