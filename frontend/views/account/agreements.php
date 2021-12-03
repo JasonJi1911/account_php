@@ -207,6 +207,7 @@ AppAsset::register($this);
                     return;
                 }
                 $('.spinner').show();
+                var int=self.setInterval(this.tickleData,1000);
                 var arrIndex = {};
                 arrIndex['Customer_id'] = '<?= $Customer_id?>';
                 $.get('/account/submit-application', arrIndex, function(s) {
@@ -226,17 +227,16 @@ AppAsset::register($this);
                         return;
                     }
 
-                    console.log(realData.data.accountType);
-                    console.log(realData.data.tradingAccount);
-                    var accountType = realData.data.accountType;
-                    var account = realData.data.tradingAccount;
-                    arrIndex['account_id'] = account;
-                    $.get('/account/submission', arrIndex, function(s) {
-
-                    });
-                    window.location.href = "/info/success?Customer_id="+<?= $Customer_id?>+"&accountType="+accountType+"&account="+account;
+                    //console.log(realData.data.accountType);
+                    //console.log(realData.data.tradingAccount);
+                    //var accountType = realData.data.accountType;
+                    //var account = realData.data.tradingAccount;
+                    //arrIndex['account_id'] = account;
+                    //$.get('/account/submission', arrIndex, function(s) {
+                    //
+                    //});
+                    //window.location.href = "/info/success?Customer_id="+<?//= $Customer_id?>//+"&accountType="+accountType+"&account="+account;
                 });
-                var int=self.setInterval(this.tickleData,1000);
             },
             tickleData:function ()
             {
