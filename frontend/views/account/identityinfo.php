@@ -163,7 +163,7 @@ $this->registerJs($js);
             on:'',
             list0:[
                 {'name':'澳洲驾照(推荐)', 'value':'DriversLicense'},
-                {'name':'身份证', 'value':'NationalCard'},
+                {'name':'澳洲photoID', 'value':'NationalCard'},
                 {'name':'护照', 'value':'Passport'}
             ],
             list1:<?=$state?>,
