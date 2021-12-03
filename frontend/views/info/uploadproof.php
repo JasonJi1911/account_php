@@ -31,7 +31,7 @@ AppAsset::register($this);
     .control-label{display: none;}
     #imgmaxH{
         width:100%;
-        max-height:410px;
+        max-height:300px;
     }
 </style>
 <div id="vertify">
