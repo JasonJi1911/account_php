@@ -148,7 +148,7 @@ $this->registerJs($js);
                 <div class="w140">银行账号<span class="colorEF7E2E">*</span></div>
 <!--                <input class="inputW" placeholder='银行账号/ACCOUNT NO.' value=""/>-->
                 <?= $form->field($model, 'bankAccount')
-                    ->textInput(['class'=>'inputW', 'placeholder'=>'银行账号/ACCOUNT NO.'])
+                    ->textInput(['class'=>'inputW', 'placeholder'=>'银行账号/ACCOUNT NO.', 'style'=>'font-size:16px'])
                     ->label(false)->error(false) ?>
             </div>
             <?php if($model->hasErrors('bankAccount')):?>
@@ -176,7 +176,7 @@ $this->registerJs($js);
                 <div class="w140">汇款金额<span class="colorEF7E2E">*</span></div>
 <!--                <input type="number" class="inputW" placeholder='请输入汇款金额' onfocus="this.placeholder=''"/>-->
                 <?= $form->field($model, 'amount')
-                    ->textInput(['type'=>'number', 'class'=>'inputW', 'placeholder'=>'请输入汇款金额', 'onfocus'=>"this.placeholder=''"])
+                    ->textInput(['type'=>'number', 'class'=>'inputW', 'placeholder'=>'请输入汇款金额', 'onfocus'=>"this.placeholder=''", 'style'=>'font-size:16px'])
                     ->label(false)->error(false) ?>
             </div>
             <?php if($model->hasErrors('amount')):?>
@@ -219,13 +219,13 @@ $this->registerJs($js);
                 {'name':'CiTi花旗', 'value':'CiTi花旗'},
             ],
             list1:[
-                {'name':'澳币AUD*', 'value':'AUD'},
+                {'name':'澳币AUD', 'value':'AUD'},
                 // {'name':'美元USD', 'value':'USD'},
                 // {'name':'港币HKD', 'value':'HKD'}
             ],
             choseData0:'<?= $model->bankName != null ? $model->bankName : 'CBA'?>',
             choseValue0: '<?= $model->bankName != null ? $model->bankName : 'CBA'?>',
-            choseData1:'澳币AUD*',
+            choseData1:'澳币AUD',
             choseValue1: 'AUD',
             switch0: '<?= $model->isSave != null ? $model->isSave : '0'?>',
             obj:[
@@ -256,7 +256,7 @@ $this->registerJs($js);
                 alert("复制失败");
             });
             <?php if($isNew == 0) :?>
-                alert('保存入金通知成功');
+                alert('入金通知成功');
             <? endif;?>
         },
         methods:{

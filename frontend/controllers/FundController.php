@@ -26,9 +26,9 @@ class FundController extends BaseController
     {
         $uid = Yii::$app->request->get('uid', '');
         $account = Yii::$app->request->get('account', '');
-        $deposit = Deposit::findOne(['uid' => $uid]);
-        if(!$deposit)
-            $deposit = new Deposit();
+//        $deposit = Deposit::findOne(['uid' => $uid]);
+//        if(!$deposit)
+//            $deposit = new Deposit();
 
         if (!$account){
             $candidateLogic = new CandidateLogic();
@@ -43,8 +43,8 @@ class FundController extends BaseController
                 $saveModel->save(false);
                 $isNew = 0;
             }
-            $deposit = $saveModel;
         }
+        $deposit = new Deposit();
         return $this->render('index', [
             'account' => $account,
             'model'=>$deposit,
