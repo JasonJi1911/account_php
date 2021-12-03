@@ -106,6 +106,13 @@ class CandidateLogic
         return $info;
     }
 
+    public function GetCandidateByUid($uid)
+    {
+        $candidateDao = new CandidateDao();
+        $info = $candidateDao->SearchCandidate(['uid' => $uid]);
+        return $info;
+    }
+
     public function UpdateCandidate($condition, $data)
     {
         $candidateDao = new CandidateDao();

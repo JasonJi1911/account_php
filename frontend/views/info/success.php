@@ -32,7 +32,7 @@ AppAsset::register($this);
         money cat trading pay ltd as car of settie rs investemem anagem
     </div>
     <div class="f24 color878787 m05B cenetr">当前开户完成，我们会优先对已入金的账户进行审核</div>
-    <div class="f33 bgEF7E2E colorFFF cenetr p05T p05B radius20px m1B">
+    <div class="f33 bgEF7E2E colorFFF cenetr p05T p05B radius20px m1B" @click="deposit">
         立即入金
     </div>
     <div class="f33 bgffffff colorEF7E2E borderEF7E2E cenetr p05T p05B radius20px " @click="closePage">
@@ -54,6 +54,10 @@ AppAsset::register($this);
             closePage:function ()
             {
                 viewPageDismiss('{reload:false}');
+            },
+            deposit:function ()
+            {
+                window.location.href = "/fund/deposit?uid="+<?= $candidate['uid']?>;
             },
         }
     });

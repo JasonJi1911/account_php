@@ -729,10 +729,11 @@ class InfoController extends BaseController
         $step = ['step' => TAB_END];
         $candidateLogic = new CandidateLogic();
         $candidateLogic->UpdateStep($customer_id, $step);
-
+        $candidate = $candidateLogic->GetCandidate($customer_id);
         return $this->render('success', [
             'Customer_id' => $customer_id,
             'data' => $data,
+            'candidate' => $candidate
         ]);
     }
 
