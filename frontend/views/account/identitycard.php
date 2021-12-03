@@ -49,7 +49,7 @@ $this->registerJs($js);
 
     #imgmaxH{
         width:100%;
-        max-height:260px;
+        max-height:210px;
     }
 </style>
 
