@@ -91,6 +91,7 @@ $this->registerJs($js);
         position: relative;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         line-height: 1.5rem;
+        font-size: 16pt;
     }
 
     .help-block_padding {
@@ -112,7 +113,7 @@ $this->registerJs($js);
 
 <?php $form = ActiveForm::begin([
     'id' => 'contact-form',
-    'enableClientValidation' => true,
+    'enableClientValidation' => false,
 //    'enableAjaxValidation' => true,
 ]) ?>
     <div class="f33 m1L borderB p1R p1T p1B flexBox1">
@@ -124,18 +125,24 @@ $this->registerJs($js);
 <!--            <input placeholder="请输入您的手机号" value="" class="color474747 f33"/>-->
             <?= $form->field($model, 'number')
                 ->textInput(['maxlength' => 11, 'placeholder' => '请输入您的手机号', 'pattern'=>"[0-9]*", 'id'=>'phone', 'class' => 'color474747 f33'])
-                ->label(false)->error(['class'=> $model->hasErrors('number') ? "help-block  help-block_padding": 'help-block']) ?>
+                ->label(false)->error(false) ?>
         </div>
         <span class="colorEF7E2E f33" id='identity-btn'>获取验证码</span>
         <div id='identity-count' class="olorEF7E2E f33 divHide">
             <span>60</span>后秒重试
         </div>
     </div>
+    <?php if($model->hasErrors('number')):?>
+        <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6"><?= $model->getErrors('number')[0] ?></div>
+    <?php endif;?>
     <div class="f33 m1L borderB p1R p1T p1B">
         <?= $form->field($model, 'identity_code')
             ->textInput(['maxlength' => 6, 'placeholder' => '请输入验证码', 'pattern'=>"[0-9]*", 'class'=>'color474747 f33 w100'])
-            ->label(false)->error(['class'=> $model->hasErrors('identity_code') ? "help-block  help-block_padding": 'help-block']) ?>
+            ->label(false)->error(false) ?>
     </div>
+    <?php if($model->hasErrors('identity_code')):?>
+        <div class="colorFF7F24 p1L p05T p05B f24 bgfef1e6"><?= $model->getErrors('identity_code')[0] ?></div>
+    <?php endif;?>
     <div class="color999 f24 m1L m1R p1T flexBox2">
         <img src="/img/icon_2.png" class="icon1" style="height:13px;"/>
         <div class="m05L">请您准备好澳洲有效证件：澳洲驾照（推荐）、澳洲 photoID或澳洲护照。</div>
