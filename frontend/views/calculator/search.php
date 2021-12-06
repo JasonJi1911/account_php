@@ -63,9 +63,9 @@ $this->title = '佣金计算器';
     <div class="flexBox1 bgFFF pa26 searchBox">
         <img src="img/search.png" class="searchIcon"/>
         <form action="javascript:return true" class="searchform">
-            <input class="search" type="text" v-model="searchName" placeholder="请输入股票名称/代码" @change="search($event)"/>
+            <input class="search" type="text" v-model="searchName" @change="search()" placeholder="请输入股票名称/代码" />
         </form>
-<!--        <img src="/calculator/img/cha.png" class="searchX" v-if="isShow" @click="remove"/>-->
+        <img src="/calculator/img/cha.png" class="searchX" v-if="isShow" @click="remove"/>
         <div class="f30 col98" class="cancel" @click="cancel">取消</div>
     </div>
     <div id="loading" class="bgFFF mT20 center" style="display: none;" >
@@ -96,7 +96,6 @@ $this->title = '佣金计算器';
         el:"#Calculator",
         data:{
             searchName:'',
-            commitStr:'',
             searchList:[],
         },
         computed:{
@@ -107,21 +106,27 @@ $this->title = '佣金计算器';
         methods:{
             remove:function(){
                 this.searchName='';
+                // console.log("1."+this.searchName);
             },
             cancel:function(){
                 history.back()
             },
             search:function(){
+                var that = this;
+                setTimeout(function () {
+                    // 这里就是处理的事件
+                    that.loadsearch();
+                }, 500);
+            },
+            loadsearch:function(){
+                // console.log("2."+this.searchName);
                 if(this.searchName==''){
                     this.searchList.length=0
                     return false
-                }else if(this.commitStr == this.searchName){
-                    return false
                 }
-                this.commitStr = this.searchName
                 // 请求接口
                 var arrIndex = {};
-                arrIndex['symbol'] = this.commitStr;
+                arrIndex['symbol'] = this.searchName;
                 var that = this;
                 this.searchList=[];
                 $("#loading").show();
