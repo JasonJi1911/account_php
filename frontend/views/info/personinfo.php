@@ -57,7 +57,7 @@ AppAsset::register($this);
 
         <div class="m1L borderB color656565 flexBox1 inputH heightAuto">
             <div class="flexBox2">
-                <div class="w140">家庭成员数量<span class="colorEF7E2E">*</span></div>
+                <div class="w140">非独立人员数量<span class="colorEF7E2E">*</span></div>
 <!--                <input type="number" id="candidate-numdependents" name="Candidate[numDependents]" placeholder="请输入家庭成员数量" aria-required="true" class="inputW valimessage1" @blur="valimessage('1','家庭成员数量')" />-->
                 <?= $form->field($candidate, 'numDependents')->textInput(['placeholder'=>'请输入家庭成员数量', 'class' => 'inputW valimessage1', 'pattern'=>"[0-9]*",'value'=>$candidate['numDependents'], '@blur'=>"valimessage('1','家庭成员数量')"])->label(false) ?>
             </div>
