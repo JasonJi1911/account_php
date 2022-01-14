@@ -190,12 +190,12 @@ $this->registerJs($js);
             <div class="m05B">如有疑问，<span class="colF08023 line" @click="help()">联系在线客服。</span></div>
         </div>
 
-<!--        <div class="m1L f27 col5A5A5A flexBox5 m1T">-->
-<!--            --><?//= $form->field($model, 'isSave')
-//                ->MySwitch(['id'=>"switch0", 'label'=>false, ':value' =>'switch0', '@click' => 'getSwitch(0,$event)'])
-//                ->label(false) ?>
-<!--            <span>保存为模版下次继续使用。</span>-->
-<!--        </div>-->
+        <div class="m1L f27 col5A5A5A flexBox5 m1T">
+            <?= $form->field($model, 'isSave')
+                ->MySwitch(['id'=>"switch0", 'label'=>false, ':value' =>'check0', '@click' => 'getSwitch(0,$event)'])
+                ->label(false) ?>
+            <span>保存为模版下次继续使用。</span>
+        </div>
 
         <div class="btn m1L m1R m15T m15B" @click="nextSubmit()">
             确认已汇款，通知财猫收款
@@ -227,7 +227,7 @@ $this->registerJs($js);
             choseValue0: '<?= $model->bankName != null ? $model->bankName : 'CBA'?>',
             choseData1:'澳币AUD',
             choseValue1: 'AUD',
-            switch0: '<?= $model->isSave != null ? $model->isSave : '0'?>',
+            check0: '<?= $model->isSave != null ? $model->isSave : '0'?>',
             obj:[
                 {
                     on:'',
@@ -256,7 +256,7 @@ $this->registerJs($js);
                 alert("复制失败");
             });
             <?php if($isNew == 0) :?>
-                alert('入金通知成功');
+                alert('<?= $message ?>');
             <? endif;?>
         },
         methods:{
@@ -282,10 +282,10 @@ $this->registerJs($js);
 
             },
             getSwitch:function(index,ev){
-                if (this['switch'+index]=='0')
-                    this['switch'+index]='1'
+                if (this['check'+index]=='0')
+                    this['check'+index]='1'
                 else
-                    this['switch'+index]='0'
+                    this['check'+index]='0'
             },
         }
     });

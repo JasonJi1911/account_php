@@ -19,7 +19,7 @@ use yii\db\ActiveRecord;
  * @property string $bankAccount
  * @property string $currency
  * @property string $amount
- * @property integer $isSave
+ * @property string $isSave
  */
 
 class Deposit extends ActiveRecord
@@ -41,6 +41,7 @@ class Deposit extends ActiveRecord
             [['bankAccount'], 'required', 'message' => '银行账号不能为空.'],
             [['currency'], 'required', 'message' => '转账货币不能为空.'],
             [['amount'], 'required', 'message' => '转账金额不能为空.'],
+            [['isSave'], 'required', 'message' => ''],
         ];
     }
 

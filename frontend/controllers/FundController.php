@@ -26,9 +26,9 @@ class FundController extends BaseController
     {
         $uid = Yii::$app->request->get('uid', '');
         $account = Yii::$app->request->get('account', '');
-//        $deposit = Deposit::findOne(['uid' => $uid]);
-//        if(!$deposit)
-//            $deposit = new Deposit();
+        $deposit = Deposit::findOne(['uid' => $uid]);
+        if(!$deposit)
+            $deposit = new Deposit();
 
         if (!$account){
             $candidateLogic = new CandidateLogic();
@@ -39,16 +39,32 @@ class FundController extends BaseController
         $saveModel = new Deposit();
         if (Yii::$app->request->isPost && $saveModel->load(Yii::$app->request->post())) {
             if ($saveModel->validate()) {
-                $saveModel->uid = $uid;
-                $saveModel->save(false);
+                $res = Tool::httpPost('https://api.moneycatrading.com/index.php?app=fund&act=deposit_funds',
+                    ['acctId'=>$account, 'amount'=>$saveModel->amount, 'currency'=>$saveModel->currency, 'bank_number'=>$saveModel->bankAccount,
+                        'bank_name'=>$saveModel->bankName]);
+                if ($saveModel->isSave == "1")
+                {
+                    $saveModel->oldAttributes = $deposit->oldAttributes;
+                    $saveModel->uid = $uid;
+                    $saveModel->save(false);
+                }
                 $isNew = 0;
+                $res_data = json_decode($res['data'], true);
+                if (!$res_data['data'])
+                    $message = '入金通知失败';
+                else
+                    $message = '入金通知成功';
             }
         }
-        $deposit = new Deposit();
+
+        if ($isNew == 0)
+            $deposit = $saveModel;
+
         return $this->render('index', [
             'account' => $account,
             'model'=>$deposit,
             'isNew'=>$isNew,
+            'message' => $message,
         ]);
     }
 }
