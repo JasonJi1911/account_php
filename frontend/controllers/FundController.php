@@ -53,7 +53,7 @@ class FundController extends BaseController
                 if (!$res_data['data'])
                     $message = '入金通知失败';
                 else
-                    $message = '入金通知成功';
+                    $message = '入金通知'.$res_data['message'];
             }
         }
 
